@@ -1,0 +1,8 @@
+!fileScope all
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ExternalTnsOrderResponse>
+    <ResponseStatus>
+        <ErrorCode>5081</ErrorCode>
+        <Description>Action is absent or invalid. Possible values  IMPORT, REMOVE</Description>
+    </ResponseStatus>
+</ExternalTnsOrderResponse>

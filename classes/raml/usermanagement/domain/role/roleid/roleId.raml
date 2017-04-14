@@ -1,0 +1,81 @@
+!fileScope internal
+
+description: This resource retrieves information about role.
+
+get:
+    description: Retrieves the information about role by unique role name.
+    responses:
+        200:
+            description: The information has been successfully retrieved and displayed in the payload.
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LdapRoleResponse>
+                            <Role>
+                                <RoleId>report-editor</RoleId>
+                                <RoleSimpleName>Simple Name</RoleSimpleName>
+                                <RoleDescription>123</RoleDescription>
+                                <Internal>false</Internal>
+                            </Role>
+                        </LdapRoleResponse>
+        404:
+            description: The role does not exist.
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LdapRoleResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12070</ErrorCode>
+                                <Description>Role 'report-editor1' does not exist</Description>
+                            </ResponseStatus>
+                        </LdapRoleResponse>
+!scope internal
+put:
+    description: Updates the information for role by unique role name or creates role, if it doesn't exist.
+    body:
+        application/xml:
+            example:
+                <Role>
+                    <Internal>true</Internal>
+                    <RoleSimpleName>Simple Name</RoleSimpleName>
+                    <RoleDescription>Some role description, that describes role nature</RoleDescription>
+                </Role>
+    responses:
+        200:
+             description: The role has been successfully updated or created and displayed in the payload.
+             body:
+                 application/xml:
+                     example:
+                         <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                         <LdapRoleResponse>
+                             <Role>
+                                 <RoleId>admin-role</RoleId>
+                                 <RoleSimpleName>Simple Name</RoleSimpleName>
+                                 <RoleDescription>admin role</RoleDescription>
+                                 <Internal>true</Internal>
+                             </Role>
+                         </LdapRoleResponse>
+
+!scope internal
+delete:
+    description: Removes specified role.
+    responses:
+        200:
+            description: The role has been successfully removed.
+        404:
+            description:
+                The role does not exist.
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LdapRoleResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12070</ErrorCode>
+                                <Description>Role 'admin-role' does not exist</Description>
+                            </ResponseStatus>
+                        </LdapRoleResponse>
+
+/permissions: !include rolepermissionsxref/rolepermissionsxref.raml

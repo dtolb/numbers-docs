@@ -1,0 +1,37 @@
+!fileScope internal
+
+description: This resource retrieves information about bwspids
+
+get:
+    description: |
+            Get all bwspids
+    responses:
+        200:
+            description: |
+                Return existed Bwspids
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <AdminDataResponse>
+                            <BwspidSystemValues>
+                                <BwspidSystemValue>
+                                    <Id>2</Id>
+                                    <RouteType>onNet</RouteType>
+                                    <Priority>1</Priority>
+                                    <Spid>E830</Spid>
+                                    <Type>NNID</Type>
+                                    <Alias>BW ESPID E830 Route</Alias>
+                                </BwspidSystemValue>
+                                <BwspidSystemValue>
+                                    <Id>4</Id>
+                                    <RouteType>onNet</RouteType>
+                                    <Priority>2</Priority>
+                                    <Spid>X641</Spid>
+                                    <Type>NPAC</Type>
+                                    <Alias>Bandwidth ALT-SPID</Alias>
+                                </BwspidSystemValue>
+                            </BwspidSystemValues>
+                        </AdminDataResponse>
+
+/{id}: !include id/id.raml

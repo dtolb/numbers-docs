@@ -1,0 +1,39 @@
+!fileScope internal
+
+description: This resource retrieves information about TPA.
+
+get:
+    responses:
+        200:
+            description: |
+                Return all existed TPA
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <AdminDataResponse>
+                            <Tpas>
+                                <Tpa>
+                                    <Spid>5123</Spid>
+                                    <Name>ATT</Name>
+                                    <NeustarTradingPartner>true</NeustarTradingPartner>
+                                    <Ebonded>true</Ebonded>
+                                    <Wireless>false</Wireless>
+                                    <AccountNumberRequired>false</AccountNumberRequired>
+                                    <StateMatchRequired>true</StateMatchRequired>
+                                    <PortOutMinDays>3</PortOutMinDays>
+                                </Tpa>
+                                <Tpa>
+                                    <Spid>5200</Spid>
+                                    <Name>ATT</Name>
+                                    <NeustarTradingPartner>true</NeustarTradingPartner>
+                                    <Ebonded>true</Ebonded>
+                                    <Wireless>false</Wireless>
+                                    <AccountNumberRequired>false</AccountNumberRequired>
+                                    <StateMatchRequired>true</StateMatchRequired>
+                                    <PortOutMinDays>3</PortOutMinDays>
+                                </Tpa>
+                            </Tpas>
+                        </AdminDataResponse>
+
+/{spid}: !include spid/spid.raml

@@ -1,0 +1,99 @@
+get:
+    description: Get list of named Routing Exceptions from Roger
+    responses:
+      200:
+        body:
+          application/xml:
+            example:
+              <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+              <TerminationRoutingExceptionsResponse>
+                <TerminationRoutingExceptions>
+                    <TerminationRoutingException>
+                        <id>6</id>
+                        <routingExceptionName>routingExceptionTestName</routingExceptionName>
+                        <RoutingExceptionPrefixes>
+                            <RoutingExceptionPrefix>
+                                <prefix>403459</prefix>
+                                <routingExceptionType>BLOCK</routingExceptionType>
+                            </RoutingExceptionPrefix>
+                        </RoutingExceptionPrefixes>
+                    </TerminationRoutingException>
+                </TerminationRoutingExceptions>
+              </TerminationRoutingExceptionsResponse>
+      500:
+        body:
+          application/xml:
+            example:
+              <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+              <TerminationRoutingExceptionResponse>
+                <ResponseStatus>
+                  <ErrorCode>18000</ErrorCode>
+                  <Description>Internal Roger error</Description>
+                </ResponseStatus>
+              </TerminationRoutingExceptionResponse>
+post:
+    description: Create a routing exception
+    body:
+        application/xml:
+            example:
+                <?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+                <TerminationRoutingException>
+                    <routingExceptionName>routingExceptionTestName</routingExceptionName>
+                    <RoutingExceptionPrefixes>
+                        <RoutingExceptionPrefix>
+                            <prefix>403459</prefix>
+                            <routingExceptionType>BLOCK</routingExceptionType>
+                        </RoutingExceptionPrefix>
+                    </RoutingExceptionPrefixes>
+                </TerminationRoutingException>
+    responses:
+        201:
+            description: The routing exception has been created as described in the payload <br>
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <TerminationRoutingExceptionResponse>
+                            <TerminationRoutingException>
+                                <id>7</id>
+                                <routingExceptionName>routingExceptionTestName</routingExceptionName>
+                                <RoutingExceptionPrefixes>
+                                    <RoutingExceptionPrefix>
+                                        <prefix>403459</prefix>
+                                        <routingExceptionType>BLOCK</routingExceptionType>
+                                    </RoutingExceptionPrefix>
+                                </RoutingExceptionPrefixes>
+                            </TerminationRoutingException>
+                        </TerminationRoutingExceptionResponse>
+            headers:
+                Location:
+                    description: contains routingException id after last "/" <br>
+        500:
+            description: It may happen in many cases, e.g. such routing exception name already exists
+            body:
+                application/xml:
+                    example:
+                         <TerminationRoutingExceptionResponse>
+                           <ResponseStatus>
+                             <ErrorCode>18000</ErrorCode>
+                             <Description>Internal Roger error</Description>
+                           </ResponseStatus>
+                         </TerminationRoutingExceptionResponse>
+put:
+    description: update routing exception
+    body:
+        application/xml:
+            example:
+                <TerminationRoutingException>
+                    <id>8</id>
+                    <routingExceptionName>routingExceptionTestName</routingExceptionName>
+                     <RoutingExceptionPrefixes>
+                        <RoutingExceptionPrefix>
+                            <prefix>403460</prefix>
+                            <routingExceptionType>BLOCK</routingExceptionType>
+                        </RoutingExceptionPrefix>
+                     </RoutingExceptionPrefixes>
+                </TerminationRoutingException>
+/{id}:
+    delete:
+        description: delete routing exception by id

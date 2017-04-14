@@ -1,0 +1,46 @@
+!fileScope internal
+get:
+    description: get all customer rate assignments
+    responses:
+        200:
+            description: managed to get all customer rate assignments
+            body:
+                application/json:
+                    schema: |
+                        [
+                            {
+                                "id":4,
+                                "termServiceRateDeckId":1,
+                                "termServiceAccountId":1,
+                                "externalProfileId":1,
+                                "externalAssignmentId":1,
+                                "billingAccountId":null,
+                                "increaseDate":"2014-09-15T13:49:42.000Z",
+                                "decreaseDate":"2014-09-15T13:49:42.000Z"
+                            }
+                        ]
+        500:
+            description: any transaction error
+/{id}:
+    get:
+        description: get customer deck assignment by id
+        responses:
+            200:
+                body:
+                    application/json:
+                        schema: |
+                            {
+                                "id":5,
+                                "termServiceRateDeckId":1,
+                                "termServiceAccountId":1,
+                                "externalProfileId":1,
+                                "externalAssignmentId":1,
+                                "billingAccountId":null,
+                                "increaseDate":"2014-09-15T13:55:44.000Z",
+                                "decreaseDate":"2014-09-15T13:55:44.000Z"
+                            }
+            404:
+                description: assignment with specified id does not exists
+            500:
+                description: any transaction error
+

@@ -1,0 +1,72 @@
+!fileScope internal
+
+description: The {user ID} method either returns the information associated with the user, adds roles to the user, or deletes the user. 
+
+get:
+    description: Retrieves the information associated with the user.
+    responses:
+        200:
+            description: The information has been successfully received and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <UserResponse>
+                            <User>
+                                <Username>mowoc</Username>
+                                <FirstName>Michael</FirstName>
+                                <LastName>Owoc</LastName>
+                                <EmailAddress>mowoc@bandwidth.com</EmailAddress>
+                                <TelephoneNumber>9199999999</TelephoneNumber>
+                                <Roles>
+                                    <Role>
+                                        <RoleName>ROLE_ADMIN</RoleName>
+                                        <Permissions>
+                                            <Permission>
+                                                <PermissionName>VIEW</PermissionName>
+                                            </Permission>
+                                        </Permissions>
+                                    </Role>
+                                </Roles>
+                            </User>
+                        </UserResponse>
+
+put:
+    description: |
+        Add a role to a userid. 
+        <i>However</i>, if the user ID has a role that isn't <u>explicitly</u> stated in the PUT payload, that role will be removed from the user ID. 
+        <strong>For this reason</strong>, adding a role to a user ID is best done in the roles sublevel. Avoid adding roles at this level unless you wish to <strong>completely change</strong> all roles for the user ID.
+    body:
+        application/xml:
+            example: |
+                <User>
+                    <Username>testcustomer</Username>
+                    <Password>newpassword</Password>
+                    <FirstName>Jane</FirstName>
+                    <LastName>Doe</LastName>
+                    <EmailAddress>janedoe@bandwidth.com</EmailAddress>
+                    <TelephoneNumber>9199999999</TelephoneNumber>
+                    <Roles>
+                        <Role>
+                            <RoleName>role_admin</RoleName>
+                                <Permissions>
+                                    <Permission>
+                                            <PermissionName>view</PermissionName>
+                                    </Permission>
+                                    <Permission>
+                                            <PermissionName>update</PermissionName>
+                                        </Permission>
+                                </Permissions>
+                            </Role>
+                    </Roles>
+                </User>
+    responses:
+        200:
+            description: The role has been successfully added. If the role already existed, it will still return 200, but nothing will be changed to the existing role.
+
+delete:
+    description: Deletes the user.
+    responses:
+        200:
+            description: The user has been successfully deleted.
+
+/roles: !include roles/roles.raml

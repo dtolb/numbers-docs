@@ -1,0 +1,46 @@
+!scope all
+get:
+    description: Retrieve information about the hosts of account, as guided by optional search parameters.
+    queryParameters:
+        host:
+            description: An IP address or subnet (CIDR format) associated with the account. Filter for subnet applies by exact match.
+            type: string
+            example: 47.16.211.63 or 69.22.181.68/30
+        type:
+            description: |
+                A status value to filter the hosts returned in the payload.  Values that can be accepted include:
+                <ul>
+                    <li>SMS</li>
+                    <li>TERMINATION</li>
+                    <li>ORIGINATION</li>
+                </ul>
+            type: string
+            enum: [SMS,TERMINATION,ORIGINATION]
+            example: TERMINATION
+
+    responses:
+        200:
+            description: A successful result that contains the response data
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <SiteHostsResponse>
+                            <SiteHosts>
+                                <SiteHost>
+                                    <SiteId>5</SiteId>
+                                    <SipPeerHosts>
+                                        <SipPeerHost>
+                                            <SipPeerId>500146</SipPeerId>
+                                            <SmsHosts/>
+                                            <VoiceHosts>
+                                                <Host>
+                                                    <HostName>47.16.211.63</HostName>
+                                                </Host>
+                                            </VoiceHosts>
+                                            <TerminationHosts/>
+                                        </SipPeerHost>
+                                    </SipPeerHosts>
+                                </SiteHost>
+                            </SiteHosts>
+                        </SiteHostsResponse>

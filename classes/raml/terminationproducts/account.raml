@@ -1,0 +1,49 @@
+get:
+  description: |
+    Get all accounts from term services.
+  responses:
+    200:
+      body:
+        application/xml:
+          example: |
+            <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <AccountsResponse>
+              <TerminationAccountList>
+                <TerminationAccount>
+                  <id>1</id>
+                  <externalAccountId>12</externalAccountId>
+                  <lcrId>4</lcrId>
+                  <core2Id>8</core2Id>
+                </TerminationAccount>
+              </TerminationAccountList>
+            </AccountsResponse>
+post:
+    description: deprecated method to create account
+    body:
+      application/xml:
+        example: |
+          <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+          <TerminationAccount>
+            <externalAccountId>12</externalAccountId>
+          </TerminationAccount>
+    responses:
+      201:
+        description: account was successfully created
+        headers:
+          Location:
+            description: contains create termination account id<br>
+            example: http://termservices.url/account/1
+        body:
+          application/xml:
+            example: |
+              <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+              <TerminationAccountResponse>
+                <TerminationAccount>
+                  <id>1</id>
+                  <externalAccountId>12</externalAccountId>
+                  <lcrId>4</lcrId>
+                  <core2Id>8</core2Id>
+                </TerminationAccount>
+              </TerminationAccountResponse>
+      400:
+        description: required fields are absent, npaNxx or global carrier mask validation failed

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<OrderHistoryWrapper>
+    <OrderHistory>
+        <OrderDate>2016-01-15T11:36:52.728Z</OrderDate>
+        <Note>Tn Option order has been received by the system</Note>
+        <Author>jbm</Author>
+        <Status>RECEIVED</Status>
+    </OrderHistory>
+    <OrderHistory>
+        <OrderDate>2016-01-15T11:36:52.759Z</OrderDate>
+        <Note>Tn Option order processing has started</Note>
+        <Author>jbm</Author>
+        <Status>PROCESSING</Status>
+    </OrderHistory>
+    <OrderHistory>
+        <OrderDate>2016-01-15T11:36:52.853Z</OrderDate>
+        <Note>Tn Option order is complete</Note>
+        <Author>jbm</Author>
+        <Status>COMPLETE</Status>
+    </OrderHistory>
+</OrderHistoryWrapper>

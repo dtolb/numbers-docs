@@ -1,0 +1,55 @@
+!fileScope external
+
+description: Retrieves the port-in requests for the given site ID.
+
+get:
+    description: Retrieves the port-in requests for the given site ID.
+    queryParameters:
+        page:
+            description: The port-in ID of the first order of the page. "1" is used as a convention for the first port-in in the site ID.
+            type: string
+            required: true
+            default: 1
+            example: ca8065d1-ec1a-43da-af40-1dcee43becb5
+        size:
+            description: The number of port-ins retrieved. 
+            type: integer
+            required: true
+            default: 300
+            example: 30
+        status:
+            description: Displays the port-ins with the given status.
+            type: string
+            example: completed
+    responses:
+        200:
+            description: The port-ins have been successfully retrieved.
+            body:
+                application/xml:
+                    example: |
+                        <LNPResponseWrapper>
+                            <TotalCount>7</TotalCount>
+                            <Links>
+                                <first>
+                                    <! --- SNIP --- >
+                                </first>
+                                <next>
+                                    <! --- SNIP --- >
+                                </next>
+                            </Links>
+                            <lnpPortInfoForGivenStatus>
+                                <CountOfTNs>1</CountOfTNs>
+                                <userId>jbm</userId>
+                                <OrderId>ca8065d1-ec1a-43da-af40-1dcee43becb5</OrderId>
+                                <OrderType>port_in</OrderType>
+                                <BillingTelephoneNumber>9192803466</BillingTelephoneNumber>
+                                <lastModifiedDate>2014-05-20T14:43:19.222Z</lastModifiedDate>
+                                <LNPLosingCarrierId>1537</LNPLosingCarrierId>
+                                <LNPLosingCarrierName>Mock Carrier</LNPLosingCarrierName>
+                                <OrderDate>2014-05-20T14:43:32.828Z</OrderDate>
+                                <ProcessingStatus>CANCELLED</ProcessingStatus>
+                                <RequestedFOCDate>2015-05-15T20:00:00.000Z</RequestedFOCDate>
+                                <VendorId>49</VendorId>
+                                <VendorName>Bandwidth CLEC</VendorName>
+                            </lnpPortInfoForGivenStatus>
+                        </LNPResponseWrapper>

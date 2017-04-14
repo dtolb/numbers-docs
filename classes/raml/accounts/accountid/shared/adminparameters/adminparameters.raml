@@ -1,0 +1,98 @@
+!fileScope internal
+# this file is shared between 6 order types - 
+#  - orders
+#  - portins
+#  - portouts
+#  - LSR orders
+#  - E911 orders
+#  - TN Option orders
+# 
+description: |
+    The /adminparameters resource contains two pieces of information...
+    <ul>
+      <li>The "activity state" of the order - a classification of what the state the order is in from the perspective of the Bandwidth staff member.</li>
+      <ul>
+        <li>Quiet - the order is automaticly progressing through the work flow and nothing needs to be done.  This is the default state</li>
+        <li>Changed - something has changed in the order, and should be examined by a staff member</li>
+        <li>Seen - the order has been examined by the staff member, and if required, action is being taken</li>
+        <li>Responded - a response has been provided to the customer</li>
+      </ul>
+      <li>The name or handle of the Bandwidth staff member that is caring for the order</li>
+    </ul>
+    This resource is used by Bandwidth in managing multiple types of orders. <br><br> There is only one instance of the adminparameters resource associated with an order.  The resource is assigned when it is needed, so an order that is flowing through the workflow without errors will likely not have an instance of adminparameters.
+!scope internal
+put:
+    description: Updates the admin parameters associated with an order.  Removing an element will result in resetting the element to the default value.
+    body:
+        application/xml:
+            example:
+                <?xml version="1.0"?>
+                <AdminParameters>
+                    <!-- Optional - Default value is Quiet-->
+                    <ActivityState>Changed</ActivityState>
+                    <!-- Optional -->
+                    <BandwidthPrime>James T Kirk</BandwidthPrime>
+                </AdminParameters>
+    responses:
+        201:
+            description: CREATED - the admin parameters resource has been created and populated as directed.
+        200:
+            description: OK - The previously created resource has been updated as directed.
+        404:
+            description: Bad Request - some error is present in the payload, and the the Admin Parameters have not been changed.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <AdminParametersResponse>
+                            <ResponseStatus>
+                                <ErrorCode>15517</ErrorCode>
+                                <Description>Invalid 'activityState'. Valid values are changed, seen, responded, quiet</Description>
+                            </ResponseStatus>
+                        </AdminParametersResponse>        
+!scope internal
+get:
+    description: Retrieve the admin parameters associated with an order.
+    responses:
+        200:
+            description: OK - there are admin parameters associated with the order, and they have been returned in the response.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <AdminParametersResponse>
+                            <AdminParameters>
+                                <ActivityState>responded</ActivityState>
+                                <BandwidthPrime>James T Kirk</BandwidthPrime>
+                            </AdminParameters>
+                        </AdminParametersResponse>                    
+        404:
+            description: NOT FOUND - No admin parameters have been associated with this order id (or the orderid cannot be found in the system).  For a valid orderid this is interpreted as a "Quiet" <ActivityState>.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <AdminParametersResponse>
+                            <ResponseStatus>
+                                <Description>The resource does not exist</Description>
+                            </ResponseStatus>
+                        </AdminParametersResponse>     
+!scope internal
+delete:
+    description: Remove the admin parameters associated with an order
+    responses:
+        200:
+            description: OK - the admin parameters have been removed from the order
+                  
+        400:
+            description: BAD REQUEST - typically this means that the order-id is incorrect.
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <AdminParametersResponse>
+                            <ResponseStatus>
+                                <ErrorCode>5035</ErrorCode>
+                                <Description>port_in order f58f47a5-f9f5-4dd2-8687-a615b2fe86cd9 not found.</Description>
+                            </ResponseStatus>
+                        </AdminParametersResponse>

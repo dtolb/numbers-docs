@@ -1,0 +1,825 @@
+!fileScope all
+
+!scope all
+
+description: |
+    The portins endpoint is used to manage requests to port a number into the Bandwidth Dashboard.  Like many other requests, the portins endpoint causes the creation of an <b>order</b> that is used to manage the porting event throughout the lifecycle of the request.
+
+    The various sub-resources and methods are covered in greater detail below.
+
+    The elements used or supplied in the payloads are described in the following table...
+    <table border="1" cellspacing="0" cellpadding="0" width="624">
+        <tbody>
+            <tr>
+                <td valign="top">
+                    <p>
+                        <strong>Parameter</strong>
+                    </p>
+                </td>
+                <td valign="top">
+                    <p>
+                        <strong>Required</strong>
+                    </p>
+                </td>
+                <td width="351" valign="top">
+                    <p>
+                        <strong>Description</strong>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <p>
+                        accountid
+                    </p>
+                </td>
+                <td valign="top">
+                    <p align="center">
+                        No
+                    </p>
+                </td>
+                <td width="351" valign="top">
+                    <p>
+                        The account ID for porting the numbers.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <p>
+                        CustomerOrderId
+                    </p>
+                </td>
+                <td valign="top">
+                    <p align="center">
+                        No
+                    </p>
+                </td>
+                <td width="351" valign="top">
+                    <p>
+                        Internal customer order id for tracking the order
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <p>
+                        RequestedFocDate
+                    </p>
+                </td>
+                <td valign="top">
+                    <p align="center">
+                        No
+                    </p>
+                </td>
+                <td width="351" valign="top">
+                    <p>
+                        If not entered, the next available FOC date will be used. It if is entered, order will be rejected if date is earlier than losing carriers
+                        minimum number of days to port-out or if date is a weekend or holiday. Format is ISO8601 encoding of ZULU/UTC/GMT such as
+                        “2013-05-10T15:14:22Z”.
+                    </p>
+                    <p>
+                        If the port is capable of on demand activation then the time value in the request considered to be the default activation time of the port.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <p>
+                        AlternateSpid
+                    </p>
+                </td>
+                <td valign="top">
+                    <p align="center">
+                        No
+                    </p>
+                </td>
+                <td width="351" valign="top">
+                    <p>
+                        Unique customer SPID associated with Bandwidth.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <p>
+                        BillingTelephoneNumber
+                    </p>
+                </td>
+                <td valign="top">
+                    <p align="center">
+                        Yes
+                    </p>
+                </td>
+                <td width="351" valign="top">
+                    <p>
+                        Account or Billing telephone number for order. Porting telephone number for most wireline ports.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <p>
+                        SubscriberType
+                    </p>
+                </td>
+                <td valign="top">
+                    <p align="center">
+                        Yes
+                    </p>
+                </td>
+                <td width="351" valign="top">
+                    <p>
+                        (BUSINESS, RESIDENTIAL) If residential, order will be rejected if a BusinessName is entered.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <p>
+                        BusinessName
+                    </p>
+                </td>
+                <td valign="top">
+                    <p align="center">
+                        No
+                    </p>
+                </td>
+                <td width="351" valign="top">
+                    <p>
+                        Subscriber business name.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <p>
+                        FirstName
+                    </p>
+                </td>
+                <td valign="top">
+                    <p align="center">
+                        No
+                    </p>
+                </td>
+                <td width="351" valign="top">
+                    <p>
+                        Subscriber first name.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <p>
+                        MiddleInitial
+                    </p>
+                </td>
+                <td valign="top">
+                    <p align="center">
+                        No
+                    </p>
+                </td>
+                <td width="351" valign="top">
+                    <p>
+                        Subscriber middle initial.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <p>
+                        LastName
+                    </p>
+                </td>
+                <td valign="top">
+                    <p align="center">
+                        No
+                    </p>
+                </td>
+                <td width="351" valign="top">
+                    <p>
+                        Subscriber last name.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <p>
+                        HouseNumber
+                    </p>
+                </td>
+                <td valign="top">
+                    <p align="center">
+                        Yes
+                    </p>
+                </td>
+                <td width="351" valign="top">
+                    <p>
+                        Street address number.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <p>
+                        HousePrefix
+                    </p>
+                </td>
+                <td valign="top">
+                    <p align="center">
+                        No
+                    </p>
+                </td>
+                <td width="351" valign="top">
+                    <p>
+                        Street address number prefix
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <p>
+                        HouseSuffix
+                    </p>
+                </td>
+                <td valign="top">
+                    <p align="center">
+                        No
+                    </p>
+                </td>
+                <td width="351" valign="top">
+                    <p>
+                        Street address number suffix.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <p>
+                        PreDirectional
+                    </p>
+                </td>
+                <td valign="top">
+                    <p align="center">
+                        No
+                    </p>
+                </td>
+                <td width="351" valign="top">
+                    <p>
+                        Street address pre-directional.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <p>
+                        StreetName
+                    </p>
+                </td>
+                <td valign="top">
+                    <p align="center">
+                        Yes
+                    </p>
+                </td>
+                <td width="351" valign="top">
+                    <p>
+                        Street name.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <p>
+                        StreetSuffix
+                    </p>
+                </td>
+                <td valign="top">
+                    <p align="center">
+                        No
+                    </p>
+                </td>
+                <td width="351" valign="top">
+                    <p>
+                        Street suffix.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <p>
+                        PostDirectional
+                    </p>
+                </td>
+                <td valign="top">
+                    <p align="center">
+                        No
+                    </p>
+                </td>
+                <td width="351" valign="top">
+                    <p>
+                        Street address post directional.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <p>
+                        AddressLine2
+                    </p>
+                </td>
+                <td valign="top">
+                    <p align="center">
+                        No
+                    </p>
+                </td>
+                <td width="351" valign="top">
+                    <p>
+                        Put unit, suite, floor, etc. here.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <p>
+                        City
+                    </p>
+                </td>
+                <td valign="top">
+                    <p align="center">
+                        Yes
+                    </p>
+                </td>
+                <td width="351" valign="top">
+                    <p>
+                        City.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <p>
+                        StateCode
+                    </p>
+                </td>
+                <td valign="top">
+                    <p align="center">
+                        Yes
+                    </p>
+                </td>
+                <td width="351" valign="top">
+                    <p>
+                        Two letter state code.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <p>
+                        Zip
+                    </p>
+                </td>
+                <td valign="top">
+                    <p align="center">
+                        Yes
+                    </p>
+                </td>
+                <td width="351" valign="top">
+                    <p>
+                        Zip code.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <p>
+                        PlusFour
+                    </p>
+                </td>
+                <td valign="top">
+                    <p align="center">
+                        No
+                    </p>
+                </td>
+                <td width="351" valign="top">
+                    <p>
+                        Zip + 4.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <p>
+                        Country
+                    </p>
+                </td>
+                <td valign="top">
+                    <p align="center">
+                        No
+                    </p>
+                </td>
+                <td width="351" valign="top">
+                    <p>
+                        Country.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <p>
+                        AddressDetail1, AddressValue1, AddressDetail2, AddressValue2, AddressDetail3, AddressValue3
+                    </p>
+                </td>
+                <td valign="top">
+                    <p align="center">
+                        No
+                    </p>
+                </td>
+                <td width="351" valign="top">
+                    <p>
+                        Additional details can optionally be added to the address to specify address refinements such as Building, Basement, etc.
+                        <br/>
+                        <br/>
+                        See the USPS Postal Address Format - pub28 for detail.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <p>
+                        LoaAuthorizingPerson
+                    </p>
+                </td>
+                <td valign="top">
+                    <p align="center">
+                        Yes
+                    </p>
+                </td>
+                <td width="351" valign="top">
+                    <p>
+                        First and last name of person who authorized LOA.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <p>
+                        AccountNumber
+                    </p>
+                </td>
+                <td valign="top">
+                    <p align="center">
+                        No
+                    </p>
+                </td>
+                <td width="351" valign="top">
+                    <p>
+                        Account number, typically required for wireless ports.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <p>
+                        PinNumber
+                    </p>
+                </td>
+                <td valign="top">
+                    <p align="center">
+                        No
+                    </p>
+                </td>
+                <td width="351" valign="top">
+                    <p>
+                        PIN Number, often required for wireless ports.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <p>
+                        PhoneNumber
+                    </p>
+                </td>
+                <td valign="top">
+                    <p align="center">
+                        Yes
+                    </p>
+                </td>
+                <td width="351" valign="top">
+                    <p>
+                        Ten digit phone number with no dots or dashes. One or more is required. Use a PhoneNumber tag for each phone number in the list.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <p>
+                        siteid
+                    </p>
+                </td>
+                <td valign="top">
+                    <p align="center">
+                        Yes
+                    </p>
+                </td>
+                <td width="351" valign="top">
+                    <p>
+                        See section on Sites
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <p>
+                        PeerId
+                    </p>
+                </td>
+                <td valign="top">
+                    <p align="center">
+                        No
+                    </p>
+                </td>
+                <td width="351" valign="top">
+                    <p>
+                        See section on SIP Peers
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <p>
+                        PartialPort
+                    </p>
+                </td>
+                <td valign="top">
+                    <p align="center">
+                        No
+                    </p>
+                </td>
+                <td width="351" valign="top">
+                    <p>
+                        By default all portin orders are classified as full ports. If the attribute PartialPort is specified as true, the order will be submitted
+                        as a partial port
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <p>
+                        Triggered
+                    </p>
+                </td>
+                <td valign="top">
+                    <p align="center">
+                        No
+                    </p>
+                </td>
+                <td width="351" valign="top">
+                    <p>
+                        (true|false)
+                        <br/>
+                        If present and set to true, this port will be treated as one that will be manually activated. If this value is set it is assumed that the
+                        customer will manually activate the port, and that the Bandwidth Dashboard will activate the port at a default activation time if the
+                        customer does not manually activate the port. This is not supported for wireless ports, and cannot be changed via a SUPP.
+                    </p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+!scope external
+get:
+    description: Retrieves the port-in requests for the given account ID.
+    queryParameters:
+        page:
+            description: The port-in ID of the first order of the page. "1" is used as a convention for the first port-in in the account ID.
+            type: string
+            required: true
+            default: 1
+            example: ca8065d1-ec1a-43da-af40-1dcee43becb5
+        size:
+            description: The number of port-ins retrieved. 
+            type: integer
+            required: true
+            default: 300
+            example: 30
+        status:
+            description: Displays the port-ins with the given status.
+            type: string
+            example: complete
+        date:
+            description: The date of when the order was placed.
+            type: date
+            example: 2014-08-01
+        startdate:
+            description: |
+                The earliest date that the order was last modified. <strong>NOTE: </strong> startdate and enddate must be simultaneously declared.
+            type: date
+            example: 2014-08-05
+        enddate:
+            description: |
+                The latest date that the order was last modified. <strong>NOTE: </strong> startdate and enddate must be simultaneously declared.
+            type: date
+            example: 2014-08-05
+        tn:
+            description: The billing telephone number associated with the port-ins
+            type: integer
+            example: 9191234567
+        pon:
+            description: The port order number
+            type: string
+    responses:
+        200:
+            description: The port-ins have been successfully retrieved.
+            body:
+                application/xml:
+                    example: |
+                        <LNPResponseWrapper>
+                            <TotalCount>3176</TotalCount>
+                            <Links>
+                                <first> -- link -- </first>
+                                <next> -- link -- </next>
+                            </Links>
+                            <lnpPortInfoForGivenStatus>
+                                <CountOfTNs>1</CountOfTNs>
+                                <userId>Neustar</userId>
+                                <lastModifiedDate>2014-11-21T14:00:33.836Z</lastModifiedDate>
+                                <OrderDate>2014-11-05T19:34:53.176Z</OrderDate>
+                                <OrderId>982e3c10-3840-4251-abdd-505cd8610788</OrderId>
+                                <OrderType>port_out</OrderType>
+                                <ErrorCode>200</ErrorCode>
+                                <ErrorMessage>Port out successful.</ErrorMessage>
+                                <FullNumber>9727717577</FullNumber>
+                                <ProcessingStatus>COMPLETE</ProcessingStatus>
+                                <RequestedFOCDate>2014-11-20T00:00:00.000Z</RequestedFOCDate>
+                                <VendorId>512E</VendorId>
+                            </lnpPortInfoForGivenStatus>
+                            <Snip>   ---   </Snip>
+                            <lnpPortInfoForGivenStatus>
+                                <CountOfTNs>1</CountOfTNs>
+                                <userId>Neustar</userId>
+                                <lastModifiedDate>2015-03-30T14:01:59.049Z</lastModifiedDate>
+                                <OrderDate>2015-03-24T17:47:17.605Z</OrderDate>
+                                <OrderId>f8f02d0a-d1a4-42eb-8f45-ce8187cd73ff</OrderId>
+                                <OrderType>port_out</OrderType>
+                                <ErrorCode>200</ErrorCode>
+                                <ErrorMessage>Port out successful.</ErrorMessage>
+                                <FullNumber>2092660315</FullNumber>
+                                <ProcessingStatus>COMPLETE</ProcessingStatus>
+                                <RequestedFOCDate>2015-03-27T00:00:00.000Z</RequestedFOCDate>
+                                <VendorId>512E</VendorId>
+                            </lnpPortInfoForGivenStatus>
+                        </LNPResponseWrapper>
+
+!scope external
+post:
+    description: |
+        Creates a port-in request under the given site ID and sippeer ID as specified in the body.<br>
+        Upon a successfully-submitted payload, the order will have a status of "PENDING_DOCUMENTS".<br>
+        In order to have a successful POST, the payload will need to have a specific <strong>site ID</strong> and <strong>sippeer ID</strong>, according to the account.
+        <br><br>
+        <strong>TnAttributes</strong> - attributes to be assigned to the telephone number. Optional parameter. Possible values: "Protected"
+    body:
+        application/xml:
+            example: |
+                <LnpOrder>
+                    <RequestedFocDate>2016-03-25T21:15:00.000Z</RequestedFocDate>
+                    <!-- OPTIONAL -->
+                    <AlternateSpid>X455</AlternateSpid>
+                    <!-- OPTIONAL -->
+                    <BillingTelephoneNumber>9195551234</BillingTelephoneNumber>
+                    <SiteId>    SITE ID     </SiteId>
+                    <PeerId>  SIPPEER ID    </PeerId>
+                    <Subscriber>
+                        <SubscriberType>BUSINESS</SubscriberType>
+                        <FirstName>First</FirstName>
+                        <LastName>Last</LastName>
+                        <ServiceAddress>
+                            <HouseNumber>11235</HouseNumber>
+                            <StreetName>Back</StreetName>
+                            <City>Denver</City>
+                            <StateCode>CO</StateCode>
+                            <Zip>27541</Zip>
+                            <County>Canyon</County>
+                        </ServiceAddress>
+                    </Subscriber>
+                    <LoaAuthorizingPerson>The Authguy</LoaAuthorizingPerson>
+                    <WirelessInfo>
+                        <AccountNumber>771297665AABC</AccountNumber>
+                        <PinNumber>1234</PinNumber>
+                    </WirelessInfo>
+                    <TnAttributes>
+                            <TnAttribute>Protected</TnAttribute>
+                    </TnAttributes>
+                    <ListOfPhoneNumbers>
+                        <PhoneNumber>9194809871</PhoneNumber>
+                    </ListOfPhoneNumbers>
+                    <Triggered>true</Triggered>
+                    !scope internal
+                    <Immediately>false</Immediately>
+                    <BillingType>PORTIN</BillingType>
+                </LnpOrder>
+    responses:
+        201:
+            description: The order has been created and an order ID will be specified in the payload and in the header.
+            body:
+                application/xml:
+                    example: |
+                        <LnpOrderResponse>
+                            <OrderId>03f194d5-3932-4e9f-8ba1-03ef767985e5</OrderId>
+                            <Status>
+                                <Code>201</Code>
+                                <Description>Order request received. Please use the order id to check the status of your order later.</Description>
+                            </Status>
+                            <ProcessingStatus>PENDING_DOCUMENTS</ProcessingStatus>
+                            <RequestedFocDate>2016-03-25T21:15:00.000Z</RequestedFocDate>
+                            <LoaAuthorizingPerson>The Authguy</LoaAuthorizingPerson>
+                            <Subscriber>
+                                <SubscriberType>BUSINESS</SubscriberType>
+                                <FirstName>First</FirstName>
+                                <LastName>Last</LastName>
+                                <ServiceAddress>
+                                    <HouseNumber>11235</HouseNumber>
+                                    <StreetName>Back</StreetName>
+                                    <City>Denver</City>
+                                    <StateCode>CO</StateCode>
+                                    <Zip>27541</Zip>
+                                    <County>Canyon</County>
+                                    <Country>United States</Country>
+                                </ServiceAddress>
+                            </Subscriber>
+                            <WirelessInfo>
+                                <AccountNumber>771297665AABC</AccountNumber>
+                                <PinNumber>1234</PinNumber>
+                            </WirelessInfo>
+                            <TnAttributes>
+                                    <TnAttribute>Protected</TnAttribute>
+                            </TnAttributes>
+                            <BillingTelephoneNumber>9195551234</BillingTelephoneNumber>
+                            <ListOfPhoneNumbers>
+                                <PhoneNumber>9194809871</PhoneNumber>
+                            </ListOfPhoneNumbers>
+                            <Triggered>true</Triggered>
+                            <BillingType>PORTIN</BillingType>
+                            !scope internal
+                            <OverrideValidation>false</OverrideValidation>
+                        </LnpOrderResponse>
+        400:
+            description: The order failed; one of the input parameters is invalid.
+            body:
+                application/xml:
+                    example: |
+                        <LnpOrderResponse>
+                            <Status>
+                                <Code>400</Code>
+                                <Description>Validation Failed. Please check your input parameters.</Description>
+                            </Status>
+                            <Errors>
+                                <Code>7309</Code>
+                                <Description>The site id was not supplied or is invalid.</Description>
+                            </Errors>
+                            <Errors>
+                                <Code>7312</Code>
+                                <Description>The sippeer id is invalid.</Description>
+                            </Errors>
+                            <Errors>
+                                <Code>7398</Code>
+                                <Description>Protected status is not available for numbers in off-net rate centers.</Description>
+                            </Errors>
+
+                            <ProcessingStatus>EXCEPTION</ProcessingStatus>
+                            <LoaAuthorizingPerson>The Authguy</LoaAuthorizingPerson>
+                            <Subscriber>
+                                <SubscriberType>BUSINESS</SubscriberType>
+                                <FirstName>First</FirstName>
+                                <LastName>Last</LastName>
+                                <ServiceAddress>
+                                    <HouseNumber>11235</HouseNumber>
+                                    <StreetName>Back</StreetName>
+                                    <City>Denver</City>
+                                    <StateCode>CO</StateCode>
+                                    <Zip>27541</Zip>
+                                    <County>Canyon</County>
+                                    <Country>United States</Country>
+                                </ServiceAddress>
+                            </Subscriber>
+                            <WirelessInfo>
+                                <AccountNumber>771297665AABC</AccountNumber>
+                                <PinNumber>1234</PinNumber>
+                            </WirelessInfo>
+                            <TnAttributes>
+                                    <TnAttribute>Protected</TnAttribute>
+                            </TnAttributes>
+                            <BillingTelephoneNumber>9195551234</BillingTelephoneNumber>
+                            <ListOfPhoneNumbers>
+                                <PhoneNumber>9194809871</PhoneNumber>
+                            </ListOfPhoneNumbers>
+                            <Triggered>true</Triggered>
+                            <BillingType>PORTIN</BillingType>
+                            !scope internal
+                            <OverrideValidation>false</OverrideValidation>
+                        </LnpOrderResponse>
+
+/{orderid}: !include orderid/orderid.raml
+/totals: !include totals/totals.raml

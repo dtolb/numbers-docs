@@ -1,0 +1,21 @@
+!fileScope external
+
+description: |
+    The history call returns a number of payload elements, each representing an event in the lifecycle of the Telephone Number. <br>
+    Information returned includes the Order details that prompted the change in the TN status, including dates, order IDs and order types.
+
+get:
+    description: Retrieves the history associated with that telephone number.
+    responses:
+        200:
+            description: OK - the history has been successfully retrieved and displayed.
+            body:
+                application/xml:
+                    example: !include GET_200_response_example.xml
+        400:
+            description: Bad Request - failed to retrieve the history for the current phone number.
+        404:
+            description: Not Found - there aren't records about the phone number in history.
+            body:
+                application/xml:
+                    example: !include GET_404_response_example.xml

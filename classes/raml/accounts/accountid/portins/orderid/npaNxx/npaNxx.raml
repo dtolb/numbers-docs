@@ -1,0 +1,19 @@
+!fileScope external
+
+description: Retrieves a list of all Npa-Nxx of the telephone numbers associated with the specified port-in number.
+
+!scope external
+get:
+    description: Retrieves a list of Npa-Nxx associated with the specified port-in number and displays them in the payload.
+    responses:
+        200:
+            description: The Npa-Nxx have been successfully retrieved and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <TelephoneDetailsReports>
+                            <TelephoneDetailsReport>
+                                <NPA-NXX>919280</NPA-NXX>
+                                <Count>1</Count>
+                            </TelephoneDetailsReport>
+                        </TelephoneDetailsReports>

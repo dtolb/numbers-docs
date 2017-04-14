@@ -1,0 +1,22 @@
+!fileScope internal
+
+description:
+    This API allows to forcefully trigger specific batch job.
+
+post:
+
+    responses:
+        201:
+            description: |
+                Created. Means that specific batch job was triggered.
+            body:
+                application/xml:
+                    example: |
+                        integrityAuditTask was sent
+        400:
+            description: |
+                Bad request. Returned in case of passing non existent batch job name.
+            body:
+                application/xml:
+                    example: |
+                        No bean named 'someNonexistentTask' is defined

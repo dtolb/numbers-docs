@@ -1,0 +1,162 @@
+!fileScope internal
+
+description:  |
+    These API calls are to allow SIP Peers to acquire SBC Settings that override the account-level SBC settings.
+    That permits a SIP Peer to have a specific traffic shape that is suited to the purposes of the TNs on that SIP Peer.
+
+get:
+    description: |
+        Retrieve SBC settings associated with a Sip Peer
+
+    responses:
+        200:
+            description: A successful result that contains the response data
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <EdgeManagementResponse>
+                            <EdgeManagementProduct>
+                                <EdgeManagementSettings>
+                                    <TrunkGroupName>SipPeerEMTrunkGroup</TrunkGroupName>
+                                    <SBC0Label>JFK1-CUSBC-01.jfk1</SBC0Label>
+                                    <SBC1Label>ATL1-CUSBC-01.atl1</SBC1Label>
+                                </EdgeManagementSettings>
+                            </EdgeManagementProduct>
+                        </EdgeManagementResponse>
+        400:
+            description: |
+                            Bad Request. Possible errors in response:
+                            <ul>
+                               <li>13563 "Sip Peer '544545' account '12346159' and site '483' does not exist"</li>
+                            </ul>
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <EdgeManagementResponse>
+                            <ResponseStatus>
+                                <ErrorCode>13563</ErrorCode>
+                                <Description>Sip Peer '544545' account '12346159' and site '483' does not exist</Description>
+                            </ResponseStatus>
+                        </EdgeManagementResponse>
+        404:
+            description: Not Found - The SBC settings on Sip Peer does not exists
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <EdgeManagementResponse>
+                            <ResponseStatus>
+                                <Description>The resource does not exist</Description>
+                            </ResponseStatus>
+                        </EdgeManagementResponse>
+
+!scope external
+post:
+    description: |
+
+        Add SBC setting to Sip Peer
+
+    body:
+        application/xml:
+            example: |
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <EdgeManagementProduct>
+                    <EdgeManagementSettings>
+                        <TrunkGroupName>SipPeerEMTrunkGroup</TrunkGroupName>
+                        <SBC0Label>JFK1-CUSBC-01.jfk1</SBC0Label>
+                        <SBC1Label>ATL1-CUSBC-01.atl1</SBC1Label>
+                    </EdgeManagementSettings>
+                </EdgeManagementProduct>
+    responses:
+        201:
+            description: SBC setting added
+            body: 
+                application/xml:
+                    example: |
+                        None
+        400:
+            description: |
+                Bad Request. Possible errors in response:
+                <ul>
+                   <li>12041 "EdgeManagement product has not been configured"</li>
+                </ul>
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <EdgeManagementResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12041</ErrorCode>
+                                <Description>EdgeManagement product has not been configured</Description>
+                            </ResponseStatus>
+                        </EdgeManagementResponse>
+
+!scope external
+put:
+    description: |
+
+        Update SBC setting to Sip Peer
+
+    body:
+        application/xml:
+            example: |
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <EdgeManagementProduct>
+                    <EdgeManagementSettings>
+                        <TrunkGroupName>SipPeerEMTrunkGroup</TrunkGroupName>
+                        <SBC0Label>JFK1-CUSBC-01.jfk1</SBC0Label>
+                        <SBC1Label>ATL1-CUSBC-01.atl1</SBC1Label>
+                    </EdgeManagementSettings>
+                </EdgeManagementProduct>
+    responses:
+        200:
+            description: SBC setting updated
+            body:
+                application/xml:
+                    example: |
+                        None
+        400:
+            description: |
+                Bad Request. Possible errors in response:
+                <ul>
+                   <li>12041 "EdgeManagement product has not been configured"</li>
+                </ul>
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <EdgeManagementResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12041</ErrorCode>
+                                <Description>EdgeManagement product has not been configured</Description>
+                            </ResponseStatus>
+                        </EdgeManagementResponse>
+
+!scope external
+delete:
+    description: Delete SBC settings from Sip Peer
+    responses:
+        200:
+            description: SBC settings deleted
+            body:
+                application/xml:
+                    example: |
+                        None
+        400:
+            description: |
+                            Bad Request. Possible errors in response:
+                            <ul>
+                               <li>13563 "Sip Peer '544545' account '12346159' and site '483' does not exist"</li>
+                            </ul>
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <EdgeManagementResponse>
+                            <ResponseStatus>
+                                <ErrorCode>13563</ErrorCode>
+                                <Description>Sip Peer '544545' account '12346159' and site '483' does not exist</Description>
+                            </ResponseStatus>
+                        </EdgeManagementResponse>

@@ -1,0 +1,101 @@
+!fileScope external
+
+!scope external
+get:
+    description: |
+        Retrieve the currently activated status for customer activated (triggered) portin orders. The payload returns the list of activated TNs associated with the order. It also returns a list of the TNs associated with the order that have not yet been activated <br><br>
+        At this time all phone numbers associated with a PON will be activated at the same time, but a change to per-TN activation is coming and will use the same basic payload and activation model.
+    responses: 
+        200:
+            description: |
+                Activation Status information is available for this order.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <ActivationStatusResponse>
+                            <ActivationStatus>
+                                <AutoActivationDate>2014-08-29T18:30:00+03:00</AutoActivationDate>
+                                <ActivatedTelephoneNumbersList>
+                                    <TelephoneNumber>6052609021</TelephoneNumber>
+                                </ActivatedTelephoneNumbersList>
+                                <NotYetActivatedTelephoneNumbersList/>
+                            </ActivationStatus>
+                        </ActivationStatusResponse>
+        400:
+            description: |
+                Return a 400 error if the Portin Order is not in FOC status, or if not executed on the day of FOC or within the delay interval.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <ActivationStatusResponse>
+                            <ResponseStatus>
+                                <ErrorCode>7342</ErrorCode>
+                                <Description>On demand portin activation not yet allowed.</Description>
+                            </ResponseStatus>
+                        </ActivationStatusResponse>
+        404:
+            description: |
+                Return a 404 if the Portin Order is missing, or if the activation is complete, and thus the ActivationStatus resource has been erased.
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <ActivationStatusResponse>
+                            <ResponseStatus>
+                                <ErrorCode>7348</ErrorCode>
+                                <Description>The order is already complete</Description>
+                            </ResponseStatus>
+                        </ActivationStatusResponse>
+
+!scope external
+put:
+    description: |
+        Sets the activation time for the portin order.  <br> <br>
+        This API call is currently used to set the Activation time of the customer activated (triggered) port.
+        <ul>
+        <li>If the time is in the past all of the TNs in the portin request will be activated 'immediately'.</li>
+        <li>If the time is within the three days after the approved FoC date, the auto-activation time for the port will be set to that time</li>
+        </ul>
+        Activation of individual telephone numbers will be enabled in a future release, but are not currently modifiable via this API
+    body:
+        application/xml:
+            example: |
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <ActivationStatus>
+                    <AutoActivationDate>2014-08-30T18:30:00+03:00</AutoActivationDate>
+                </ActivationStatus>
+    responses:
+        200:
+            body:
+                application/xml:
+                    example: |      
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <ActivationStatusResponse>
+                            <ActivationStatus>
+                                <AutoActivationDate>2014-08-30T18:30:00+03:00</AutoActivationDate>
+                            </ActivationStatus>
+                        </ActivationStatusResponse>
+        400:
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <ActivationStatusResponse>
+                            <ResponseStatus>
+                                <ErrorCode>7342</ErrorCode>
+                                <Description>On demand portin activation not yet allowed.</Description>
+                            </ResponseStatus>
+                        </ActivationStatusResponse>      
+        404:
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <ActivationStatusResponse>
+                            <ResponseStatus>
+                                <ErrorCode>7348</ErrorCode>
+                                <Description>The order is already complete</Description>
+                            </ResponseStatus>
+                        </ActivationStatusResponse>

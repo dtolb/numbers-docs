@@ -1,0 +1,27 @@
+!fileScope internal
+
+description: |
+    the <b>User Management API</b> resource is a hidden resource that is used to work with domains and users.
+get:
+    responses: 
+        200:
+            description: |
+                Return all existed domains
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <DomainsResponse>
+                            <DomainList>
+                                <Domain>
+                                    <DomainName>Iris</DomainName>
+                                    <DomainDescription>Bandwidth Dashboard API and Portal Users</DomainDescription>
+                                    <DomainSettings />
+                                </Domain>
+                            </DomainList>
+                        </DomainsResponse>
+
+/userPreferences: !include userpreferences/userpreference.raml
+/{domainName}: !include domain/domain.raml
+/migration: !include migration/migration.raml
+/adminmigration: !include migration/adminmigration.raml

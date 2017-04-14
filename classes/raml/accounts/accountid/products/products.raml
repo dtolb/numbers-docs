@@ -1,0 +1,64 @@
+!fileScope internal
+
+description: |
+    The /products API provides access to information about the products configured for the account.
+    !scope internal
+    Only admin class users have the permissions required to add products to an account.
+
+post:
+    description:  Add a new product to the account
+    body:
+        application/xml:
+            example:
+                <Product>
+                <Name>TollFree</Name>
+                </Product>
+    responses:
+        200:
+            body:
+                application/xml:
+                    example: None
+
+!scope all
+get:
+    description: discover what is currently enabled on the account
+    responses:
+        200:
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0"?>
+                        <AccountProductsResponse>
+                            <Products>
+                                <Product>
+                                    <Name>Termination</Name>
+                                </Product>
+                                <Product>
+                                    <Name>VirtualInventory</Name>
+                                </Product>
+                                <Product>
+                                    <Name>TollFree</Name>
+                                </Product>
+                                <Product>
+                                    <Name>Origination</Name>
+                                    <Features>
+                                        <Feature>CallForwarding</Feature>
+                                        <Feature>DlDa</Feature>
+                                        <Feature>CNAM</Feature>
+                                    </Features>
+                                </Product>
+                                <Product>
+                                    <Name>SMS</Name>
+                                </Product>
+                            </Products>
+                        </AccountProductsResponse>
+
+/origination: !include origination/origination.raml
+/termination: !include termination/termination.raml
+/uctrunking: !include uctrunking/uctrunking.raml
+/messaging: !include messaging/messaging.raml
+/tollfree: !include tollfree/tollfree.raml
+/edgemanagement: !include edgemanagement/edgemanagement.raml
+/virtualinventory: !include virtualinventory/virtualinventory.raml
+/dedicatedprivatenetworktopology: !include privatenetwork/dedicatedprivatenetworktopology.raml
+/e911: !include e911/e911.raml

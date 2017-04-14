@@ -1,0 +1,8 @@
+<AnalyticsResult>
+    <ErrorList>
+        <Error>
+            <Code>12751</Code>
+            <Description>The specific type of analytics data must be declared. Options are [numbersassignmentdata]</Description>
+        </Error>
+    </ErrorList>
+</AnalyticsResult>

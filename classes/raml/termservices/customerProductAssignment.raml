@@ -1,0 +1,63 @@
+!fileScope internal
+get:
+    description: should return assigned products
+    responses:
+        200:
+            description: managed to get assigned products
+            body:
+                application/json:
+                    example: |
+                        [
+                            {
+                                "id":93,
+                                "name":"Default name",
+                                "key":null,
+                                "description":null,
+                                "attributes":{
+                                    "TRACE":"true"
+                                    }
+                            }
+                        ]
+post:
+    description: assign product to account
+    body:
+        application/json:
+            example: |
+                {
+                  "attributeId" : null,
+                  "productName" : "Default name",
+                  "attributes" : { }
+                }
+    responses:
+        201:
+            description: product was successfully assigned
+        400:
+            description: required fields are absent, or product does not contain any attribute
+        404:
+            description: account or product was not found
+/{productId}:
+    get:
+        description: return a specific product
+        responses:
+            200:
+                body:
+                    application/json:
+                        example: |
+                            {
+                                "id":93,
+                                "name":"Default name",
+                                "key":null,
+                                "description":null,
+                                "attributes":{
+                                    "TRACE":"true"
+                                    }
+                            }
+            404:
+                description: account or product was not found
+    delete:
+        description: delete product assignment
+        responses:
+            200:
+                description: assignment product was deleted
+            404:
+                description: assignment product with specified was not found

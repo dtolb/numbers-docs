@@ -1,0 +1,17 @@
+!fileScope internal
+
+description: a GET on this resource returns the number of toll-free numbers for a given account ID.
+
+get:
+    description: Retrieves the total number of toll-free numbers for a given account ID.
+    responses:
+        200:
+            description: the total number of toll-free numbers have been successfully retrieved.
+            body:
+                application/xml:
+                    example: |
+                        <AccountTollFreeTotalsResponse>
+                            <TollFreeTotals>
+                                <TotalCount>0</TotalCount>
+                            </TollFreeTotals>
+                        </AccountTollFreeTotalsResponse>

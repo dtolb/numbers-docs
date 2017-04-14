@@ -1,0 +1,16 @@
+!fileScope external
+
+description: A GET on this resource returns the total number of in-service numbers for the given account.
+
+!scope external
+get:
+    description: Returns the total number of in-service numbers for the given account.
+    responses:
+        200:
+            description: The request has been successfully retrieved and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <Quantity>
+                            <Count>62</Count>
+                        </Quantity>

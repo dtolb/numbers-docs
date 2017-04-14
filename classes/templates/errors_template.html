@@ -1,0 +1,440 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>Error Codes</title>
+  <script src="scripts/toc.js" type="text/javascript"></script>
+  <style>
+    h1 {
+      color: #ffffff;
+      background: linear-gradient(to bottom, #3bd7ff 0%, #00bcec 100%)
+    }
+
+    h2 {
+      color: #ffffff;
+      background: linear-gradient(to bottom, #3bd7ff 0%, #00bcec 100%)
+    }
+
+    table.fixed {
+      table-layout: fixed;
+      width: 750px;
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+
+    /*Setting the table width is important!*/
+    table.fixed td {
+      overflow: hidden;
+      border: 1px solid black;
+    }
+
+    /*Hide text outside the cell.*/
+    table.fixed td:nth-of-type(1) {
+      width: 50px;
+    }
+
+    /*Setting the width of column 1.*/
+    table.fixed td:nth-of-type(2) {
+      width: 500px;
+    }
+
+    /*Setting the width of column 2.*/
+    table.fixed th:nth-of-type(1) {
+      width: 50px;
+    }
+
+    /*Setting the width of column 1.*/
+    table.fixed th:nth-of-type(2) {
+      width: 500px;
+    }
+
+    /*Setting the width of column 2.*/
+
+    table.fixed3 {
+      table-layout: fixed;
+      width: 750px;
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+
+    /*Setting the table width is important!*/
+    table.fixed3 td {
+      overflow: hidden;
+      border: 1px solid black;
+    }
+
+    /*Hide text outside the cell.*/
+    table.fixed3 td:nth-of-type(1) {
+      width: 50px;
+    }
+
+    /*Setting the width of column 1.*/
+    table.fixed3 td:nth-of-type(2) {
+      width: 50px;
+    }
+
+    /*Setting the width of column 2.*/
+    table.fixed3 td:nth-of-type(3) {
+      width: 450px;
+    }
+
+    /*Setting the width of column 3.*/
+    table.fixed3 th:nth-of-type(1) {
+      width: 50px;
+    }
+
+    /*Setting the width of column 1.*/
+    table.fixed3 th:nth-of-type(2) {
+      width: 50px;
+    }
+
+    /*Setting the width of column 2.*/
+    table.fixed3 th:nth-of-type(3) {
+      width: 450px;
+    }
+
+    /*Setting the width of column 3.*/
+
+    table.comment {
+      border-collapse: collapse;
+      background-color: #FFDDDD;
+      width: 100%;
+    }
+
+    div#toc a {
+      text-decoration: none;
+      font-family: Verdana, Helvetica, sans-serif;
+    }
+
+    div#toc a:hover {
+      text-decoration: underline;
+    }
+
+    div#toc ul {
+      list-style-type: none;
+      margin-left: 1.5em;
+      padding-left: 0;
+    }
+  </style>
+</head>
+<body onload="generateTOC(document.getElementById('toc'));">
+
+
+<h1>Table of Contents</h1>
+<div id="toc"></div>
+
+
+<h1>Searching the Telephone Number Inventory</h1>
+
+
+#foreach ($errorGroup in $searchErrors.entrySet())
+<h2>$errorGroup.key</h2>
+<table class="fixed">
+  <tr>
+    <th>Error Code</th>
+    <th>Error Description</th>
+  </tr>
+  #foreach ($error in $errorGroup.value)
+  <tr>
+    <td>${error.getCode()}</td>
+    <td>${error.getDescription()}</td>
+  </tr>
+  #end
+</table>
+#end
+
+
+<h1>Ordering Telephone Numbers</h1>
+
+
+#foreach ($errorGroup in $orderingErrors.entrySet())
+<h2>$errorGroup.key</h2>
+<table class="fixed">
+  <tr>
+    <th>Error Code</th>
+    <th>Error Description</th>
+  </tr>
+  #foreach ($error in $errorGroup.value)
+  <tr>
+    <td>${error.getCode()}</td>
+    <td>${error.getDescription()}</td>
+  </tr>
+  #end
+</table>
+#end
+
+
+<h1>Porting Numbers In</h1>
+
+
+<h2>LNP Checker API Call errors </h2>
+<table class="fixed">
+  <tr>
+    <th>Error Code</th>
+    <th>Error Description</th>
+  </tr>
+  #foreach ($error in $lnpCheckerErrors)
+  <tr>
+    <td>${error.getCode()}</td>
+    <td>${error.getDescription()}</td>
+  </tr>
+  #end
+</table>
+
+<h2>LNP or /portins errors </h2>
+<table class="fixed">
+  <tr>
+    <th>Error Code</th>
+    <th>Error Description</th>
+  </tr>
+  #foreach ($error in $portinsErrors)
+  <tr>
+    <td>${error.getCode()}</td>
+    <td>${error.getDescription()}</td>
+  </tr>
+  #end
+</table>
+
+<h2>Carrier LNP Error codes</h2>
+<table class="fixed3">
+  <tr><th>Error Code </th><th>Carrier JCode</th><th>Error Description</th></tr>
+  <tr><td>7400</td><td>E428</td><td>inetwork is unable to port the toll free number on this order at this time.  Please contact support@inetwork.com for assistance.</td></tr>
+  <tr><td>7401</td><td>E17B</td><td>Order is being rejected for account number. If an account number has already been provided, please provide a valid account number.  If there was no account number given, please provide a valid account number. A bill copy dated within 30-days is recommended.</td></tr>
+  <tr><td>7401</td><td>E17A</td><td>Order is being rejected for account number. If an account number has already been provided, please provide a valid account number.  If there was no account number given, please provide a valid account number. A bill copy dated within 30-days is recommended.</td></tr>
+  <tr><td>7401</td><td>8A</td><td>Order is being rejected for account number. If an account number has already been provided, please provide a valid account number.  If there was no account number given, please provide a valid account number. A bill copy dated within 30-days is recommended.</td></tr>
+  <tr><td>7402</td><td>E1</td><td>Order is being rejected at this time for address mismatch.  Please either provide a Customer Service Record (CSR) to dispute the provided address, or cancel your order and resubmit with the correct information.</td></tr>
+  <tr><td>7402</td><td>8D</td><td>Order is being rejected at this time for address (zip code) mismatch.  Please either provide a Customer Service Record (CSR) to dispute the provided address, or cancel your order and resubmit with the correct information.</td></tr>
+  <tr><td>7403</td><td>6K</td><td>A telephone number on this order is being rejected by the losing carrier as 'non-portable'. Please contact support@inetwork.com for additional assistance or cancel this order</td></tr>
+  <tr><td>7404</td><td>8G</td><td>The business name entered on this order is either missing or incorrect according to the losing carrier's records. Please either provide a Customer Service Record (CSR) to dispute what was provided, or provide the correct business name to proceed.</td></tr>
+  <tr><td>7405</td><td>6R</td><td>The losing carrier has rejected this order as they are unable to process this multi-line request. Please either cancel this order, or contact support@inetwork.com for additional assistance.</td></tr>
+  <tr><td>7406</td><td>E6c</td><td>Order is being rejected by the losing carrier for Centrex Service.  Please advise if inetwork should continue processing this port. If so, the Centrex service will be disconnected which may affect PBX and Hunt Group services.  Additionally, a new Billing Telephone Number (BTN) will need to be provided to the losing carrier if the BTN is porting with this order.  Please advise if you wish to proceed with the port, agreeing to disconnect the Centrex service.  If you wish not to proceed, please advise the EU to contact the losing carrier to re-work the Centrex service, and/or cancel this order.</td></tr>
+  <tr><td>7407</td><td>6M</td><td>One or more of the telephone numbers on this request has a current order to port to another provider already. Please either cancel that order, and advise when to proceed with this request, or cancel this order.</td></tr>
+  <tr><td>7407</td><td>E19</td><td>Order is being rejected at this time for pending order.  This means there is another active order with the losing carrier that is conflicting with this order.  It can be anything from a feature add/disconnect, to a port request or an informational change.  Please advise the end user to cancel this order with the losing carrier, or allow the order to complete and advise inetwork once completed so that the order may be resubmitted.</td></tr>
+  <tr><td>7407</td><td>6N</td><td>One or more of the telephone numbers on this request has a current order to port to another provider already. Please either cancel that order, and advise when to proceed with this request, or cancel this order.</td></tr>
+  <tr><td>7408</td><td>6C</td><td>Order is being rejected by the losing carrier for all data mismatch.  Please either provide a Customer Service Record (CSR) to dispute the provided information, or cancel this order and resubmit with the correct customer information.</td></tr>
+  <tr><td>7409</td><td>E27</td><td>One or more of the telephone numbers on this order is disconnected, or the account status is inactive.  Both must be active in order to port. Please have the end user correct this and advise when it is ok to proceed.</td></tr>
+  <tr><td>7409</td><td>E30</td><td>One or more of the telephone numbers on this order is either disconnected or is no longer part of the account with the losing carrier and end user.  Only active telephone numbers assigned to end user's can be ported. Please advise the end user to contact their current carrier to resolve. Once resolved, pleaes advise the inetwork team for resubmittal.</td></tr>
+  <tr><td>7410</td><td>E6a</td><td>Order is being rejected by the losing carrier for Distinctive Ring feature.  Please advise if inetwork should continue processing this port, which requires that the distinctive ring feature will be disconnected.  If the customer's existing services with the losing carrier require distinctive ring, please cancel this order.</td></tr>
+  <tr><td>7411</td><td>E25</td><td>Order is being rejected by the losing carrier for DSL services.  If the main number for DSL service is being ported, the DSL will be disconnected with the losing carrier. If the end user wishes to keep their DSL service, please advise them to contact the losing carrier to retain this service under a new Billing Telephone Number (BTN).  Please advise inetwork iwhen to continue processing this order.</td></tr>
+  <tr><td>7412</td><td>1N</td><td>The losing carrier is reporting that they are unable to meet the due date/time requested.  Please SUPP your order for a minimum of 3 business days from today's date.</td></tr>
+  <tr><td>7412</td><td>6E</td><td>The losing carrier is reporting that they are unable to meet the due date/time requested.  Please SUPP your order for a minimum of 3 business days from today's date.</td></tr>
+  <tr><td>7412</td><td>E35</td><td>The losing carrier is reporting that they are unable to meet the due date/time requested.  Please SUPP your order for a minimum of 3 business days from today's date.</td></tr>
+  <tr><td>7412</td><td>6F</td><td>The losing carrier is reporting that they are unable to meet the due date/time requested.  Please SUPP your order for a minimum of 3 business days from today's date.</td></tr>
+  <tr><td>7413</td><td>1E</td><td>The losing carrier has reported that the end user is not ready to port their number at this time.  Please address this with your end user and let us know how you wish to proceed.</td></tr>
+  <tr><td>7414</td><td>8E</td><td>First name required or incorrect</td></tr>
+  <tr><td>7415</td><td>E6e</td><td>Foreign Exchange (FX)</td></tr>
+  <tr><td>7412</td><td>1L</td><td>The losing carrier is reporting that they are unable to meet the due date/time requested.  Please SUPP your order for a minimum of 3 business days from today's date.</td></tr>
+  <tr><td>7416</td><td>E6d</td><td>Order is being rejected by the losing carrier for a freeze on the line.  A freeze is a security feature offered by the losing carrier to ensure telephone numbers are not inadvertently ported. Please instruct the end user to remove this feature.  Once it has been removed, please advise so that inetwork may continue processing this order.</td></tr>
+  <tr><td>7417</td><td>6G</td><td>This order has received an error. Please contact support@inetwork.com for assistance.</td></tr>
+  <tr><td>7417</td><td>1P</td><td>This order has received an error. Please contact support@inetwork.com for assistance.</td></tr>
+  <tr><td>7417</td><td>999</td><td>This order has received an error. Please contact support@inetwork.com for assistance.</td></tr>
+  <tr><td>7418</td><td>6J</td><td>The losing carrier is reporting a high volume of orders at this time and as such, the due date on your order may be extended.</td></tr>
+  <tr><td>7419</td><td>E6b</td><td>Order is being rejected by the losing carrier for a Hunt Group.  If the main/pilot number for the hunt group is being ported, it may dismantle the hunt group causing call routing issues. Please either advise if inetwork should proceed with this order and disconnect the hunt group, or have the end user re-configure the hunting feature with the losing carrier and advise when okay to proceed.</td></tr>
+  <tr><td>7420</td><td>7B</td><td>The losing carrier has rejected this order for illegible fax / non-portable number. Please instruct the end user to reach out to the losing carrier to assign in portable status, or cancel this order.</td></tr>
+  <tr><td>7421</td><td>E6f</td><td>Order is being rejected by the losing carrier for ISDN services.  If the main number for ISDN service is being ported, the ISDN will be disconnected with the losing carrier. If the end user wishes to keep their ISDN service, please advise them to contact the losing carrier to retain this service under a new Billing Telephone Number (BTN).  Please advise inetwork when to continue processing this order.</td></tr>
+  <tr><td>7422</td><td>8F</td><td>This order was listed as a residential port, but a last name was not provided.  Please either resubmit as a Business port, or add a last name.</td></tr>
+  <tr><td>7423</td><td>7A</td><td>LNUM/MDN is valid. errors with other LNUMs/MDNs in request</td></tr>
+  <tr><td>7424</td><td>E8</td><td>A Letter of Authorization (LOA) is being requested by the losing carrier. Please provide a signed LOA dated within 30-days to proceed.</td></tr>
+  <tr><td>7425</td><td>6P</td><td>MDN has service provider port protection</td></tr>
+  <tr><td>7426</td><td>6D</td><td>MDN not active</td></tr>
+  <tr><td>7427</td><td>6A</td><td>MDN not found/does not belong to SP</td></tr>
+  <tr><td>7428</td><td>E23</td><td>Multi TN</td></tr>
+  <tr><td>7429</td><td>E10</td><td>Order is being rejected at this time for End User name mismatch. Please either provide a Customer Service Record (CSR) to dispute the name provided, or provide the correct customer name on the order.</td></tr>
+  <tr><td>7430</td><td>1C</td><td>Network SP not ready</td></tr>
+  <tr><td>7431</td><td>E40</td><td>This number is deemed as an internal port. Please open a ticket to process this request. Thank you!</td></tr>
+  <tr><td>7432</td><td>E34</td><td>This order cannot be cancelled at this time due to losing carrier rules.  Please contact support@inetwork.com after the port completes to attempt a snapback if necessary.  If the order has been completed longer than 24 hours, a win-back is required, which has to be initiated by the end user.</td></tr>
+  <tr><td>7433</td><td>E33</td><td>This order cannot be SUPP'd at this time due to losing carrier rules. Please contact support@inetwork.com after the port completes to attempt a snapback if necessary.  If the order has been completed longer than 24 hours, a win-back is required, which has to be initiated by the end user. </td></tr>
+  <tr><td>7434</td><td>E24</td><td>The migration indicator (full or partial port) on this order has been incorrectly chosen. Please advise if this is an error, or if the inetwork team should correct the migration indicator in order to proceed with this port.</td></tr>
+  <tr><td>7434</td><td>E6h</td><td>The Billing Telephone Number (BTN) of this order is porting, but there are remaining services or telephone numbers on the account with the losing carrier.  Please either advise of a new BTN to use for the existing account (it must be an active number on the account already), or cancel this order and resubmit with all applicable telephone numbers.</td></tr>
+  <tr><td>7435</td><td>E42PWB</td><td>Order is being rejected for PIN/Passcode. If a PIN/Passcode has already been provided, please provide a valid PIN/Passcode.  If there was no PIN/Passcode given, please provide a PIN/Passcode to proceed.</td></tr>
+  <tr><td>7435</td><td>E42PWA</td><td>Order is being rejected for PIN/Passcode. If a PIN/Passcode has already been provided, please provide a valid PIN/Passcode.  If there was no PIN/Passcode given, please provide a PIN/Passcode to proceed.</td></tr>
+  <tr><td>7435</td><td>8C</td><td>Order is being rejected for PIN/Passcode. If a PIN/Passcode has already been provided, please provide a valid PIN/Passcode.  If there was no PIN/Passcode given, please provide a PIN/Passcode to proceed.</td></tr>
+  <tr><td>7436</td><td>7C</td><td>Prepay MDN</td></tr>
+  <tr><td>7437</td><td>E6g</td><td>This order is being rejected by the losing carrier for Remote Call Forwarding (RCF).  Please provide the non-RCF service address to proceed with the port, and advise if this feature should be disconnected.</td></tr>
+  <tr><td>7438</td><td>6L</td><td>Request received outside of business hours</td></tr>
+  <tr><td>7439</td><td>1M</td><td>Requested Due Date less than Published Interval</td></tr>
+  <tr><td>7440</td><td>104</td><td>This should happen in prevalidations and we should not see it with neustar</td></tr>
+  <tr><td>7441</td><td>6B</td><td>This order is now deemed as internal.  Please contact support@inetwork.com for additional assistance.</td></tr>
+  <tr><td>7442</td><td>1B</td><td>Scheduling/Work load</td></tr>
+  <tr><td>7443</td><td>8B</td><td>SSN/Tax ID required or incorrect</td></tr>
+  <tr><td>7444</td><td>6H</td><td>The losing carrier is reporing system outages and thus the due date requested on the order may be extended. </td></tr>
+  <tr><td>7445</td><td>E14</td><td>The Billing Telephone Number (BTN) on this order is being rejected by the losing carrier. Please provide a valid BTN to continue porting, or provide a Customer Service Record (CSR) to dispute the submitted information.</td></tr>
+  <tr><td>7446</td><td>LNP128J</td><td>A bill copy dated within 30-days is being requested to proceed with this order.  Please upload a current bill copy to proceed with this order.</td></tr>
+  <tr><td>7446</td><td>LNP113J</td><td>A bill copy dated within 30-days is being requested to proceed with this order.  Please upload a current bill copy to proceed with this order.</td></tr>
+  <tr><td>7447</td><td>LNP138J</td><td>The losing carrier has advised that this order contains more than one Billing Telephone Number (BTN) and the order cannot be processed with a single BTN. Your order will have to be cancelled and re-issued under multiple orders. Each order should contain just a single BTN. Please identify all BTNs and the telephone numbers associated with them before resubmitting the orders.</td></tr>
+  <tr><td>7448</td><td>LNP146J</td><td>Bandwidth has been informed by the losing carrier that the E/U (End User) has decided to remain with them. Please contact your customer to verify their intentions. If they do not wish to port their number(s) anymore, please cancel the order.</td></tr>
+  <tr><td>7449</td><td>LNP145J</td><td>Bandwidth has been informed by the losing carrier that the number you are requesting to port is currently resold and a CSR is not available. This reseller is the customer of record and not the end-user. Please resubmit this order with the correct end-user information of the reselller, or attach a current bill copy so that we may attempt to assist.</td></tr>
+  <tr><td>7450</td><td>LNP135J</td><td>Bandwidth has been informed by the losing carrier that the FOC received for this order is no longer valid. Please review the additional rejection associated with this order for further clarification. Once action has been taken and the associated rejection condition has been removed, please request a SUPP of your order and include a new requested date.</td></tr>
+  <tr><td>7451</td><td>LNP148J</td><td>Bandwidth has been informed that the losing carrier (Fairpoint/Verizon) your end user is requesting to port away from is currently converting to a new operating system. This transition has resulted in an extended 'Blackout' period. At this time, no port out requests are being processed by this LSP. Please cancel your order and resubmit at a later date.</td></tr>
+  <tr><td>7452</td><td>LNP011J</td><td>Bandwidth has determined that a Ring Mate TN exists on the line and has delayed the order from porting. The Ring Mate number must either be removed at the time of port, or made into a POTS line and ported. Please advise how you wish to proceed.</td></tr>
+  <tr><td>7453</td><td>LNP105S</td><td>Bandwidth has determined that one or more of the working telephone numbers submitted on this order does not exist on the CSR with the losing carrier. Please review the CSR with the losing carrier, then cancel and re-enter your order accordingly.</td></tr>
+  <tr><td>7454</td><td>LNP997J</td><td>Bandwidth has determined that the losing carrier has placed this order in conflict and it cannot port at this time. Please contact us for assistance in resolving this conflict.</td></tr>
+  <tr><td>7455</td><td>LNP117J</td><td>Bandwidth has determined that there is a UNE-P (Unbundled Network Element Platform) issue on the line. Porting can still continue, but in the event that the end user wishes to return to the donor carrier, a snapback will not be possible. Please request to cancel this order if this is an option or issue for the end user.</td></tr>
+  <tr><td>7456</td><td>LNP107J</td><td>Bandwidth has determined that there is no interconnection agreement (ICA) in place with the donor carrier. Please contact us to determine other options, or the option to add this ICA.</td></tr>
+  <tr><td>7460</td><td>LNP121J</td><td>The donor LEC has rejected the port out request because the TNs service address is in a disaster area. Until the physical facilities have been restored, this order is not portable. Please cancel this customer order.</td></tr>
+  <tr><td>7461</td><td>LNP127J</td><td>The donor LEC has rejected the provided LOA (Letter of Authorization) because the Authorized Name (Auth Name) submitted is illegible or not present. Please provide a note entry indicating the authorized name on the LOA.</td></tr>
+  <tr><td>7462</td><td>LNP126J</td><td>The donor LEC has rejected the provided LOA (Letter of Authorization) because the Authorized Name (Auth Name) submitted is not the Authorized Name on record. Please upload a corrected LOA.</td></tr>
+  <tr><td>7463</td><td>LNP116J</td><td>The losing carrier has rejected the order for an incorrect Customer Type of Service (Business or Residential). Please advise.</td></tr>
+  <tr><td>7464</td><td>LNP109J</td><td>The losing carrier has rejected the provided LOA. (Letter of Authorization) A new LOA needs to be uploaded to your order. Please verify the LOA's end-user name, telephone numbers to port, and a legible signature dated within the last 60 days.</td></tr>
+  <tr><td>7465</td><td>LNP141J</td><td>The losing carrier has rejected this order because the Account number was not provided or does not match the what is on the account. Please cancel and resubmit your order with the correct account number.</td></tr>
+  <tr><td>7466</td><td>LNP140J</td><td>The losing carrier has rejected this order because the Social Security number was not provided or does not match the what is on the account. Please cancel and resubmit your order with the correct SSN.</td></tr>
+  <tr><td>7467</td><td>LNP142J</td><td>The losing carrier has rejected this order because the Wireless Account PIN number was not provided or does not match the what is on the account. Please cancel and resubmit your order with the correct wireless info.</td></tr>
+  <tr><td>7470</td><td>E42O</td><td>TN not portable</td></tr>
+  <tr><td>7471</td><td>E18</td><td>Data Missing or Incorrect</td></tr>
+  <tr><td>7473</td><td>E10a</td><td>Order is being rejected at this time for Agency Authorization name mismatch. Please either provide a Customer Service Record (CSR) to dispute the name provided, or provide the correct customer Agency Authorization name on the order.</td></tr>
+  <tr><td>7484</td><td>E1111</td><td>Your order was rejected by the losing carrier, but our processing team is attempting to resolve the rejection on your behalf. Please contact the Bandwidth Support Team if your order does not progress within 2 business days</td></tr>
+  <tr><td>7485</td><td>E9999</td><td>The losing carrier requires us to break your order into multiple submissions. Our processing team is working on this request and will flow status to your order within 1-2 business days</td></tr>
+</table>
+
+<h2>LOA File Upload </h2>
+<table class="fixed">
+  <tr>
+    <th>Error Code</th>
+    <th>Error Description</th>
+  </tr>
+  #foreach ($error in $loaErrors)
+  <tr>
+    <td>${error.getCode()}</td>
+    <td>${error.getDescription()}</td>
+  </tr>
+  #end
+</table>
+
+
+<h1>Porting Numbers Out</h1>
+
+
+#foreach ($errorGroup in $lsrErrors.entrySet())
+<h2>$errorGroup.key</h2>
+<table class="fixed">
+  <tr>
+    <th>Error Code</th>
+    <th>Error Description</th>
+  </tr>
+  #foreach ($error in $errorGroup.value)
+  <tr>
+    <td>${error.getCode()}</td>
+    <td>${error.getDescription()}</td>
+  </tr>
+  #end
+</table>
+#end
+
+<h2>Port Out Validation callbacks</h2>
+<p>The following errors are treated as expected valid error codes when returned as part of a Port-out validation callback.
+  These align with errors that may be seen as part of a failed or suspended Port-in request.</p>
+<table class="fixed">
+  <tr>
+    <th>Error Code</th>
+    <th>Error Description</th>
+  </tr>
+  #foreach ($error in $portOutValidationCallbackErrors)
+  <tr>
+    <td>${error.getCode()}</td>
+    <td>${error.getDescription()}</td>
+  </tr>
+  #end
+</table>
+
+
+<h1>Telephone Number Features</h1>
+
+
+#foreach ($errorGroup in $tnFeatureErrors.entrySet())
+<h2>$errorGroup.key</h2>
+<table class="fixed">
+  <tr>
+    <th>Error Code</th>
+    <th>Error Description</th>
+  </tr>
+  #foreach ($error in $errorGroup.value)
+  <tr>
+    <td>${error.getCode()}</td>
+    <td>${error.getDescription()}</td>
+  </tr>
+  #end
+</table>
+#end
+
+
+<h1>Order Search and History</h1>
+
+
+#foreach ($errorGroup in $orderSearchAndHistoryErrors.entrySet())
+<h2>$errorGroup.key</h2>
+<table class="fixed">
+  <tr>
+    <th>Error Code</th>
+    <th>Error Description</th>
+  </tr>
+  #foreach ($error in $errorGroup.value)
+  <tr>
+    <td>${error.getCode()}</td>
+    <td>${error.getDescription()}</td>
+  </tr>
+  #end
+</table>
+#end
+
+
+<h1>Management Function Errors</h1>
+
+
+#foreach ($errorGroup in $managementFunctionErrors.entrySet())
+<h2>$errorGroup.key</h2>
+<table class="fixed">
+  <tr>
+    <th>Error Code</th>
+    <th>Error Description</th>
+  </tr>
+  #foreach ($error in $errorGroup.value)
+  <tr>
+    <td>${error.getCode()}</td>
+    <td>${error.getDescription()}</td>
+  </tr>
+  #end
+</table>
+#end
+
+
+<h1>System Errors</h1>
+
+
+#foreach ($errorGroup in $systemErrors.entrySet())
+<h2>$errorGroup.key</h2>
+<table class="fixed">
+  <tr>
+    <th>Error Code</th>
+    <th>Error Description</th>
+  </tr>
+  #foreach ($error in $errorGroup.value)
+  <tr>
+    <td>${error.getCode()}</td>
+    <td>${error.getDescription()}</td>
+  </tr>
+  #end
+</table>
+#end
+
+
+<h1>Status Messages</h1>
+
+
+#foreach ($errorGroup in $statusMessages.entrySet())
+<h2>$errorGroup.key</h2>
+<table class="fixed">
+  <tr>
+    <th>Error Code</th>
+    <th>Error Description</th>
+  </tr>
+  #foreach ($error in $errorGroup.value)
+  <tr>
+    <td>${error.getCode()}</td>
+    <td>${error.getDescription()}</td>
+  </tr>
+  #end
+</table>
+#end
+
+</body>
+</html>

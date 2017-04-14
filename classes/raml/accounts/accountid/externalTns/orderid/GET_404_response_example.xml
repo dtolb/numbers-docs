@@ -1,0 +1,7 @@
+!fileScope all
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ExternalTnsOrderResponse>
+    <ResponseStatus>
+        <Description>The resource does not exist</Description>
+    </ResponseStatus>
+</ExternalTnsOrderResponse>

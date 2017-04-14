@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BulkPortOut>
+	<PON>pon</PON>   <!-- optional – allocated by POT if not specified. An error if not unique -->
+	<Pin>55678</Pin>
+	<NewNetworkSPID>512E</NewNetworkSPID>
+	<FocDate>2014-01-31 00:00:00</FocDate> <!-- can be date or date-time -->
+	<Supplemental>[NONE|CANCEL|UPDATE|OTHER]</Supplemental>
+	<Immediately>[true|false]</Immediately>
+	<InternalPort>true</InternalPort>      <!-- will always be true -->
+	<TelephoneNumberList>
+		<TelephoneNumberToPort>[10d]</TelephoneNumberToPort>
+		<TelephoneNumberToPort>[10d]</TelephoneNumberToPort>
+	</TelephoneNumberList>
+	<CallbackUrl>"https://{iris.api}/accounts/{acct-id}/portins/{portin-id}/statusupdate"</CallbackUrl>
+</BulkPortOut>

@@ -1,0 +1,80 @@
+!fileScope internal
+!scope all
+description: The Origination resource controls the Origination features and settings that can be added to an account.
+
+post:
+    description: |
+      Add Origination to the account.    
+      The payload contains (optional) features that can be
+      offered to the subscribers of the account  These features  are enabled for DIDs in 
+      the account, but must still be provisioned on a DID-by-DID basis.
+      
+    body:
+        application/xml:
+            example: |
+              <?xml version="1.0"?>
+              <Product>
+                  <Name>Origination</Name>
+                  <Features>
+                      <Feature>CallForwarding</Feature>
+                      <Feature>DlDa</Feature>
+                      <Feature>CNAM</Feature>
+                  </Features>
+              </Product>
+
+    responses:
+        200:
+          description: The Origination product and associated features was added to the account
+        400:
+          description: Some field error prevented the addition of the feature to the account.
+
+put:
+    description: |
+      Update Origination on the account.    
+      The payload contains (optional) features that can be 
+      offered to the subscribers of the account  These features  are enabled for DIDs in 
+      the account, but must still be provisioned on a DID-by-DID basis.
+    body:
+        application/xml:
+            example: |
+              <?xml version="1.0"?>
+              <Product>
+                  <Name>Origination</Name>
+                  <Features>
+                      <Feature>CallForwarding</Feature>
+                      <Feature>DLDA</Feature>
+                      <Feature>CNAM</Feature>
+                  </Features>
+              </Product>
+
+    responses:
+        200:
+          description: The Origination product and associated features was added to the account
+        400:
+          description: Some field error prevented the addition of the feature to the account.
+
+!scope all
+get:
+    description: |
+      Examine the Origination capabilities of the account.  The response also contains information that 
+      describes the Origination features that are enabled for the account.  All of these features still 
+      need to be provisioned for any DIDs that will be enabled to use the Feature
+    responses:
+        200:
+            body:
+                application/xml:
+                    example: |
+                      <AccountProductResponse>
+                        <Product>
+                          <Name>Origination</Name>
+                          <Features>
+                            <Feature>CallForwarding</Feature>
+                            <Feature>DlDa</Feature>
+                            <Feature>CNAM</Feature>
+                           </Features>
+                         </Product>
+                      </AccountProductResponse>
+
+!fileScope internal
+/settings: !include settings/originationsettings.raml
+/tntotals: !include tntotals/tntotals.raml

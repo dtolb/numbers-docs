@@ -1,0 +1,146 @@
+!fileScope internal
+
+description: |
+    This resource retrieves information about permissions to role relationship.
+get:
+    responses:
+        200:
+            description: |
+                Return all existing permissions for role
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LdapRolePermissionsResponse>
+                            <Role>
+                                <PermissionList>
+                                    <Permission>
+                                        <PermissionId>report-list-reports</PermissionId>
+                                        <PermissionDescription>Default Description</PermissionDescription>
+                                        <Internal>false</Internal>
+                                    </Permission>
+                                    <Permission>
+                                        <PermissionId>report-retrieve-file-9</PermissionId>
+                                        <Internal>true</Internal>
+                                    </Permission>
+                                    <Permission>
+                                        <PermissionId>report-retrieve-file-8</PermissionId>
+                                        <PermissionDescription>123</PermissionDescription>
+                                        <Internal>true</Internal>
+                                    </Permission>
+                                    <Permission>
+                                        <PermissionId>test-permission-put-1</PermissionId>
+                                        <PermissionDescription>123</PermissionDescription>
+                                        <Internal>true</Internal>
+                                    </Permission>
+                                </PermissionList>
+                            </Role>
+                        </LdapRolePermissionsResponse>
+!scope internal
+put:
+    description: Rewrites all existing permissions, related to role.
+    body:
+        application/xml:
+            example:
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <PermissionList>
+                            <Permission>
+                                <PermissionId>report-retrieve-file-9</PermissionId>
+                            </Permission>
+                            <Permission>
+                                <PermissionId>report-retrieve-file-8</PermissionId>
+                            </Permission>
+                </PermissionList>
+    responses:
+        200:
+             description: The role has been successfully updated or created and displayed in the payload.
+             body:
+                 application/xml:
+                     example:
+                          <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                          <LdapRolePermissionsResponse>
+                              <Role>
+                                  <RoleId>test-role</RoleId>
+                                  <PermissionList>
+                                      <Permission>
+                                          <PermissionId>report-retrieve-file-9</PermissionId>
+                                      </Permission>
+                                      <Permission>
+                                          <PermissionId>report-retrieve-file-8</PermissionId>
+                                      </Permission>
+                                  </PermissionList>
+                              </Role>
+                          </LdapRolePermissionsResponse>
+        400:
+             description: Data in body formed in wrong way, validation error appears.
+             body:
+                 application/xml:
+                     example:
+                         <LdapRolePermissionsResponse>
+                             <ResponseStatus>
+                                 <ErrorCode>1012</ErrorCode>
+                                 <Description>PermissionId is too short. Min length 4 characters</Description>
+                             </ResponseStatus>
+                             <Role>
+                                 <RoleId>test-role</RoleId>
+                                 <PermissionList>
+                                     <Permission>
+                                         <PermissionId>rep</PermissionId>
+                                     </Permission>
+                                     <Permission>
+                                         <PermissionId>report-retrieve-file-9</PermissionId>
+                                     </Permission>
+                                     <Permission>
+                                         <PermissionId>report-retrieve-file-8</PermissionId>
+                                     </Permission>
+                                 </PermissionList>
+                             </Role>
+                         </LdapRolePermissionsResponse>
+        403:
+             description: Update failed, some of permissions cannot be associated with role.
+             body:
+                 application/xml:
+                     example:
+                         <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                         <LdapRolePermissionsResponse>
+                             <ResponseStatus>
+                                 <ErrorCode>12082</ErrorCode>
+                                 <Description>Some of permission(s) '[report-retrieve-file-8]' defined as internal. Internal permissions cannot be associated to external 'test-role' role</Description>
+                             </ResponseStatus>
+                             <Role>
+                                 <RoleId>test-role</RoleId>
+                                 <PermissionList>
+                                     <Permission>
+                                         <PermissionId>report-create-definition</PermissionId>
+                                         <Internal>false</Internal>
+                                     </Permission>
+                                     <Permission>
+                                         <PermissionId>report-retrieve-file-8</PermissionId>
+                                         <PermissionDescription>123</PermissionDescription>
+                                         <Internal>true</Internal>
+                                     </Permission>
+                                 </PermissionList>
+                             </Role>
+                         </LdapRolePermissionsResponse>
+        422:
+             description: Some of permissions cannot be found.
+             body:
+                 application/xml:
+                     example:
+                         <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                         <LdapRolePermissionsResponse>
+                             <ResponseStatus>
+                                 <ErrorCode>12076</ErrorCode>
+                                 <Description>Some of your permission(s) '[report-retrieve-file-81]' do not exist</Description>
+                             </ResponseStatus>
+                             <Role>
+                                 <RoleId>test-role</RoleId>
+                                 <PermissionList>
+                                     <Permission>
+                                         <PermissionId>report-retrieve-file-81</PermissionId>
+                                     </Permission>
+                                 </PermissionList>
+                             </Role>
+                         </LdapRolePermissionsResponse>
+
+/{permissionId}: !include rolepermissionxref/rolepermissionxref.raml

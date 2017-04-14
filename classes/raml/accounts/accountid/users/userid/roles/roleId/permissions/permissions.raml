@@ -1,0 +1,51 @@
+!fileScope internal
+
+description: The permissions resource interacts with the permissions of the user, adding and retrieving permissions.
+
+get:
+    description: Retrieves the list of permissions associated with the user ID.
+    responses:
+        200:
+            description: The list of permissions has been successfully received and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <PermissionsResponse>
+                            <Permissions>
+                                <Permission>
+                                    <PermissionName>VIEW</PermissionName>
+                                </Permission>
+                            </Permissions>
+                        </PermissionsResponse>
+
+post:
+    description: Adds a role to the user ID.
+    body:
+        application/xml:
+            example: |
+                <Roles>
+                    <Role>
+                        <RoleName>ROLE_API_ORDERING</RoleName>
+                        <Permissions>
+                            <Permission>
+                                <PermissionName>VIEW</PermissionName>
+                            </Permission>
+                        </Permissions>
+                    </Role>
+                </Roles>
+    responses:
+        201:
+            description: The permissions have been successfully added to the user as described in the payload
+        409:
+            description: The permission as described in the payload already exists for the user.
+            body:
+                application/xml:
+                    example: |
+                        <PermissionsResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12004</ErrorCode>
+                                <Description>For account '12346099' user 'mowoc' already has permission 'UPDATE' for role 'ROLE_API_ORDERING'</Description>
+                            </ResponseStatus>
+                        </PermissionsResponse>
+
+/{permissionId}: !include permissionId/permissionId.raml

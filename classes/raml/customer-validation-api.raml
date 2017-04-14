@@ -1,0 +1,15 @@
+!fileScope all
+#%RAML 0.8
+---
+title: Customer Port-out Validation API Documentation
+# Use null host here to trigger automatic replacement in javascript
+baseUri: http://null
+version: v1
+
+securedBy: [basic]
+
+securitySchemes:
+   - basic:
+        type: Basic Authentication
+
+/customer-validation-api: !include customer-validation-api/customer-validation-api.raml

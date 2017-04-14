@@ -1,0 +1,15 @@
+!fileScope all
+
+description: |
+    The file resource is an explicit reference to the zip file that has been created with the selected BDR records. 
+get:
+    description:
+        A GET on the /file resource subtending a BDR ID will cause the download of the file.  Executing this resource path within a browser will cause the download of the file.
+    responses:
+        200:
+            description: |
+                A 200 OK indicates that the request for the file download was accepted and will be processed.
+            headers:
+                Content-Disposition:
+                    description: a text string description of the file being downloaded
+                    example: "attachment; filename=bdrs_2015-04-01_2015-04-30.zip"

@@ -1,0 +1,85 @@
+!fileScope internal
+get:
+    description: get all get attributes
+    responses:
+        200:
+            description: managed to get all attributes
+            body:
+                application/json:
+                    example: |
+                        [
+                            {
+                                "id":205,
+                                "name":"TRACE",
+                                "value":"{}",
+                                "effectiveDate":"2014-09-18T08:18:48",
+                                "ineffectiveDate":"2014-09-18T08:18:48",
+                                "externalId":1
+                            }
+                        ]
+post:
+    description: add to customer attribute
+    body:
+        application/json:
+            example: |
+                {
+                   "id":null,
+                    "name":"TRACE",
+                    "value":"{}",
+                    "effectiveDate":"2014-09-18T08:18:48",
+                    "ineffectiveDate":"2014-09-18T08:18:48",
+                    "externalId":1
+                }
+    responses:
+        201:
+            description: attribute was successfully added
+        404:
+            description: specified in request account was not found
+/{attributeId}:
+    get:
+        description: get account attribute by id
+        responses:
+            200:
+                body:
+                    application/json:
+                        example: |
+                            {
+                                "id":205,
+                                "name":"TRACE",
+                                "value":"{}",
+                                "profileId":1770,
+                                "effectiveDate":"2014-09-18T08:18:48",
+                                "ineffectiveDate":"2014-09-18T08:18:48",
+                                "externalId":1
+                            }
+            404:
+                description: account or attribute was not found
+    put:
+        description: update account attribute, i.e. attribute value
+        responses:
+            200:
+                body:
+                    application/json:
+                        example: |
+                            {
+                                "id":205,
+                                "name":"TRACE",
+                                "value":"New value",
+                                "profileId":1770,
+                                "effectiveDate":"2014-09-18T08:18:48",
+                                "ineffectiveDate":"2014-09-18T08:18:48",
+                                "externalId":1
+                            }
+            400:
+                description: update validation failed, eg changed forbidden fields (like metadata name)
+            404:
+                description: account or attribute was not found
+    delete:
+        description: delete account attribute
+        responses:
+            200:
+                description: account attribute was deleted
+            400:
+                description: some required value was not found
+            404:
+                description: account or attribute was not found

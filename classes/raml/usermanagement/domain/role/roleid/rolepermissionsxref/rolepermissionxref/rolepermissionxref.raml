@@ -1,0 +1,158 @@
+!fileScope internal
+
+description: This resource retrieves information about permission to role relationship.
+
+get:
+    description: Retrieves the information about permission by unique name, related to specific role.
+    responses:
+        200:
+            description: The information has been successfully retrieved and displayed in the payload.
+            body:
+                application/xml:
+                    example:
+                        <LdapRolePermissionResponse>
+                            <Role>
+                                <RoleId>test-role</RoleId>
+                                <PermissionList>
+                                    <Permission>
+                                        <PermissionId>report-retrieve-file-9</PermissionId>
+                                        <Internal>true</Internal>
+                                    </Permission>
+                                </PermissionList>
+                            </Role>
+                        </LdapRolePermissionResponse>
+        404:
+            description: The role or permission does not exist.
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LdapRolePermissionResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12069</ErrorCode>
+                                <Description>Permission 'report-create-definition1' does not exist in role 'test-role'</Description>
+                            </ResponseStatus>
+                            <Role>
+                                <RoleId>test-role</RoleId>
+                                <PermissionList>
+                                    <Permission>
+                                        <PermissionId>report-create-definition1</PermissionId>
+                                    </Permission>
+                                </PermissionList>
+                            </Role>
+                        </LdapRolePermissionResponse>
+
+                       <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                       <LdapRolePermissionResponse>
+                           <ResponseStatus>
+                               <ErrorCode>12073</ErrorCode>
+                               <Description>Role 'test-role1' does not exist</Description>
+                           </ResponseStatus>
+                           <Role>
+                               <RoleId>test-role1</RoleId>
+                               <PermissionList>
+                                   <Permission>
+                                       <PermissionId>report-create-definition1</PermissionId>
+                                   </Permission>
+                               </PermissionList>
+                           </Role>
+                       </LdapRolePermissionResponse>
+!scope internal
+post:
+    description: Adds permission to role.
+    responses:
+        201:
+             description: The permission has been successfully added to role.
+             body:
+                 application/xml:
+                     example:
+                         <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                         <LdapRolePermissionResponse>
+                             <Role>
+                                 <RoleId>test-role</RoleId>
+                                 <PermissionList>
+                                     <Permission>
+                                         <PermissionId>report-retrieve-file-9</PermissionId>
+                                     </Permission>
+                                     <Permission>
+                                         <PermissionId>report-retrieve-file-8</PermissionId>
+                                     </Permission>
+                                     <Permission>
+                                         <PermissionId>test-permission-post</PermissionId>
+                                     </Permission>
+                                 </PermissionList>
+                             </Role>
+                         </LdapRolePermissionResponse>
+        200:
+             description: The existing permission-role relation was updated.
+             body:
+                 application/xml:
+                     example:
+                         <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                         <LdapRolePermissionResponse>
+                              <Role>
+                                  <RoleId>test-role</RoleId>
+                                  <PermissionList>
+                                      <Permission>
+                                          <PermissionId>report-retrieve-file-9</PermissionId>
+                                      </Permission>
+                                      <Permission>
+                                          <PermissionId>report-retrieve-file-8</PermissionId>
+                                      </Permission>
+                                      <Permission>
+                                          <PermissionId>test-permission-post</PermissionId>
+                                      </Permission>
+                                  </PermissionList>
+                              </Role>
+                          </LdapRolePermissionResponse>
+        403:
+             description: Create failed, permission cannot be associated to certain role.
+             body:
+                 application/xml:
+                     example:
+                         <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                         <LdapRolePermissionResponse>
+                             <ResponseStatus>
+                                 <ErrorCode>12082</ErrorCode>
+                                 <Description>Some of permission(s) '[report-retrieve-file-5]' defined as internal. Internal permissions cannot be associated to external 'test-role' role</Description>
+                             </ResponseStatus>
+                             <Role>
+                                 <RoleId>test-role</RoleId>
+                                 <PermissionList>
+                                     <Permission>
+                                         <PermissionId>report-retrieve-file-5</PermissionId>
+                                         <PermissionDescription>123</PermissionDescription>
+                                         <Internal>true</Internal>
+                                     </Permission>
+                                 </PermissionList>
+                             </Role>
+                         </LdapRolePermissionResponse>
+
+
+!scope internal
+delete:
+    description: Removes specified permission from role.
+    responses:
+        200:
+            description: The permission has been successfully removed from role.
+        404:
+            description:
+                The permission does not exist in certain role.
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LdapRolePermissionResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12069</ErrorCode>
+                                <Description>Permission 'report-list-report-details' does not exist in role 'test-role'</Description>
+                            </ResponseStatus>
+                            <Role>
+                                <RoleId>test-role</RoleId>
+                                <PermissionList>
+                                    <Permission>
+                                        <PermissionId>report-list-report-details</PermissionId>
+                                    </Permission>
+                                </PermissionList>
+                            </Role>
+                        </LdapRolePermissionResponse>

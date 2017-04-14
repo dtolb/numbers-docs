@@ -1,0 +1,94 @@
+!fileScope internal
+
+description: |
+    This resource returns a count of all the telephone numbers currently available.
+
+    The availablenumbers query will return counts all of the inservice numbers on the account, structured in a way that is controlled by a URI "search" parameter.
+get:
+    description: get a count of the available numbers on the system - structured in a variety of ways. 
+    queryParameters:
+        page:
+            description: the page to fetch in a paginated collection
+            type: integer
+            required: true
+            default: 1
+        size:
+            description: the number of TNs to retrieve in a page
+            type: integer
+            required: true
+            default: 500
+        startdate:
+            description: the starting date for a Date Range in which the Available Numbers are were ordered in the format YY-MM-DD
+            type: string
+            example: 13-05-21
+        enddate:
+            description: the starting date for a Date Range in which the Available Numbers are were ordered in the format YY-MM-DD
+            type: string
+            example: 13-05-21
+        type:
+            description: |
+                this is the value that governs the structure of the results.  The results payload will be different based on the type value specified.
+                <ul>
+                    <li>NPA - decompose the results by Area Code</li>
+                    <li>NPANXX - decompose the results by NPA NXX pairings</li>
+                    <li>NPANXXX - decompose the results by NPA NXX X pairings</li>
+                    <li>LATA - break the results down by LATA</li>
+                    <li>RC - break the results down by Rate Center</li>
+                    <li>ST - break the results down by State</li>
+                </ul>
+            enum: [NPA, NPANXX, NPANXXX, LATA, RC, ST]
+            example: NPA
+
+    responses: 
+        200:
+            description: A successful result that contains the response data
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0"?>
+                        <TNs>
+                            <TNs>
+                                <State>AL</State>
+                                <Tier>0</Tier>
+                                <Count>5220</Count>
+                            </TNs>
+                            <TNs>
+                                <State>AR</State>
+                                <Tier>0</Tier>
+                                <Count>655</Count>
+                            </TNs>
+                            <TNs>
+                                <State>AZ</State>
+                                <Tier>0</Tier>
+                                <Count>8993</Count>
+                            </TNs>
+
+                            <TNs>...</TNs>
+                            <TNs>...</TNs>
+                            <!-- SNIP -->
+                            
+                            <TNs>
+                                <State>WV</State>
+                                <Tier>0</Tier>
+                                <Count>324</Count>
+                            </TNs>
+                            <TNs>
+                                <State>WY</State>
+                                <Tier>0</Tier>
+                                <Count>454</Count>
+                            </TNs>
+                        </TNs>
+
+
+        204:
+            description: No Content - there are no numbers found using the search parameters
+        404:
+            description: Not Found - The search parameters are invalid and prevent finding any content
+        500:
+             description: Internal Server Error - System error
+        504:
+             description: Timeout - The system was not able to process your request in time
+
+
+/orders: !include orders/orders.raml
+/totals: !include totals/totals.raml

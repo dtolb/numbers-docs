@@ -1,0 +1,82 @@
+!fileScope external
+
+description: Allows to retrieve information about the specific subscription or delete the subscription.
+
+get:
+    description: |
+      Retrieves the information associated with the subscription ID.
+      The returned information reflects the subscription as it has been defined, and for callback subscriptions will reflect the status of the latest attempt to place the callback.  The <status> element will indicate if an error is being encountered when the Bandwidth Dashboard attempts to place the callback.
+    responses:
+        200:
+            description: A subscrption as been retrieved. The information is returned.
+            body:
+                application/xml:
+                    example: |
+                        <SubscriptionsResponse>
+                            <Subscriptions>
+                                <Subscription>
+                                    <SubscriptionId>257f9be6-2e81-47bb-afd9-b8c184e9e246</SubscriptionId>
+                                    <OrderType>portouts</OrderType>
+                                    <EmailSubscription>
+                                        <Email>newtest@gmail.com</Email>
+                                        <DigestRequested>DAILY</DigestRequested>
+                                    </EmailSubscription>
+                                </Subscription>
+                            </Subscriptions>
+                        </SubscriptionsResponse>
+                        <!-- *** or *** -->
+                        <Subscription>
+                            <SubscriptionId>991a60d7-a612-48a5-a86e-326b51997cac</SubscriptionId>
+                            <OrderType>portins</OrderType>
+                            <CallbackSubscription>
+                                <URL>http://customer.com:8087/path/BandwidthHandler</URL>
+                                <Expiry>4283455101</Expiry>
+                                <Status>200 OK</Status>
+                            </CallbackSubscription>
+                        </Subscription>
+put:
+    description: |
+        Updates the subscription. This can be be used to update various values (expiry, email address, url, credentials...).
+        Note that the initial state changes for an order may happen very quickly, so subscribing to an
+        order once the system creates it needs to account for the fact that the initial state may be
+        different based on timing factors. It is recommended that the application creating the
+        subscription check the order status after the subscription is created to ensure the correct initial
+        condition. <br>
+
+        The same rules around valid or possible values as for POSTs apply.
+
+    body:
+        application/xml:
+            example:
+                <Subscription>
+                    <OrderType> [portins | portouts | orders | disconnects | dldas | lsrorders | e911s | tnoptions | externalTns] </OrderType>
+                    <OrderId> [UUID] </OrderId>
+                    <CallbackSubscription>
+                        <URL> [valid publically addressable URL] </URL>
+                        <Expiry> [time in seconds] </Expiry>
+                        <CallbackCredentials>
+                            <BasicAuthentication>
+                                <Username> [username] </Username>
+                                <Password> [password] </Password>
+                            </BasicAuthentication>
+                            <PublicKey> [BASE64 encoded public key] </PublicKey>
+                        </CallbackCredentials>
+                    </CallbackSubscription>
+                </Subscription>
+    responses:
+        200:
+            description: Subscription was successfully updated
+        400:
+            description: Subscription values failed validation
+        404:
+            description: Subscription does not exist
+
+delete:
+    description: |
+        Deletes the specified subscription. Note that deleting subscriptions is only supported on a one-by-one basis.
+        Deleting all subscriptions associated with an order requires GETting all of those subscriptions, then deleting them one by one.
+    responses:
+        200:
+            description: subscription has been successfully deleted
+        404:
+            description: subscription does not exist

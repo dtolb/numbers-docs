@@ -1,0 +1,72 @@
+!fileScope internal
+get:
+    description: return all product assignments for account
+    responses:
+        200:
+            description: managed to get all product assignments for account
+            body:
+                application/json:
+                    example: |
+                        [
+                            {
+                              "id" : 12345,
+                              "termServiceRateDeckId" : 12345,
+                              "termServiceAccountId" : null,
+                              "externalProfileId" : null,
+                              "externalAssignmentId" : null,
+                              "billingAccountId" : null,
+                              "increaseDate" : "2014-09-18T13:56:43.316Z",
+                              "decreaseDate" : "2014-09-18T13:56:43.332Z"
+                            }
+                        ]
+post:
+    description: assign ratedeck to account
+    body:
+        application/json:
+            example: |
+                {
+                  "id" : null,
+                  "termServiceRateDeckId" : 12345,
+                  "termServiceAccountId" : 225,
+                  "externalProfileId" : 4,
+                  "externalAssignmentId" : null,
+                  "billingAccountId" : 2,
+                  "increaseDate" : "2014-09-18T14:00:26.781Z",
+                  "decreaseDate" : "2014-09-18T14:00:26.797Z"
+                }
+    responses:
+        201:
+            description: product was successfully assigned
+        400:
+            description: required values are absent
+        404:
+            description: rate deck was not found
+/{assignmentId}:
+    get:
+        description: return a specific product assignment
+        responses:
+            200:
+                body:
+                    application/json:
+                        example: |
+                            {
+                              "id" : 12345,
+                              "termServiceRateDeckId" : 12345,
+                              "termServiceAccountId" : null,
+                              "externalProfileId" : null,
+                              "externalAssignmentId" : null,
+                              "billingAccountId" : null,
+                              "increaseDate" : "2014-09-18T13:56:43.316Z",
+                              "decreaseDate" : "2014-09-18T13:56:43.332Z"
+                            }
+            400:
+                description: assignment account id does not equal accountId in request
+            404:
+                description: assignment was not found
+    delete:
+        description: delete rate deck assignment
+        responses:
+            200:
+                description: assignment was deleted
+            404:
+                description: assignment was not found

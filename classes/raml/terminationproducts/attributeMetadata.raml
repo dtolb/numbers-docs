@@ -1,0 +1,207 @@
+get:
+    description: get all attribute metadata
+    responses:
+      200:
+        body:
+          application/xml:
+            example:
+              <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+              <TerminationAttributeMetadatasResponse>
+                <TerminationAttributeMetadatas>
+                    <TerminationAttributeMetadata>
+                        <id>4</id>
+                        <name>TRACE</name>
+                        <validationType>FREE_FORM</validationType>
+                        <attributeProvisionTypes>
+                            <attributeProvisionType>ACCOUNT</attributeProvisionType>
+                            <attributeProvisionType>GATEWAY</attributeProvisionType>
+                        </attributeProvisionTypes>
+                        <origin>LCR</origin>
+                        <repeatable>true</repeatable>
+                        <values>
+                            <value>OPTION1</value>
+                            <value>OPTION2</value>
+                        </values>
+                    </TerminationAttributeMetadata>
+                </TerminationAttributeMetadatas>
+              </TerminationAttributeMetadatasResponse>
+post:
+  description: post attribute metadata
+  body:
+      application/xml:
+          example:
+              <?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+              <TerminationAttributeMetadata>
+                <name>TRACE</name>
+                <validationType>FREE_FORM</validationType>
+                <attributeProvisionTypes>
+                    <attributeProvisionType>ACCOUNT</attributeProvisionType>
+                    <attributeProvisionType>GATEWAY</attributeProvisionType>
+                </attributeProvisionTypes>
+                <origin>LCR</origin>
+                <repeatable>true</repeatable>
+                <values>
+                    <value>OPTION1</value>
+                    <value>OPTION2</value>
+                </values>
+              </TerminationAttributeMetadata>
+  responses:
+      201:
+          description:
+              The carrier mask has been created as described in the payload <br>
+          body:
+              application/xml:
+                  example:
+                      <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                      <TerminationAttributeMetadataResponse>
+                        <TerminationAttributeMetadata>
+                            <id>5</id>
+                            <name>TRACE</name>
+                            <validationType>FREE_FORM</validationType>
+                            <attributeProvisionTypes>
+                                <attributeProvisionType>ACCOUNT</attributeProvisionType>
+                                <attributeProvisionType>GATEWAY</attributeProvisionType>
+                            </attributeProvisionTypes>
+                            <origin>LCR</origin>
+                            <repeatable>true</repeatable>
+                            <values>
+                                <value>OPTION1</value>
+                                <value>OPTION2</value>
+                            </values>
+                        </TerminationAttributeMetadata>
+                      </TerminationAttributeMetadataResponse>
+          headers:
+            Location:
+              description: contains attribute metadata id after last "/" <br>
+
+put:
+    description: update attribute metadata
+    body:
+        application/xml:
+            example:
+                <TerminationAttributeMetadata>
+                    <id>6</id>
+                    <name>TRACE</name>
+                    <validationType>FREE_FORM</validationType>
+                    <attributeProvisionTypes>
+                        <attributeProvisionType>ACCOUNT</attributeProvisionType>
+                        <attributeProvisionType>GATEWAY</attributeProvisionType>
+                    </attributeProvisionTypes>
+                    <origin>LCR</origin>
+                    <repeatable>true</repeatable>
+                    <values>
+                        <value>OPTION1</value>
+                        <value>OPTION2</value>
+                    </values>
+                </TerminationAttributeMetadata>
+    responses:
+        200:
+            description:
+                The carrier mask has been updated
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <TerminationAttributeMetadataResponse>
+                            <TerminationAttributeMetadata>
+                                <id>6</id>
+                                <name>TRACE</name>
+                                <validationType>FREE_FORM</validationType>
+                                <attributeProvisionTypes>
+                                    <attributeProvisionType>ACCOUNT</attributeProvisionType>
+                                    <attributeProvisionType>GATEWAY</attributeProvisionType>
+                                </attributeProvisionTypes>
+                                <origin>LCR</origin>
+                                <repeatable>true</repeatable>
+                                <values>
+                                    <value>OPTION1</value>
+                                    <value>OPTION2</value>
+                                </values>
+                            </TerminationAttributeMetadata>
+                        </TerminationAttributeMetadataResponse>
+/{id}:
+    get:
+       description: get account by id
+       responses:
+             200:
+               body:
+                 application/xml:
+                   example:
+                     <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                     <TerminationAttributeMetadataResponse>
+                        <TerminationAttributeMetadata>
+                            <id>7</id>
+                            <name>TRACE</name>
+                            <validationType>FREE_FORM</validationType>
+                            <attributeProvisionTypes>
+                                <attributeProvisionType>ACCOUNT</attributeProvisionType>
+                                <attributeProvisionType>GATEWAY</attributeProvisionType>
+                            </attributeProvisionTypes>
+                            <origin>LCR</origin>
+                            <repeatable>true</repeatable>
+                            <values>
+                                <value>OPTION1</value>
+                                <value>OPTION2</value>
+                            </values>
+                        </TerminationAttributeMetadata>
+                     </TerminationAttributeMetadataResponse>
+/origin:
+    get:
+        queryParameters:
+            origin:
+        description: get all attributes by origin
+        responses:
+             200:
+               body:
+                 application/xml:
+                   example:
+                     <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                     <TerminationAttributeMetadataByOriginResponse>
+                        <TerminationAttributeMetadatas>
+                            <TerminationAttributeMetadata>
+                                <id>8</id>
+                                <name>TRACE</name>
+                                <validationType>FREE_FORM</validationType>
+                                <attributeProvisionTypes>
+                                    <attributeProvisionType>ACCOUNT</attributeProvisionType>
+                                    <attributeProvisionType>GATEWAY</attributeProvisionType>
+                                </attributeProvisionTypes>
+                                <origin>LCR</origin>
+                                <repeatable>true</repeatable>
+                                <values>
+                                    <value>OPTION1</value>
+                                    <value>OPTION2</value>
+                                </values>
+                            </TerminationAttributeMetadata>
+                        </TerminationAttributeMetadatas>
+                     </TerminationAttributeMetadataByOriginResponse>
+/type:
+    get:
+        queryParameters:
+            type:
+        description: get all attributes by type
+        responses:
+             200:
+               body:
+                 application/xml:
+                   example:
+                     <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                     <TerminationAttributeMetadataByNameResponse>
+                        <TerminationAttributeMetadata>
+                            <id>9</id>
+                            <name>TRACE</name>
+                            <validationType>FREE_FORM</validationType>
+                            <attributeProvisionTypes>
+                                <attributeProvisionType>ACCOUNT</attributeProvisionType>
+                                <attributeProvisionType>GATEWAY</attributeProvisionType>
+                            </attributeProvisionTypes>
+                            <origin>LCR</origin>
+                            <repeatable>true</repeatable>
+                            <values>
+                                <value>OPTION1</value>
+                                <value>OPTION2</value>
+                            </values>
+                        </TerminationAttributeMetadata>
+                     </TerminationAttributeMetadataByNameResponse>
+
+

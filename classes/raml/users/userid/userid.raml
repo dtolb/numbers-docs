@@ -1,0 +1,74 @@
+!fileScope all
+
+description: reference a specific user in the Bandwidth Dashboard
+
+!scope internal
+put:
+    description: Update a User. PUT can be used to update role or user data information associated with a user.
+    body:
+        application/xml:
+            example: |
+                <User>
+                    <Username>testcustomer</Username>
+                    <Password>newpassword</Password>
+                    <FirstName>Jane</FirstName>
+                    <LastName>Doe</LastName>
+                    <EmailAddress>janedoe@bandwidth.com</EmailAddress>
+                    <TelephoneNumber>9199999999</TelephoneNumber>
+                </User>
+    responses:
+        200:
+            body: 
+                application/xml:
+                    example: empty response
+
+!scope internal
+delete:
+    description: Delete a User id
+    responses:
+        200:
+            body: 
+                application/xml:
+                    example: empty response
+
+!scope external
+get:
+    description: Retrieve the information (except the password) for a specific user id
+    responses:
+        200:
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserResponse>
+                            <User>
+                                <Username>testcustomer</Username>
+                                <FirstName>Jane</FirstName>
+                                <LastName>Doe</LastName>
+                                <EmailAddress>janedoe@bandwidth.com</EmailAddress>
+                                <TelephoneNumber>9199999999</TelephoneNumber>
+                                <Roles>
+                                    <Role>
+                                        <RoleName>ROLE_BDR</RoleName>
+                                        <Permissions>
+                                            <Permission>
+                                                <PermissionName>VIEW</PermissionName>
+                                            </Permission>
+                                        </Permissions>
+                                    </Role>
+                                </Roles>
+                                <Accounts>
+                                    <Account>
+                                        <AccountId>12346095</AccountId>
+                                        <CompanyName>ABC Corp</CompanyName>
+                                    </Account>
+                                </Accounts>
+                            </User>
+                        </UserResponse>
+
+/password: !include password/password.raml
+/roles: !include roles/roles.raml
+/businessNames: !include businessNames/businessNames.raml
+/firstName: !include firstName/firstName.raml
+/lastName: !include lastName/lastName.raml
+/preferences: !include preferences/preferences.raml

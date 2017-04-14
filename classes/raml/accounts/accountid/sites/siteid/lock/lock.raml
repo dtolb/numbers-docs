@@ -1,0 +1,44 @@
+!fileScope internal
+
+description: Access and modify the current lock state of a site.
+
+get:
+    description: Retrieves the current lock state of a site.
+
+    responses:
+        200:
+            description: site id successfully retrieved
+            body: 
+                application/xml:
+                    example: |
+                        <SiteLockResponse>
+                            <Lock>
+                                <Locked>true</Locked>
+                            </Lock>
+                        </SiteLockResponse>
+
+put:
+    description: Modifies the lock state of a site.
+    body:
+        application/xml:
+            example:
+                <?xml version="1.0" ?>
+                <Lock>
+                    <Locked>false</Locked>
+                </Lock>
+
+    responses:
+        200:
+            description: The site's lock state has been successfully updated.
+        400:
+            description: The request to modify the site's locked state was invalid.
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" ?>
+                        <SiteLockResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12632</ErrorCode>
+                                <Description>Invalid Locked field value 'not true' (expected 'true' or 'false').</Description>
+                            </ResponseStatus>
+                        </SiteLockResponse>

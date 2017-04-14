@@ -1,0 +1,54 @@
+!fileScope external
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<DldaOrderResponse>
+    <DldaOrder>
+        <CustomerOrderId>[String]</CustomerOrderId>
+        <OrderCreateDate>2014-07-10T12:38:11.833Z</OrderCreateDate>
+        <AccountId>14</AccountId>
+        <CreatedByUser>team_ua</CreatedByUser>
+        <OrderId>f179237b-c1cb-449d-9590-aaa9d0bf3ca4</OrderId>
+        <LastModifiedDate>2014-07-17T12:21:02.644Z</LastModifiedDate>
+        <ErrorList/>
+        <ProcessingStatus>RECEIVED</ProcessingStatus>
+        <DldaTnGroups>
+            <DldaTnGroup>
+                <TelephoneNumbers>
+                    <TelephoneNumber>2199347436</TelephoneNumber>
+                </TelephoneNumbers>
+                <AccountType>RESIDENCE</AccountType>
+                <ListingType>NON_LISTED</ListingType>
+                <ListingName>
+                    <FirstName>John</FirstName>
+                    <FirstName2></FirstName2>
+                    <LastName>Smith</LastName>
+                    <Designation></Designation>
+                    <TitleOfLineage></TitleOfLineage>
+                    <TitleOfAddress></TitleOfAddress>
+                    <TitleOfAddress2></TitleOfAddress2>
+                    <TitleOfLineageName2></TitleOfLineageName2>
+                    <TitleOfAddressName2></TitleOfAddressName2>
+                    <TitleOfAddress2Name2></TitleOfAddress2Name2>
+                    <PlaceListingAs></PlaceListingAs>
+                </ListingName>
+                <ListAddress>true</ListAddress>
+                <Address>
+                    <HousePrefix></HousePrefix>
+                    <HouseNumber>915</HouseNumber>
+                    <HouseSuffix></HouseSuffix>
+                    <PreDirectional></PreDirectional>
+                    <StreetName>Elm</StreetName>
+                    <StreetSuffix>Ave</StreetSuffix>
+                    <PostDirectional></PostDirectional>
+                    <AddressLine2></AddressLine2>
+                    <City>Carpinteria</City>
+                    <StateCode>CA</StateCode>
+                    <Zip>93013</Zip>
+                    <PlusFour></PlusFour>
+                    <County></County>
+                    <Country>United States</Country>
+                    <AddressType>Dlda</AddressType>
+                </Address>
+            </DldaTnGroup>
+        </DldaTnGroups>
+    </DldaOrder>
+</DldaOrderResponse>

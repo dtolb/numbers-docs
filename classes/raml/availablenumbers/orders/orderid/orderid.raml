@@ -1,0 +1,54 @@
+!fileScope internal
+
+description: |
+    Display the data associated with a specific Import to Available Order.
+
+get:
+    description: Get the information associated with the identified orderid
+
+    responses: 
+        200:
+            description: A successful result that contains the response data
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0"?>
+                        <ImportAvailableNumberOrderResponse>
+                            <accountProfileName>defaultnontfaccount</accountProfileName>
+                            <gatewayProfileName>defaultnontf</gatewayProfileName>
+                            <ImportedTelephoneNumberList>
+                                <TelephoneNumber>3019720000</TelephoneNumber>
+                                <TelephoneNumber>3019720001</TelephoneNumber>
+                                <TelephoneNumber>3019720002</TelephoneNumber>
+                                <TelephoneNumber>3019720003</TelephoneNumber>
+                                <TelephoneNumber>3019720004</TelephoneNumber>
+                                <TelephoneNumber>3019720005</TelephoneNumber>
+                                <TelephoneNumber>3019720006</TelephoneNumber>
+                                <TelephoneNumber>3019720007</TelephoneNumber>
+                                <TelephoneNumber>3019720008</TelephoneNumber>
+                                <TelephoneNumber>3019720009</TelephoneNumber>
+                            </ImportedTelephoneNumberList>
+                            <orderRequest>
+                                <id>ed1c0bed-e2ba-432d-bb58-81dca35a62ef</id>
+                                <ImportAvailableNumberOrderType>
+                                    <AccountProfile>defaultnontfaccount</AccountProfile>
+                                    <GatewayProfile>defaultnontf</GatewayProfile>
+                                    <TelephoneNumberList>
+                                        <TelephoneNumber>3019720002</TelephoneNumber>
+                                        <TelephoneNumber>3019720003</TelephoneNumber>
+                                        <TelephoneNumber>3019720000</TelephoneNumber>
+                                        <TelephoneNumber>3019720001</TelephoneNumber>
+                                        <TelephoneNumber>3019720006</TelephoneNumber>
+                                        <TelephoneNumber>3019720007</TelephoneNumber>
+                                        <TelephoneNumber>3019720004</TelephoneNumber>
+                                        <TelephoneNumber>3019720005</TelephoneNumber>
+                                        <TelephoneNumber>3019720008</TelephoneNumber>
+                                        <TelephoneNumber>3019720009</TelephoneNumber>
+                                    </TelephoneNumberList>
+                                    <VendorName>Bandwidth CLEC</VendorName>
+                                </ImportAvailableNumberOrderType>
+                            </orderRequest>
+                        </ImportAvailableNumberOrderResponse>
+
+        404:
+            description: Not Found - The order-id is invalid. 

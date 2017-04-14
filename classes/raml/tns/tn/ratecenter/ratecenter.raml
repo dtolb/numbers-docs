@@ -1,0 +1,18 @@
+!fileScope external
+
+description: The get method retrieves the rate centers associated with that telephone number.
+
+get:
+    description: Retrieves the rate centers associated with that telephone number.
+    responses:
+        200:
+            description: The rate centers have been successfully retrieved and displayed.
+            body:
+                application/xml:
+                    example:
+                        <TelephoneNumberResponse>
+                            <TelephoneNumberDetails>
+                                <State>NJ</State>
+                                <RateCenter>HACKENSACK</RateCenter>
+                            </TelephoneNumberDetails>
+                        </TelephoneNumberResponse>

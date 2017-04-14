@@ -1,0 +1,87 @@
+!fileScope all
+
+!scope external
+get:
+    description: |
+        Retrieve sip sms hosts associated with a Sip Peer
+    responses:
+        200:
+            description: A successful result that contains the response data
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <SmsSipHostsResponse>
+                            <SmsHosts>
+                                <SmsHost>
+                                    <HostName>21.15.241.73</HostName>
+                                    <Port>0</Port>
+                                    <hostId>6456</hostId>
+                                    <priority>0</priority>
+                                </SmsHost>
+                            </SmsHosts>
+                        </SmsSipHostsResponse>
+        400:
+            description: |
+                Bad Request. Possible errors in response:
+                <ul>
+                   <li>13563 "Sip Peer '544545' account '12346159' and site '483' does not exist"</li>
+                </ul>
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <SmsSipHostsResponse>
+                            <ResponseStatus>
+                                <ErrorCode>13563</ErrorCode>
+                                <Description>Sip Peer '544545' account '12346159' and site '483' does not exist</Description>
+                            </ResponseStatus>
+                        </SmsSipHostsResponse>
+!scope internal
+post:
+    description: |
+
+        Add sip sms host to sip peer
+
+    body:
+        application/xml:
+            example: |
+                <?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+                <SmsHost>
+                    <HostName>0.65.145.232</HostName>
+                    <Port>0</Port>
+                    <priority>0</priority>
+                </SmsHost>
+    responses:
+        201:
+            description: Sms host added
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <SmsSipHostResponse>
+                            <SmsHost>
+                                <HostName>0.65.145.232</HostName>
+                                <Port>0</Port>
+                                <hostId>6455</hostId>
+                                <priority>0</priority>
+                            </SmsHost>
+                        </SmsSipHostResponse>
+        400:
+            description: |
+                Bad Request. Possible errors in response:
+                <ul>
+                   <li>12041 "Sms product has not been configured"</li>
+                </ul>
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <SmsSipHostResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12041</ErrorCode>
+                                <Description>Sms product has not been configured</Description>
+                            </ResponseStatus>
+                        </SmsSipHostResponse>
+!fileScope all
+/{smsHostId}: !include host/host.raml

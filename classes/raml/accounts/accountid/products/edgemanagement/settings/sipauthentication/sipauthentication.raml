@@ -1,0 +1,67 @@
+!fileScope internal
+description: |
+    The SIP authentication configuragtion on the account.
+
+get:
+    description: Retrieve existing SIP authentication configuration on account.
+
+    responses:    
+        200:
+            description: An optional description of the response.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <SipAuthenticationResponse>
+                            <SipAuthentication>
+                                <Realm>cust27.auth.bandwidth.com</Realm>
+                                <SBC>
+                                    <Zone>
+                                        <Id>1</Id>
+                                        <Name>CUST27_10000105_ZONE</Name>
+                                        <SipSigPort>
+                                            <Index>1</Index>
+                                            <PortNumber>1</PortNumber>
+                                        </SipSigPort>
+                                    </Zone>
+                                </SBC>
+                                <DNSRecords>
+                                    <DNSRecord>
+                                        <Type>A</Type>
+                                        <Name>cust27.auth.bandwidth.com</Name>
+                                        <Data>235.152.100.100</Data>
+                                        <TTL>300</TTL>
+                                    </DNSRecord>
+                                    <DNSRecord>
+                                        <Type>A</Type>
+                                        <Name>cust27.auth.bandwidth.com</Name>
+                                        <Data>235.152.100.200</Data>
+                                        <TTL>300</TTL>
+                                    </DNSRecord>
+                                    <DNSRecord>
+                                        <Type>SRV</Type>
+                                        <Name>_sip._udp.cust27.auth.bandwidth.com</Name>
+                                        <Data>5 50 5000 test.host1</Data>
+                                        <TTL>300</TTL>
+                                    </DNSRecord>
+                                    <DNSRecord>
+                                        <Type>SRV</Type>
+                                        <Name>_sip._udp.cust27.auth.bandwidth.com</Name>
+                                        <Data>5 50 5000 test.host2</Data>
+                                        <TTL>300</TTL>
+                                    </DNSRecord>
+                                </DNSRecords>
+                            </SipAuthentication>
+                        </SipAuthenticationResponse>
+        404:
+            description: |
+                If the configuration is not present a 404 NOT FOUND is returned with an explanatory payload.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <SipAuthenticationResponse>
+                            <ResponseStatus>
+                                <Description>The resource does not exist</Description>
+                            </ResponseStatus>
+                        </SipAuthenticationResponse>

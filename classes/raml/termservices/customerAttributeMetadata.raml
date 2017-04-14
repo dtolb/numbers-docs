@@ -1,0 +1,125 @@
+!fileScope internal
+get:
+    description: get all attribute metadata
+    responses:
+        200:
+            description: managed to get all attribute metadata
+            body:
+                application/json:
+                    example: |
+                        [
+                            {
+                                "id":1238,
+                                "name":"TRACE",
+                                "validationType":"FREE_FORM",
+                                "attributeProvisionTypes":["ACCOUNT","GATEWAY"],
+                                "origin":"LCR",
+                                "repeatable":true,
+                                "values":["OPTION1","OPTION2"]
+                            }
+                        ]
+post:
+    description: add attribute metadata
+    body:
+        application/json:
+            example: |
+                {
+                    "id":null,
+                    "name":"TRACE",
+                    "validationType":"FREE_FORM",
+                    "attributeProvisionTypes":["ACCOUNT","GATEWAY"],
+                    "origin":"LCR",
+                    "repeatable":true,
+                    "values":["OPTION1","OPTION2"]
+                }
+    responses:
+        201:
+            description: attribute was successfully added
+        400:
+            description: some required value was not found
+/{id}:
+    get:
+        description: get attribute metadata by id
+        responses:
+            200:
+                body:
+                    application/json:
+                        example: |
+                            {
+                                "id":1238,
+                                "name":"TRACE",
+                                "validationType":"FREE_FORM",
+                                "attributeProvisionTypes":["ACCOUNT","GATEWAY"],
+                                "origin":"LCR",
+                                "repeatable":true,
+                                "values":["OPTION1","OPTION2"]
+                            }
+            404:
+                description: attribute metadata was not found
+    put:
+        description: update account attribute, i.e. attribute value
+        responses:
+            200:
+                body:
+                    application/json:
+                        example: |
+                            {
+                                "id":1240,
+                                "name":"TRACE",
+                                "validationType":"MULTIPLE_CHOICE",
+                                "attributeProvisionTypes":["ACCOUNT","GATEWAY"],
+                                "origin":"BILLING",
+                                "repeatable":false,
+                                "values":["OPTION3","OPTION4"]
+                            }
+            400:
+                description: some required value was not found
+            404:
+                description: attribute metadata with specified id was not found
+    delete:
+        description: delete attribute metadata
+        responses:
+            200:
+                description: attribute metadata was deleted
+            400:
+                description: some required value was not found
+            404:
+                description: attribute metadata was not found
+/name/{name}:
+    get:
+        description: get attribute metadata by name
+        responses:
+            200:
+                body:
+                    application/json:
+                        example: |
+                            {
+                                "id":1240,
+                                "name":"TRACE",
+                                "validationType":"MULTIPLE_CHOICE",
+                                "attributeProvisionTypes":["ACCOUNT","GATEWAY"],
+                                "origin":"BILLING",
+                                "repeatable":false,
+                                "values":["OPTION3","OPTION4"]
+                            }
+            404:
+                description: attribute metadata was not found
+/type/{type}:
+    get:
+        description: get attribute metadata by type (origin)
+        responses:
+            200:
+                body:
+                    application/json:
+                        example: |
+                            [   {
+                                    "id":1240,
+                                    "name":"TRACE",
+                                    "validationType":"MULTIPLE_CHOICE",
+                                    "attributeProvisionTypes":["ACCOUNT","GATEWAY"],
+                                    "origin":"BILLING",
+                                    "repeatable":false,
+                                    "values":["OPTION3","OPTION4"]
+                                }
+                            ]
+

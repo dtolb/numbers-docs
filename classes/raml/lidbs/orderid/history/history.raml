@@ -1,0 +1,55 @@
+!fileScope internal
+
+description: |
+    History information is available on orders that have gone through multiple transitions.  In this case the order will have one or more OrderHistory records associated with it, detailing the set of events that have affected the order.
+    
+get:
+    description: |
+        Retrieve the history information associated with an order
+
+    responses:    
+        200:
+            description: |
+                The history payload is a set of history records, each of which contains:
+                    <table style="text-align: left; width: 80%;" border="1" cellpadding="2" cellspacing="2">
+                        <tbody>
+                            <tr>
+                                <td>OrderModifiedDate</td>
+                                <td>The date that the order history event happened</td>
+                            </tr>
+                            <tr>
+                                <td>Status</td>
+                                <td>The new state of the LIDB order - RECEIVED, PROCESSING, COMPLETE, PARTIAL, FAILED </td>
+                            </tr>
+                            <tr>
+                                <td>Note</td>
+                                <td>A Note or additional information included with the state change </td>
+                           </tr>
+                           <tr>
+                                <td>Author</td>
+                                <td>The user id that implemented the state change</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <OrderHistoryWrapper>
+                            <OrderHistory>
+                                <OrderDate>2014-05-20T14:21:43.937Z</OrderDate>
+                                <Note>The Calling Name database update request has been received</Note>
+                                <Author>jbm</Author>
+                                <Status>RECEIVED</Status>
+                            </OrderHistory>
+                            <OrderHistory>
+                                <OrderDate>2014-05-20T14:24:43.428Z</OrderDate>
+                                <Note>
+									The Calling Name database update request is being processed by our 3rd party supplier
+								</Note>
+                                <Author>jbm</Author>
+                                <Status>PROCESSING</Status>
+                            </OrderHistory>
+                        </OrderHistoryWrapper>

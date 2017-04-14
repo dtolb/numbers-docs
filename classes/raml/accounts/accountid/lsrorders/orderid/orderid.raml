@@ -1,0 +1,258 @@
+!fileScope all
+
+!scope all
+
+description: |
+    This resource allows retrieval and updating information associated with the lsr by its ID.<br/>
+
+    Modifiable lsr order fields:
+    <ul>
+        <li>CustomerOrderId</li>
+        <li>SPID</li>
+        <li>BillingTelephoneNumber</li>
+        <li>AuthorizingPerson</li>
+        <li>RequestedFocDate</li>
+        <li>SubscriberType</li>
+        <li>BusinessName</li>
+        <li>LastName</li>
+        <li>FirstName</li>
+        <li>MiddleInitial</li>
+        <li>AccountNumber</li>
+        <li>PinNumber</li>
+        <li>HousePrefix</li>
+        <li>HouseNumber</li>
+        <li>HouseSuffix</li>
+        <li>PreDirectional</li>
+        <li>PostDirectional</li>
+        <li>StreetName</li>
+        <li>StreetSuffix</li>
+        <li>AddressLine2</li>
+        <li>County</li>
+        <li>City</li>
+        <li>StateCode</li>
+        <li>OrderStatus*</li>
+        !scope internal
+        <li>OverrideValidation**</li>
+    </ul>
+
+    &#42;OrderStatus field can be modified to CANCELLED value only. This will cancel lsr. All another updates will be ignored in this case.<br/>
+    !scope internal
+    &#42;&#42;OverrideValidation this flag will force portout to complete bypassing any validity checking (if has not terminal errors). Flag can be supped only for an orders in EXCEPTION status.
+    
+!scope all
+get:
+    description: Retrieves the information associated with the specified lsr ID number.
+    responses:
+        200:
+            description: The information has been successfully retrieved and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LsrOrder>
+                            <CustomerOrderId>MyId5</CustomerOrderId>
+                            <LastModifiedBy>System</LastModifiedBy>
+                            <OrderCreateDate>2015-03-03T13:54:00.450Z</OrderCreateDate>
+                            <AccountId>9999999</AccountId>
+                            <OrderId>00cf7e08-cab0-4515-9a77-2d0a7da09415</OrderId>
+                            <LastModifiedDate>2015-03-03T14:07:19.926Z</LastModifiedDate>
+                            <OrderStatus>FAILED</OrderStatus>
+                            <SPID>123C</SPID>
+                            <BillingTelephoneNumber>9192381468</BillingTelephoneNumber>
+                            <Pon>testpon1002</Pon>
+                            <PonVersion>0</PonVersion>
+                            <RequestedFocDate>2015-11-15</RequestedFocDate>
+                            <AuthorizingPerson>Jim Hopkins</AuthorizingPerson>
+                            !scope internal
+                            <OverrideValidation>false</OverrideValidation>
+                            <Subscriber>
+                                <SubscriberType>BUSINESS</SubscriberType>
+                                <BusinessName>BusinessName</BusinessName>
+                                <AccountNumber>123463</AccountNumber>
+                                <PinNumber>1231</PinNumber>
+                                <ServiceAddress>
+                                    <HouseNumber>11</HouseNumber>
+                                    <StreetName>Park</StreetName>
+                                    <StreetSuffix>Ave</StreetSuffix>
+                                    <City>New York</City>
+                                    <StateCode>NY</StateCode>
+                                    <Zip>90025</Zip>
+                                </ServiceAddress>
+                            </Subscriber>
+                            <ListOfTelephoneNumbers>
+                                <TelephoneNumber>9192381467</TelephoneNumber>
+                                <TelephoneNumber>9192381468</TelephoneNumber>
+                            </ListOfTelephoneNumbers>
+                            <LsrOrderErrors>
+                                <LsrOrderError>
+                                    <Code>17008</Code>
+                                    <Description>
+                                        FOC date cannot fall on a holiday
+                                    </Description>
+                                </LsrOrderError>
+                            </LsrOrderErrors>
+                            <CountOfTNs>2</CountOfTNs>
+                        </LsrOrder>
+
+
+!scope all
+put:
+    description: |
+        Updates the information associated with the specified LSR.  This is also used to cancel an order, by changing the order status field to canceled.  This is the only case where the status can be changed, and when this is done, all other fields are left as they were prior to the cancellation.  Please see the example below.
+    body:
+        application/xml:
+            example: |
+                <LsrOrder>
+                    <CustomerOrderId>FineCustomerid</CustomerOrderId>
+                    <SPID>123C</SPID>
+                    <BillingTelephoneNumber>9192381468</BillingTelephoneNumber>
+                    <RequestedFocDate>2015-11-15</RequestedFocDate>
+                    <AuthorizingPerson>Jim Hopkins</AuthorizingPerson>
+                    !scope internal
+                    <OverrideValidation>false</OverrideValidation>
+                    <Subscriber>
+                        <SubscriberType>BUSINESS</SubscriberType>
+                        <BusinessName>BusinessName</BusinessName>
+                        <ServiceAddress>
+                            <HouseNumber>11</HouseNumber>
+                            <StreetName>Park</StreetName>
+                            <StreetSuffix>Ave</StreetSuffix>
+                            <City>New York</City>
+                            <StateCode>NY</StateCode>
+                            <Zip>90025</Zip>
+                        </ServiceAddress>
+                        <AccountNumber>123463</AccountNumber>
+                        <PinNumber>1231</PinNumber>
+                    </Subscriber>
+                </LsrOrder>
+                                <!-- and for cancelling an LSR -->
+                <LsrOrder>
+                    <OrderStatus>CANCELLED</OrderStatus>
+                    <ListOfTelephoneNumbers/>
+                </LsrOrder>
+
+    responses:
+        200:
+            description: Lsr has been successfully updated.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LsrOrderResponse>
+                            <LsrOrder>
+                                <CustomerOrderId>FineCustomerid</CustomerOrderId>
+                                <LastModifiedBy>team_ua</LastModifiedBy>
+                                <OrderCreateDate>2015-03-11T10:08:23.961Z</OrderCreateDate>
+                                <AccountId>9999999</AccountId>
+                                <OrderId>63fb728d-421b-46ce-8c32-da30b909934d</OrderId>
+                                <LastModifiedDate>2015-03-11T10:08:59.832Z</LastModifiedDate>
+                                <OrderStatus>PENDING</OrderStatus>
+                                <SPID>123C</SPID>
+                                <BillingTelephoneNumber>9192381468</BillingTelephoneNumber>
+                                <Pon>ATT-011515-324234</Pon>
+                                <PonVersion>8</PonVersion>
+                                <RequestedFocDate>2015-11-15</RequestedFocDate>
+                                <AuthorizingPerson>Jim Hopkins</AuthorizingPerson>
+                                !scope internal
+                                <OverrideValidation>false</OverrideValidation>
+                                <Subscriber>
+                                    <SubscriberType>BUSINESS</SubscriberType>
+                                    <BusinessName>BusinessName</BusinessName>
+                                    <AccountNumber>123463</AccountNumber>
+                                    <PinNumber>1231</PinNumber>
+                                    <ServiceAddress>
+                                        <HouseNumber>11</HouseNumber>
+                                        <StreetName>Park</StreetName>
+                                        <StreetSuffix>Ave</StreetSuffix>
+                                        <City>New York</City>
+                                        <StateCode>NY</StateCode>
+                                        <Zip>90025</Zip>
+                                    </ServiceAddress>
+                                </Subscriber>
+                                <ListOfTelephoneNumbers>
+                                    <TelephoneNumber>9192381468</TelephoneNumber>
+                                </ListOfTelephoneNumbers>
+                                <LsrOrderErrors/>
+                                <CountOfTNs>1</CountOfTNs>
+                            </LsrOrder>
+                        </LsrOrderResponse>
+
+        400:
+            description: Validation error occurred.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LsrOrderResponse>
+                            <ResponseStatus>
+                                <ErrorCode>400</ErrorCode>
+                                <Description>Lsr order doesn't pass validation. Please check your input parameters.</Description>
+                            </ResponseStatus>
+                            <LsrOrderErrors>
+                                <LsrOrderError>
+                                    <Code>17023</Code>
+                                    <Description>The authorizing person contact is required for lsr orders.</Description>
+                                </LsrOrderError>
+                                <LsrOrderError>
+                                    <Code>17020</Code>
+                                    <Description>Account SPID [1234] does not match with SPID specified in the Lsr order [123C].</Description>
+                                </LsrOrderError>
+                            </LsrOrderErrors>
+                            <LsrOrder>
+                                <CountOfTNs>1</CountOfTNs>
+                                <OrderId>63fb728d-421b-46ce-8c32-da30b909934d</OrderId>
+                                <OrderStatus>FAILED</OrderStatus>
+                                <AuthorizingPerson>Jim Hopkins</AuthorizingPerson>
+                                <SPID>123C</SPID>
+                                <BillingTelephoneNumber>9192381468</BillingTelephoneNumber>
+                                <Pon>ATT-011515-324234</Pon>
+                                <PonVersion>8</PonVersion>
+                                <RequestedFocDate>2015-11-15</RequestedFocDate>
+                                !scope internal
+                                <OverrideValidation>false</OverrideValidation>
+                                <Subscriber>
+                                    <SubscriberType>BUSINESS</SubscriberType>
+                                    <BusinessName>BusinessName</BusinessName>
+                                    <AccountNumber>123463</AccountNumber>
+                                    <PinNumber>1231</PinNumber>
+                                    <ServiceAddress>
+                                        <HouseNumber>11</HouseNumber>
+                                        <StreetName>Park</StreetName>
+                                        <StreetSuffix>Ave</StreetSuffix>
+                                        <City>New York</City>
+                                        <StateCode>NY</StateCode>
+                                        <Zip>90025</Zip>
+                                        <Country>United States</Country>
+                                        <AddressType>Service</AddressType>
+                                    </ServiceAddress>
+                                </Subscriber>
+                                <ListOfTelephoneNumbers>
+                                    <TelephoneNumber>9192381468</TelephoneNumber>
+                                </ListOfTelephoneNumbers>
+                                <LastModifiedBy>team_ua</LastModifiedBy>
+                                <OrderCreateDate>2015-03-11T10:08:23.961Z</OrderCreateDate>
+                                <AccountId>9999999</AccountId>
+                                <CreatedByUser>team_ua</CreatedByUser>
+                                <CustomerOrderId>FineCustomerid</CustomerOrderId>
+                                <LastModifiedDate>2015-03-11T10:08:59.832Z</LastModifiedDate>
+                            </LsrOrder>
+                        </LsrOrderResponse>
+
+        404:
+            description: Requested lsr not found.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LsrOrderResponse>
+                            <ResponseStatus>
+                                <ErrorCode>5035</ErrorCode>
+                                <Description>lsr order 63fb728d-421b-46ce-8c32-da30b909934s not found.</Description>
+                            </ResponseStatus>
+                        </LsrOrderResponse>
+
+
+
+/history: !include history/history.raml
+/notes: !include ../../shared/notes/notes.raml
+/adminparameters: !include ../../shared/adminparameters/adminparameters.raml

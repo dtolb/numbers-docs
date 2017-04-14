@@ -1,0 +1,100 @@
+!fileScope internal
+
+description: This resource retrieves admin data information according to data type.
+
+get:
+    description: Get Vendor.
+    responses:
+        200:
+            description: |
+                Return Vendor
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <AdminDataResponse>
+                            <Vendor>
+                                <VendorId>32</VendorId>
+                                <LegacyId>12280865-a1c5-4293-aae8-10c3291e3a06</LegacyId>
+                                <ManualPortEnabled>false</ManualPortEnabled>
+                                <VendorName> Connexstar</VendorName>
+                                <TollfreeManualPortEnabled>false</TollfreeManualPortEnabled>
+                            </Vendor>
+                        </AdminDataResponse>
+        404:
+            description: |
+                Vendor not found
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <AdminDataResponse>
+                            <ResponseStatus>
+                                <Description>The resource does not exist</Description>
+                            </ResponseStatus>
+                        </AdminDataResponse>
+
+put:
+    description: Allows to create or update Vendor.
+    body:
+        application/xml:
+            example: |
+                <Vendor>
+                    <VendorId>32</VendorId>
+                    <LegacyId>12280865-a1c5-4293-aae8-10c3291e3a06</LegacyId>
+                    <ManualPortEnabled>false</ManualPortEnabled>
+                    <VendorName> Connexstar</VendorName>
+                    <TollfreeManualPortEnabled>false</TollfreeManualPortEnabled>
+                </Vendor>
+    responses:
+        200:
+            description: |
+                Vendor updated
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <AdminDataResponse>
+                            <Vendor>
+                                <VendorId>32</VendorId>
+                                <LegacyId>12280865-a1c5-4293-aae8-10c3291e3a06</LegacyId>
+                                <ManualPortEnabled>false</ManualPortEnabled>
+                                <VendorName> Connexstar</VendorName>
+                                <TollfreeManualPortEnabled>false</TollfreeManualPortEnabled>
+                            </Vendor>
+                        </AdminDataResponse>
+        201:
+            description: |
+                Vendor created
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <AdminDataResponse>
+                            <Vendor>
+                                <VendorId>32</VendorId>
+                                <LegacyId>12280865-a1c5-4293-aae8-10c3291e3a06</LegacyId>
+                                <ManualPortEnabled>false</ManualPortEnabled>
+                                <VendorName> Connexstar</VendorName>
+                                <TollfreeManualPortEnabled>false</TollfreeManualPortEnabled>
+                            </Vendor>
+                        </AdminDataResponse>
+        400:
+            description: |
+                Validation error
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <AdminDataResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12734</ErrorCode>
+                                <Description>Vendor ID in the link and in the body is not the same.</Description>
+                            </ResponseStatus>
+                        </AdminDataResponse>
+delete:
+    description: Detele Vendor.
+    responses:
+        200:
+            description: |
+                Vendor deleted

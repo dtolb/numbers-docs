@@ -1,0 +1,160 @@
+!fileScope internal
+
+get:
+    description: Retrieve report template details.
+    queryParameters:
+        accountId:
+            displayName: Account ID
+            type: integer
+            description: Account ID to which the request is scoped, if applicable
+            required: false
+    responses:
+        200:
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <ReportResponse>
+                            <Report>
+                                <Name>Sample Report 1</Name>
+                                <JasperUri>/jasper/path/to/sample/report1</JasperUri>
+                                <Scope>ACCOUNT</Scope>
+                                <DisplayPriority>2</DisplayPriority>
+                                <Parameters>
+                                    <Parameter>
+                                        <Name>Report Parameter 1</Name>
+                                        <Type>String</Type>
+                                        <Required>true</Required>
+                                        <JasperId>jasperParam1</JasperId>
+                                        <Description>Report Parameter 1 Description</Description>
+                                        <MultiSelectAllowed>false</MultiSelectAllowed>
+                                        <HelpInformation>Report Parameter 1 Help Text</HelpInformation>
+                                    </Parameter>
+                                    <Parameter>
+                                        <Name>Report Parameter 2</Name>
+                                        <Type>Enum</Type>
+                                        <Required>false</Required>
+                                        <!--Contains a semicolon separated list of InternalNames-->
+                                        <ValueFilter>Value1;Value2;Value3</ValueFilter>
+                                        <Values>
+                                            <Value>
+                                                <!--A InternalName tag value should be used in report instance creation-->
+                                                <InternalName>Value1</InternalName>
+                                                <!--A DisplayName tag value is used only for UI purposes-->
+                                                <DisplayName>Display Value2</DisplayName>
+                                            </Value>
+                                            <Value>
+                                                <InternalName>Value2</InternalName>
+                                                <DisplayName>Value2</DisplayName>
+                                            </Value>
+                                            <Value>
+                                                <InternalName>Value3</InternalName>
+                                                <DisplayName>Display Value3</DisplayName>
+                                            </Value>
+                                        </Values>
+                                        <JasperId>jasperParam2</JasperId>
+                                        <Description>Report Parameter 2 Description</Description>
+                                        <MultiSelectAllowed>true</MultiSelectAllowed>
+                                        <HelpInformation>Report Parameter 2 Help Text</HelpInformation>
+                                    </Parameter>
+                                </Parameters>
+                            </Report>
+                        </ReportsResponse>
+        404:
+            description: A report template matching the provided ID could not be found.
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <ReportResponse>
+                            <ResponseStatus>
+                                <ErrorCode>19000</ErrorCode>
+                                <Description>No report found with report ID of '123'</Description>
+                            </ResponseStatus>
+                        </ReportResponse>
+
+put:
+    description: Update an existing report template. Incorrect or omitted display priority will be replaced with the default value of 1.
+    body:
+        application/xml:
+            example:
+                <Report>
+                    <Name>Sample Report</Name>
+                    <JasperUri>/jasper/path/to/sample/report</JasperUri>
+                    <Scope>ACCOUNT</Scope>
+                    <Description>Report Description</Description>
+                    <DisplayPriority>3</DisplayPriority>
+                    <Parameters>
+                        <Parameter>
+                            <Name>Report Parameter 1</Name>
+                            <Type>String</Type>
+                            <Required>true</Required>
+                            <JasperId>jasperParam1</JasperId>
+                            <Description>Parameter 1 Description</Description>
+                            <MultiSelectAllowed>false</MultiSelectAllowed>
+                            <HelpInformation>Report Parameter 1 Help Text</HelpInformation>
+                        </Parameter>
+                        <Parameter>
+                            <Name>Report Parameter 2</Name>
+                            <Type>Enum</Type>
+                            <Required>false</Required>
+                            <!--At least one of ValueFilter and Values non-empty tags are required for enum parameter-->
+                            <!--ValueFilter is deprecated. This tag left for a backward compatibility-->
+                            <ValueFilter>Value1;Value2;Value3</ValueFilter>
+                            <Values>
+                                <Value>
+                                    <InternalName>Value1</InternalName>
+                                    <DisplayName>Display Value2</DisplayName>
+                                </Value>
+                                <Value>
+                                    <InternalName>Value2</InternalName>
+                                    <DisplayName>Value2</DisplayName>
+                                </Value>
+                                <Value>
+                                    <InternalName>Value3</InternalName>
+                                    <DisplayName>Display Value3</DisplayName>
+                                </Value>
+                            </Values>
+                            <JasperId>jasperParam2</JasperId>
+                            <Description>Parameter 2 Description</Description>
+                            <MultiSelectAllowed>true</MultiSelectAllowed>
+                            <HelpInformation>Report Parameter 2 Help Text</HelpInformation>
+                        </Parameter>
+                    </Parameters>
+                </Report>
+    responses:
+        200:
+            description: The report template was updated successfully.
+        404:
+            description: A report template matching the provided ID could not be found.
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <ReportResponse>
+                            <ResponseStatus>
+                                <ErrorCode>19000</ErrorCode>
+                                <Description>No report found with report ID of '123'</Description>
+                            </ResponseStatus>
+                        </ReportResponse>
+
+delete:
+    description: Delete an existing report template.
+    responses:
+        200:
+            description: The report template was deleted successfully.
+        404:
+            description:
+                A report template matching the provided ID could not be found.
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <ReportResponse>
+                            <ResponseStatus>
+                                <ErrorCode>19000</ErrorCode>
+                                <Description>No report found with report ID of '123'</Description>
+                            </ResponseStatus>
+                        </ReportResponse>
+
+/instances: !include instances/instances.raml

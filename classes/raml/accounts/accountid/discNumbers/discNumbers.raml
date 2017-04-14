@@ -1,0 +1,46 @@
+!fileScope external
+
+description: This API call provides information on numbers that have been disconnected from an account.
+
+get:
+    description: Retrieves a list of disconnected numbers associated with the account. There are optional search parameters to limit the discNumbers payload
+    queryParameters:
+        page:
+            type: string
+            required: true
+            description: The first disconnected number on the desired page.   "1" is used as a convention for the first disconnected number in the collection
+            example: 59e69657-44d2-4e7e-90f8-777988be4aef
+            default: 1
+        size:
+            description: The number of records that should be returned by the query
+            required: true
+            type: integer
+            example: 30
+            default: 300
+        startdate:
+            description: The starting date of a search. startdate and enddate <strong>must</strong> be used as a pair.
+            type: date
+            example: yy-mm-dd
+        enddate:
+            description: The ending date of a search. startdate and enddate <strong>must</strong> be used as a pair.
+            type: date
+            example: yy-mm-dd
+    responses:
+        200:
+            description: The disconnected numbers have been retrieved successfully.
+            body:
+                application/xml:
+                    example:
+                        <TNs>
+                            <TotalCount>4</TotalCount>
+                            <Links>
+                                <first>Link=<http://api.qa.inetwork.com/iris/accounts/12346099/discNumbers?size=500&page=1>;rel="first";</first>
+                            </Links>
+                            <TelephoneNumbers>
+                                <Count>2</Count>
+                                <TelephoneNumber>4158714245</TelephoneNumber>
+                                <TelephoneNumber>4352154439</TelephoneNumber>
+                            </TelephoneNumbers>
+                        </TNs>
+
+/totals: !include totals/totals.raml

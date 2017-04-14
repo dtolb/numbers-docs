@@ -1,0 +1,55 @@
+!fileScope internal
+get:
+    description: get all carrier masks
+    responses:
+        200:
+            description: managed to get all carrier masks
+            body:
+                application/json:
+                    example: |
+                        [
+                            {
+                                "id":1,
+                                "carrierMaskName":"carrierMaskName1410976299650",
+                                "carrierMaskType":"NPANXX",
+                                "npaNxxCarrierMasks":[
+                                    {
+                                        "npaNxx":"222222",
+                                        "carrierMask":"00000"
+                                    }
+                                ],
+                                "globalCarrierMask":null,
+                                "userType":"TERMINATION_SERVICES"
+                            }
+                        ]
+post:
+    description: create account
+    body:
+        application/json:
+            example: |
+                {
+                    "id":null,
+                    "carrierMaskName":"carrierMaskName1410976299650",
+                    "carrierMaskType":"NPANXX",
+                    "npaNxxCarrierMasks":[
+                        {
+                            "npaNxx":"222222",
+                            "carrierMask":"00000"
+                        }
+                    ],
+                    "globalCarrierMask":null,
+                    "userType":"TERMINATION_SERVICES"
+                }
+    responses:
+        201:
+            description: account was successfully created
+        400:
+            description: required fields are absent, npaNxx or global carrier mask validation failed
+/{id}:
+    delete:
+        description: delete carrier mask
+        responses:
+            200:
+                description: carrier mask was deleted
+            404:
+                description: carrier mask with specified id was not found

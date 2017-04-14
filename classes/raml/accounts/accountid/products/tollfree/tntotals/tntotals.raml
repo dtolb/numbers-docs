@@ -1,0 +1,24 @@
+!fileScope internal
+
+description: Retrieves the Toll Free TN Counts for the account - primarily for billing and taxation purposes
+
+get:
+    description: |
+        Retrieve the number of Toll Free TNs on this account 
+    responses:    
+        200:
+            description: Success - there are Toll Free TNs on this account.  Only the raw count is important.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <ProductTNDetailsResponse>
+                            <ProductTNDetails>
+                                <Tollfree>
+                                    <Count>17</Count>
+                                </Tollfree>
+                            </ProductTNDetails>
+                        </ProductTNDetailsResponse> 
+        400:
+            description: |
+                Failure to parse the request, or inconsistent provisioned data, such as no related product associated with the account.

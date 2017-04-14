@@ -1,0 +1,20 @@
+!fileScope external
+!scope external
+description: |
+    This API call retrieves any current reservation information associated with the Telephone Number, if a reservation is currently active on the indicated Telephone Number.
+    The query is restricted to calls that do not exceed the account privileges of the calling user.
+get:
+    description: Retrieves reservation information associated with the Telephone Number.
+    responses:
+        200:
+            description: The reservation information has been successfully retrieved.
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0"?>
+                        <TNReservation>
+                            <ReservationID>d28529e6-23dc-408e-b7ad-f2015a6975d5</ReservationID>
+                            <Account>12346099</Account>
+                            <ReservationExpires>14346</ReservationExpires>
+                            <ReservedTN>6136211234</ReservedTN>
+                        </TNReservation>

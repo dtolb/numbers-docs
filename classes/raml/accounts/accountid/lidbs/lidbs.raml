@@ -1,0 +1,200 @@
+!fileScope all
+
+description: |
+    The LIDBs Resource represents the requests made to the Bandwidth Dashboard API to add or otherwise manage a request to add Calling Line Information with a telephone number.  This API allows the creation and observation of a <b>"Line Information Data Base (LIDB)"</b> work order that causes an update of a person's calling name identification in a network Database.  The entry of this information in the network database in turn causes the display of their name on the phone of the people that they call. <br>
+    This API call supports <b>GET</b> to retrieve information about outstanding LIDBs orders, and <b>POST</b> to create those orders.
+
+!scope external
+get:
+    description: |
+        Retrieve a list of the LIDB orders that are associated with the account.
+    queryParameters:
+        tn:
+            description: A Telephone Number (TN) that is referenced in the order
+            type: string
+            example: 9199918388
+        lastModifiedAfter:
+            description: Checks the order's last modified date against this value. Orders that have a modification date after this date will be included. Format is yyyy-MM-dd
+            type: string
+            example: 2013-10-25
+    responses:
+        200:
+            description: |
+                OK <br> a 200 OK indicates that there are LIDB orders associated with the account.
+
+                The 200 OK response payload provides a list of all LIDB orders that have been issued against that account.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0"?>
+                         <ResponseSelectWrapper>
+                            <ListOrderIdUserIdDate>
+                                <TotalCount>2122</TotalCount>
+                                <OrderIdUserIdDate>
+                                    <accountId>9999999</accountId>
+                                    <CountOfTNs>0</CountOfTNs>
+                                    <lastModifiedDate>2014-02-25T16:02:43.195Z</lastModifiedDate>
+                                    <OrderType>lidb</OrderType>
+                                    <OrderDate>2014-02-25T16:02:43.195Z</OrderDate>
+                                    <orderId>abe36738-6929-4c6f-926c-88e534e2d46f</orderId>
+                                    <OrderStatus>FAILED</OrderStatus>
+                                    <TelephoneNumberDetails/>
+                                    <userId>team_ua</userId>
+                                </OrderIdUserIdDate>
+
+                                <!-- ...SNIP... -->
+
+                                <OrderIdUserIdDate>
+                                    <accountId>9999999</accountId>
+                                    <CountOfTNs>0</CountOfTNs>
+                                    <lastModifiedDate>2014-02-25T16:02:39.021Z</lastModifiedDate>
+                                    <OrderType>lidb</OrderType>
+                                    <OrderDate>2014-02-25T16:02:39.021Z</OrderDate>
+                                    <orderId>ba5b6297-139b-4430-aab0-9ff02c4362f4</orderId>
+                                    <OrderStatus>FAILED</OrderStatus>
+                                    <userId>team_ua</userId>
+                                </OrderIdUserIdDate>
+                            </ListOrderIdUserIdDate>
+                        </ResponseSelectWrapper>
+        404:
+            description: |
+                NOT FOUND
+
+                If any errors are found in the processing of the query string a 404 will be returned.  Note that parameters that are not recognized are not considered errors, and are just ignored.
+
+!scope external
+post:
+    description: |
+        Create a LIDB order to associate Calling Name Information with a TN or list of CountOfTNs
+
+        The key data elements in the submission are -
+            <table style="text-align: left; width: 80%;"
+             border="1" cellpadding="2" cellspacing="2">
+              <tbody>
+                <tr>
+                  <td>TelephoneNumbers</td>
+                  <td>A list of telephone numbers that will all assume the SubscriberInformation that is listed in the payload.  In an enterprise context it is not uncommon for all of the served telephone numbers to use the same string for the Subscriber Information.</td>
+                </tr>
+                <tr>
+                  <td>SubscriberInformation</td>
+                  <td>This is the field that is displayed to the user receiving the phone call from the Telephone numbers in the TelephoneNumberList</td>
+                </tr>
+                <tr>
+                  <td>UseType</td>
+                  <td>Can be RESIDENTIAL or BUSINESS.  The element is required.</td>
+                </tr>
+                <tr>
+                  <td>Visibility</td>
+                  <td>Can be PRIVATE or PUBLIC.   If it is tagged as PRIVATE then the data will be provided, but the display will not be provided on a standard phone call.  The element is required</td>
+                </tr>
+                <tr>
+                  <td>CustomerOrderId</td>
+                  <td>The Customer Order ID is an ID assigned by the account owner to provide a reference number for the Order.  The element is optional.</td>
+                </tr>
+              </tbody>
+            </table>
+
+    body:
+        application/xml:
+            example: |
+                <LidbOrder>
+                    <CustomerOrderId>[String]</CustomerOrderId>
+                    <LidbTnGroups>
+                        <LidbTnGroup>
+                            <TelephoneNumbers>
+                                <TelephoneNumber>8045030097</TelephoneNumber>
+                                <TelephoneNumber>8045030098</TelephoneNumber>
+                            </TelephoneNumbers>
+                            <SubscriberInformation>Joes Garage</SubscriberInformation>
+                            <UseType>RESIDENTIAL</UseType>
+                            <Visibility>PUBLIC</Visibility>
+                        </LidbTnGroup>
+                        <LidbTnGroup>
+                            <TelephoneNumbers>
+                                <TelephoneNumber>8888595935</TelephoneNumber>
+                            </TelephoneNumbers>
+                            <SubscriberInformation>Joes Storage</SubscriberInformation>
+                            <UseType>RESIDENTIAL</UseType>
+                            <Visibility>PRIVATE</Visibility>
+                        </LidbTnGroup>
+                    </LidbTnGroups>
+                </LidbOrder>
+    responses:
+        201:
+            description: |
+                The 201 response indicates that an order has been created to monitor and manage the request to establish a LIDB CNAME record registered with the network.
+
+                The <b>location</b> header in the response contains a URL that refers to the created order, including an echo of the order as requested.
+                Errors in processing the request will be articulated in the ErrorList component of the response.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LidbOrderResponse>
+                            <LidbOrder>
+                                <orderId>1d863522-c9bf-430c-8e79-cc63cad04a1d</orderId>
+                                <CustomerOrderId>[String]</CustomerOrderId>
+                                <ProcessingStatus>RECEIVED</ProcessingStatus>
+                                <ErrorList>
+                                  <Error>
+                                    <TelephoneNumber>8888595935</TelephoneNumber>
+                                    <Code>11020</Code>
+                                    <Description>Cannot add LIDB to a telephone number that already has LIDB or is in process</Description>
+                                  </Error>
+                                </ErrorList>
+                                <LidbTnGroups>
+                                  <LidbTnGroup>
+                                    <TelephoneNumbers>
+                                      <TelephoneNumber>8045030097</TelephoneNumber>
+                                      <TelephoneNumber>8045030098</TelephoneNumber>
+                                    </TelephoneNumbers>
+                                    <SubscriberInformation>Joes Garage</SubscriberInformation>
+                                    <UseType>RESIDENTIAL</UseType>
+                                    <Visibility>PUBLIC</Visibility>
+                                  </LidbTnGroup>
+                                  <LidbTnGroup>
+                                    <TelephoneNumbers>
+                                      <TelephoneNumber>8888595935</TelephoneNumber>
+                                    </TelephoneNumbers>
+                                    <SubscriberInformation>Joes Storage</SubscriberInformation>
+                                    <UseType>RESIDENTIAL</UseType>
+                                    <Visibility>PRIVATE</Visibility>
+                                  </LidbTnGroup>
+                                </LidbTnGroups>
+                            </LidbOrder>
+                        </LidbOrderResponse>
+        400:
+            description: |
+                Bad Request
+
+                A 400 Bad Request indicates that the processing of the request payload has detected a syntactic error that prevents further processing.  No order is created under these conditions, and the request must be corrected and re-submitted before an order can be created.
+
+                Error text and an error code will be provided in the ErrorList element.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LidbOrderResponse>
+                            <Status>
+                                <Code>400</Code>
+                                <Description>Validation Failed. Please check your input parameters.</Description>
+                            </Status>
+                            <ErrorList>
+                                <Error>
+                                    <Code>11007</Code>
+                                    <Description>No visibility supplied. Visibility must be one of the following - PUBLIC, PRIVATE</Description>
+                                </Error>
+                            </ErrorList>
+                            <LidbOrder>
+                                <LidbTnGroups>
+                                  <LidbTnGroup>
+                                    <TelephoneNumbers>
+                                      <TelephoneNumber>9199998830</TelephoneNumber>
+                                    </TelephoneNumbers>
+                                    <SubscriberInformation>Joes Garage</SubscriberInformation>
+                                    <UseType>RESIDENTIAL</UseType>
+                                  </LidbTnGroup>
+                                </LidbTnGroups>
+                            </LidbOrder>
+                        </LidbOrderResponse>
+/{lidbid}: !include lidbid/lidbid.raml

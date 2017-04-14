@@ -1,0 +1,7 @@
+!fileScope all
+<TelephoneNumberResponse>
+    <ResponseStatus>
+        <ErrorCode>12512</ErrorCode>
+        <Description>Telephone number '123456789' is not valid</Description>
+    </ResponseStatus>
+</TelephoneNumberResponse>

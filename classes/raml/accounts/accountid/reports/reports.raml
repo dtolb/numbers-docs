@@ -1,0 +1,140 @@
+!fileScope all
+
+!scope all
+
+description: |
+
+    Bandwidth provides a reporting infrastructure that will allow the creation
+    of pre-defined reports, and the subsequent API-based exposure of those
+    reports to our customers to assist them in management of their
+    business.<br>
+    <br>
+    The reports exposed via the reporting API are defined by the Bandwidth
+    staff, and will grow and adapt over time to meet our customers changing
+    needs. The basic structure of the resources in the reporting API reflects
+    three levels of information:
+
+    <ol>
+        <li>Reports: pre-defined templates for information that include:
+
+            <ul>
+                <li>a name</li>
+
+                <li>a description of the report in general terms</li>
+
+                <li>a set of parameters that are used to provide boundaries on
+                the information that is provided. &nbsp;These parameters
+                contain</li>
+
+                <li style="list-style: none; display: inline">
+                    <ul>
+                        <li>The parameter name,</li>
+
+                        <li>a&nbsp;description of the parameter,</li>
+
+                        <li>a declaration of whether it is required or not,
+                        and&nbsp;</li>
+
+                        <li>the type of the parameter.</li>
+
+                        <li>a declaration of whether multi-selection is allowed or not.</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+
+        <li>Instances: the result of executing a report - a parameterized set
+        of data that results from the creation of a report with a set of
+        parameters.
+
+            <ul>
+                <li>They reflect the meta-data associated with actually
+                creating a report from a set of data. &nbsp;The instance is
+                used in managing the actual &nbsp;report that is made available
+                for download.</li>
+
+                <li>Instances contain:</li>
+
+                <li style="list-style: none; display: inline">
+                    <ul>
+                        <li>An ID</li>
+
+                        <li>The ID of the Report that was used to generate the
+                        Instance</li>
+
+                        <li>An output format (currently PDF, XLS, or CSV)</li>
+
+                        <li>Data about the user that requested the report.</li>
+
+                        <li>A list of parameter values that was used to create
+                        the report</li>
+
+                        <li>An expiration date of the report.</li>
+
+                        <li>A status, indicating whether the report data is
+                        still being assembled, ready for download, or
+                        expired.</li>
+                    </ul>
+                </li>
+
+                <li>Instances are specific to a report.</li>
+            </ul>
+        </li>
+
+        <li>Files: the actual data associated with a Report Instance.
+
+            <ul>
+                <li>Files are the items that are actually retrieved from the
+                server and delivered to the user on demand. &nbsp;The file is a
+                logical resource that reflects the downloadable data that is
+                described by the Instance</li>
+            </ul>
+        </li>
+    </ol>
+
+    The report resource of the API allow the management of reports in the Bandwidth Dashboard.
+
+!scope all
+get:
+    description: | 
+        GET Retrieves a list of the report templates available for use within the Iris application. This list contains the basic description of the reports, including a report ID that can be used to access further details about the report, and thus facilitating the subsequent choice and creation of an instance of the report. Items of this list are sorted by display priority in ascending order and alphabetically by name within priority groups (display priority is displayed only for admin endpoint).
+    responses:
+        200:
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <ReportsResponse>
+                            <Reports>
+                                <Report>
+                                    <Name>Sample Report 1</Name>
+                                    <Id>100020</Id>
+                                    !scope internal
+                                    <JasperUri>/jasper/path/to/sample/report1</JasperUri>
+                                    !scope internal
+                                    <Scope>ACCOUNT</Scope>
+                                    <Description>Sample Report 1 Description</Description>
+                                </Report>
+                                <Report>
+                                    <Name>Sample Report 2</Name>
+                                    <Id>100021</Id>
+                                    !scope internal
+                                    <JasperUri>/jasper/path/to/sample/report2</JasperUri>
+                                    !scope internal
+                                    <Scope>ACCOUNT</Scope>
+                                    <Description>Sample Report 2 Description</Description>
+                                </Report>
+                                <Report>
+                                    <Name>Sample Report 3</Name>
+                                    <Id>100022</Id>
+                                    !scope internal
+                                    <JasperUri>/jasper/path/to/sample/report3</JasperUri>
+                                    !scope internal
+                                    <Scope>ADMIN</Scope>
+                                    <Description>Sample Report 3 Description</Description>
+                                </Report>
+                            </Reports>
+                        </ReportsResponse>
+
+/{reportid}: !include reportid/reportid.raml
+/instances: !include instances/instances.raml

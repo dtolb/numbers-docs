@@ -1,0 +1,178 @@
+!fileScope internal
+description: |
+    New number orders track the assignment of TNs to Accounts, and comprise the most common use of the Bandwidth Dashboard API.
+    The *+orders+* global search API will search the system for new number orders, filtered by a wide range of filter parameters.
+    
+get:
+    description: |
+        Retrieve information about one or more New Number Orders (orders), where the orders are chosen based on the search parameters provided in the API Call. 
+        Not all search parameters are compatible with all other search parameters, due to the complexity of searching for historical records using highly parameterized or complex searches.  As a result:
+        * all query parameters are compatible with the exception of...
+        ** if modifiedFromDate or modifiedToDate are specified, then the only other valid search parameters are accountId, sippeerId or siteId
+        ** sippeerId and siteId are only compatible with searches that have a date range parameter.
+    queryParameters:
+        accountId:
+            description: This is the account that the searched-for order will be contributing to.  Specifying this parameter will restrict the search to new number orders within the specified account.
+            type: integer
+            example: 9900012
+            repeat: true
+        invertAccountIdSearch:
+            description: This flag makes it possible to exclude accounts from the search.
+            type: boolean
+            example: true
+        status:
+            description: The status of the new number order being searched for.
+            type: string
+            example: BACKORDERED
+            enum: [PARTIAL, FAILED, BACKORDERED, COMPLETE]
+            repeat: true
+        tn:
+            description: A Telephone Number (TN) that is referenced in the order - a TN ported by the Port Order
+            type: string
+            example: 9199918388
+        customerOrderId:
+            description: The Customer Order ID is an ID assigned by the account owner to provide a reference number for the Port.
+            type: string
+            example: ABCCorp12345
+        orderIdFragment:
+            description: This search parameter represents the internal Bandwidth Dashboard ID that has been assigned to the Port Order.  This parameter is the first few characters of the internal ID - the entire ID does not need to be specified.
+            type: string
+            example: ed1c0bed-e2
+        siteId:
+            description: The numeric designation for the Site ID that applied to the Port-in Order.  The SiteId is used to provide a home within the account for the TN(s) that were ported in by the Port-in Order.
+            type: integer
+            example: 645881
+        sippeerId:
+            description: The numeric designation for the Location or SIP PEER ID that applied to the Port-in Order.  The SIP Peer ID is used to provide a home within the location for the TN(s) that were ported in by the Port-in Order.
+            type: integer
+            example: 456
+        activityState:
+            description: The Order-Management state of the Port-in Order - used to manage orders within Bandwidth.  This parameter may not be exposed in the external representation of the API
+            type: string
+            enum: [quiet, responded, changed, seen]
+            example: responded
+            repeat: true
+        bandwidthPrime:
+            description: The name of the Bandwidth person responsible for managing the Port-in Order - used to manage orders within Bandwidth.  This parameter may not be exposed in the external representation of the API.
+            example: GeorgeB
+            type: string
+            repeat: true
+        modifiedDateFrom:
+            description: For Date-based searches, the starting date of a date range that will be used to find Port-in Orders that were modified within the date range.  It is in the form yyyy-MM-dd.
+            type: string
+            example: 2013-10-22
+        modifiedDateTo:
+            description: For Date-based searches, the ending date of a date range that will be used to find Port-in Orders that were modified within the date range.  It is in the form yyyy-MM-dd.
+            type: string
+            example: 2013-10-25
+        createdDateFrom: 
+            description: Checks the order's creation date against this value. Orders that have a creation date after this date will be included. Format is yyyy-MM-dd 
+            type: string
+            example: 2013-10-22
+        createdDateTo:
+            description: Checks the order's creation date against this value. Orders that have a creation date before this date will be included. Format is yyyy-MM-dd 
+            type: string
+            example: 2013-10-25
+        lastModifiedAfter:
+            description: Checks the order's last modified date against this value. Orders that have a modification date after this date will be included. Format is yyyy-MM-dd 
+            type: string
+            example: 2013-10-25
+        includeInResponse:
+            description: Includes optional values into the response according to the provided value. Multiple values can be provided.
+            type: string
+            enum: [LAST_NOTE, SUPP_COUNT, ADMIN_INFO]
+            repeat: true
+            example: includeInResponse=LAST_NOTE&amp;includeInResponse=ADMIN_INFO
+    responses:    
+        200:
+            description: |
+                The descriptive payload for the New number Orders query provides a broad range of information about the New number Orders found by the query, including the data associated with the order, the state of the order, and details about the order if it was successful.
+
+                If the order successfully completes the TelephoneNumberDetails element will provide classification information on the Telephone Numbers that were included as part of the order.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0"?>
+                        <ResponseSelectWrapper>
+                            <ListOrderIdUserIdDate>
+                                <TotalCount>2122</TotalCount>
+                                <OrderIdUserIdDate>
+                                    <accountId>9999999</accountId>
+                                    <CountOfTNs>0</CountOfTNs>
+                                    <lastModifiedDate>2014-02-25T16:02:43.195Z</lastModifiedDate>
+                                    <OrderDate>2014-02-25T16:02:43.195Z</OrderDate>
+                                    <orderId>abe36738-6929-4c6f-926c-88e534e2d46f</orderId>
+                                    <OrderStatus>FAILED</OrderStatus>
+                                    <TelephoneNumberDetails/>
+                                    <userId>team_ua</userId>
+                                </OrderIdUserIdDate>
+                                <OrderIdUserIdDate>
+                                    <accountId>9999999</accountId>
+                                    <CountOfTNs>0</CountOfTNs>
+                                    <lastModifiedDate>2014-02-25T16:02:40.628Z</lastModifiedDate>
+                                    <OrderDate>2014-02-25T16:02:40.628Z</OrderDate>
+                                    <orderId>18427880-33a9-4282-a196-f740c720bb9e</orderId>
+                                    <OrderStatus>COMPLETE</OrderStatus>
+                                    <TelephoneNumberDetails>
+                                        <States>
+                                            <StateWithCount>
+                                                <State>VA</State>
+                                                <Count>1</Count>
+                                            </StateWithCount>
+                                        </States>
+                                        <RateCenters>
+                                            <RateCenterWithCount>
+                                                <Count>1</Count>
+                                                <RateCenter>GLOUCESTER</RateCenter>
+                                            </RateCenterWithCount>
+                                        </RateCenters>
+                                        <Cities>
+                                            <CityWithCount>
+                                                <City>GLOUCESTER</City>
+                                                <Count>1</Count>
+                                            </CityWithCount>
+                                        </Cities>
+                                        <Tiers>
+                                            <TierWithCount>
+                                                <Tier>0</Tier>
+                                                <Count>1</Count>
+                                            </TierWithCount>
+                                        </Tiers>
+                                        <Vendors>
+                                            <VendorWithCount>
+                                                <VendorId>49</VendorId>
+                                                <VendorName>Bandwidth CLEC</VendorName>
+                                                <Count>1</Count>
+                                            </VendorWithCount>
+                                        </Vendors>
+                                    </TelephoneNumberDetails>
+                                    <userId>team_ua</userId>
+                                </OrderIdUserIdDate>
+
+                                ...SNIP...
+
+                                <OrderIdUserIdDate>
+                                    <accountId>9999999</accountId>
+                                    <CountOfTNs>0</CountOfTNs>
+                                    <lastModifiedDate>2014-02-25T16:02:39.345Z</lastModifiedDate>
+                                    <OrderDate>2014-02-25T16:02:39.345Z</OrderDate>
+                                    <orderId>d7eff0d8-303c-4f11-86f8-44740bbd4535</orderId>
+                                    <OrderStatus>FAILED</OrderStatus>
+                                    <userId>team_ua</userId>
+                                </OrderIdUserIdDate>
+                                <OrderIdUserIdDate>
+                                    <accountId>9999999</accountId>
+                                    <CountOfTNs>0</CountOfTNs>
+                                    <lastModifiedDate>2014-02-25T16:02:39.021Z</lastModifiedDate>
+                                    <OrderDate>2014-02-25T16:02:39.021Z</OrderDate>
+                                    <orderId>ba5b6297-139b-4430-aab0-9ff02c4362f4</orderId>
+                                    <OrderStatus>FAILED</OrderStatus>
+                                    <userId>team_ua</userId>
+                                </OrderIdUserIdDate>
+                            </ListOrderIdUserIdDate>
+                        </ResponseSelectWrapper>
+        404:
+            description: Not Found.  If any errors are found in the processing of the query string a 404 will be returned.  Note that parameters that are not recognized are not considered errors, and are just ignored. 
+            
+!fileScope internal
+/{orderId}: !include orderid/orderid.raml

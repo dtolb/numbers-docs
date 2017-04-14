@@ -1,0 +1,70 @@
+!fileScope internal
+description: |
+    The information below captures the REST endpoint URL and Payloads that are used to install or remove customer provided external telephone numbers from the Bandwidth Dashboard.
+    <br>
+    This API has been developed based on similar existing functionality available in the Bandwidth Dashboard, but has been refined to focus purely on the task of managing numbers that have been provided to Bandwidth by our customers, allowing the Dashboard business logic to be specific and focused with respect to managing these telephone numbers.
+    <br>
+    The API follows the Bandwidth Dashboard “order” model, where an order-id is created to track the interaction and refer back to it as needed.  This record will also be persisted to enable examination of past events.  
+    <br>
+    This single API controls both the installation and removal of telephone numbers.  The action is controlled by the use of an element in the payload, allowing a simple model for managing both addition and removal of telephone numbers.  Additionally, if the status of an existing telephone number needs to be reset within the Bandwidth Dashboard, possibly as the result of an ownership change (port) of the telephone number, the API can be called to “re-add” the number to the Bandwidth Dashboard, which will perform a reset on that number without removing it from service first.
+    <br>
+    The externalTns order tracks the orders related to customer-provided numbers into the customer's account. <br><br>
+
+    This Import/Delete request reflects a customer-executed import or removal of numbers that they own and/or control.  The telephone numbers in question cannot be Bandwidth CLEC numbers, and are not subject to the normal telephone number life-cycle.<br><br>
+
+    This Global Search API call is used for internal / admin staff to find and view any customer's externalTns orders, to assist our customers in the management of those orders.
+    
+get:
+    description: |
+        Retrieve information about one or more externalTns orders, where the orders are chosen based on the search parameters provided in the API Call.
+    queryParameters:
+        accountId:
+            description: This is the account that the searched-for order will be customer provided telephone numbers ordered to.  Specifying this parameter will restrict the search to externalTns orders within the specified account.
+            type: integer
+            example: 9900012
+            repeat: false
+        status:
+            description: The status of the ExternalTnsOrder being searched for.  The PARTIAL status indicates that some of the Telephone Numbers were not successfully processed.
+            type: string
+            example: COMPLETE
+            enum: [RECEIVED, PROCESSING, COMPLETE, PARTIAL, FAILED]
+            repeat: true
+        tn:
+            description: A Telephone Number (TN) that is referenced in the order
+            type: string
+            example: 9199918388
+        customerOrderId:
+            description: The Customer Order ID is an ID assigned by the account owner to provide a reference number for the ExternalTnsOrder.
+            type: string
+            example: ABCCorp12345
+        createdDateFrom: 
+            description: Checks the order's creation date against this value. Orders that have a creation date after this date will be included. Format is yyyy-mm-dd 
+            type: string
+            example: 2013-10-22
+        createdDateTo:
+            description: Checks the order's creation date against this value. Orders that have a creation date before this date will be included. Format is yyyy-mm-dd 
+            type: string
+            example: 2013-10-25
+        orderIdFragment:
+            description: This search parameter represents the internal Bandwidth Dashboard ID that has been assigned to the ExternalTnsOrder.  This parameter is the first few characters of the internal ID - the entire ID does not need to be specified.
+            type: string
+            example: ed1c0bed-e2
+        action:
+            description: whether or not the results should be restricted to IMPORT or REMOVE orders.  The Default value is "ALL"
+            type: string
+            example: REMOVE
+            enum: [IMPORT, REMOVE, ALL]
+            repeat: false
+    responses:    
+        200:
+            description: |
+                200 OK indicates that the one or more externalTns orders have been found, and a response payload has been generated.
+
+            body: 
+                application/xml:
+                    example: !include 200_response_example.xml
+        404:
+            description: Not Found.  If any errors are found in the processing of the query string a 404 will be returned.  Note that parameters that are not recognized are not considered errors, and are just ignored. 
+            
+!fileScope internal
+/{orderId}: !include orderid/orderid.raml

@@ -1,0 +1,213 @@
+get:
+  description: get all sip peer gateway IPs and subnets
+  responses:
+    200:
+      description: A successful result that contains the response data
+      body:
+        application/xml:
+          example:
+            <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <TerminationResponse>
+                <TerminationProduct>
+                    <TerminationHosts>
+                        <TerminationHost>
+                            <HostName>188.219.64.2</HostName>
+                            <Port>0</Port>
+                            <id>20</id>
+                        </TerminationHost>
+                        <TerminationHost>
+                            <HostName>87.67.71.16/30</HostName>
+                            <Port>0</Port>
+                            <id>21</id>
+                        </TerminationHost>
+                    </TerminationHosts>
+                </TerminationProduct>
+            </TerminationResponse>
+    500:
+      body:
+        application/xml:
+          example:
+            <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <SipPeerGatewayIpsResponse>
+                <ResponseStatus>
+                    <Description>Some error description</Description>
+                </ResponseStatus>
+            </SipPeerGatewayIpsResponse>
+/hosts:
+    get:
+        description: get all sip peer gateway IPs and subnets
+        responses:
+            200:
+              description: A successful result that contains the response data
+              body:
+                application/xml:
+                  example:
+                    <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                    <TerminationHosts>
+                        <TerminationHost>
+                            <HostName>212.240.169.208</HostName>
+                            <Port>0</Port>
+                            <id>21</id>
+                        </TerminationHost>
+                        <TerminationHost>
+                            <HostName>87.67.71.16/30</HostName>
+                            <Port>0</Port>
+                            <id>22</id>
+                        </TerminationHost>
+                    </TerminationHosts>
+    post:
+      description: post sip peer gateway IP or subnet
+      body:
+          application/xml:
+              example:
+                  <?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+                  <TerminationHost>
+                    <HostName>251.180.7.30/30</HostName>
+                    <Port>0</Port>
+                  </TerminationHost>
+      responses:
+          201:
+              description: sip peer gateway IP has been created
+              body:
+                  application/xml:
+                      example:
+                          <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                          <SipPeerGatewayIpResponse>
+                            <SipPeerGatewayIp>
+                                <HostName>251.180.7.30/30</HostName>
+                                <Port>0</Port>
+                                <id>22</id>
+                            </SipPeerGatewayIp>
+                          </SipPeerGatewayIpResponse>
+    /{gatewayId}:
+        get:
+            description: get sip peer gateway IP or subnet by id
+            responses:
+              200:
+                description: A successful result that contains the response data
+                body:
+                  application/xml:
+                    example:
+                      <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                      <SipPeerGatewayIpResponse>
+                        <SipPeerGatewayIp>
+                            <HostName>87.67.71.16/30</HostName>
+                            <Port>0</Port>
+                            <id>23</id>
+                        </SipPeerGatewayIp>
+                      </SipPeerGatewayIpResponse>
+              404:
+                  description: sip peer gateway ip was not found
+                  body:
+                      application/xml:
+                          example: |
+                              None
+        delete:
+            description: delete a sip peer gateway ip
+            responses:
+                200:
+                    description: sip peer gateway ip was deleted
+                    body:
+                        application/xml:
+                            example: |
+                                None
+                404:
+                    description: sip peer gateway ip was not found
+                    body:
+                        application/xml:
+                            example: |
+                                None
+        /settings:
+            post:
+              description: post gateway attribute
+              body:
+                  application/xml:
+                      example:
+                          <?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+                          <TerminationAttribute>
+                            <type>TRACE</type>
+                            <value>true</value>
+                            <profileId>25</profileId>
+                            <effectiveDate>2014-11-13T17:48:33</effectiveDate>
+                            <inEffectiveDate>2014-12-13T17:48:33</inEffectiveDate>
+                          </TerminationAttribute>
+            get:
+              description: get all gateway attributes
+              responses:
+                200:
+                  body:
+                    application/xml:
+                      example:
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <SipPeerGatewayAttributesResponse>
+                            <SipPeerGatewayAttributes>
+                                <GatewayId>10</GatewayId>
+                                <GatewayAttributes>
+                                    <GatewayAttribute>
+                                        <id>8</id>
+                                        <type>TRACE</type>
+                                        <value>true</value>
+                                        <effectiveDate>2014-11-13T17:48:33</effectiveDate>
+                                        <inEffectiveDate>2014-12-13T17:48:33</inEffectiveDate>
+                                    </GatewayAttribute>
+                                </GatewayAttributes>
+                            </SipPeerGatewayAttributes>
+                        </SipPeerGatewayAttributesResponse>
+            /{attributeId}:
+                get:
+                    description: get gateway attribute by id
+                    responses:
+                      200:
+                        body:
+                          application/xml:
+                            example:
+                              <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                              <SipPeerGatewayAttributeResponse>
+                                <SipPeerGatewayAttribute>
+                                    <GatewayId>25</GatewayId>
+                                    <GatewayAttribute>
+                                        <id>21</id>
+                                        <type>TRACE</type>
+                                        <value>true</value>
+                                        <effectiveDate>2014-11-13T17:48:33</effectiveDate>
+                                        <inEffectiveDate>2014-12-13T17:48:33</inEffectiveDate>
+                                    </GatewayAttribute>
+                                </SipPeerGatewayAttribute>
+                              </SipPeerGatewayAttributeResponse>
+                put:
+                    description: update gateway attribute
+                    body:
+                      application/xml:
+                          example:
+                              <?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+                              <TerminationAttribute>
+                                <id>22</id>
+                                <type>TRACE</type>
+                                <value>false</value>
+                                <effectiveDate>2014-11-13T17:48:33</effectiveDate>
+                                <inEffectiveDate>2014-12-13T17:48:33</inEffectiveDate>
+                              </TerminationAttribute>
+                delete:
+                    description: delete gateway attribute
+                    responses:
+                        200:
+                            description: gateway attribute was deleted
+                            body:
+                                application/xml:
+                                    example: |
+                                        None
+                        404:
+                            description: gateway attribute was not found
+                            body:
+                                application/xml:
+                                    example: |
+                                        None
+
+
+
+
+
+
+
+
+

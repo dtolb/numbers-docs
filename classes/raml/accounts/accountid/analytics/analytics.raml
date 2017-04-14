@@ -1,0 +1,15 @@
+!fileScope internal
+description: |
+    This resource returns account-level analytic data, e.g. some resource usage.
+
+!scope internal
+get:
+    responses:
+        404:
+            description: |
+                Not Found - if the API call does not specify the type of data.
+            body:
+                application/xml:
+                    example: !include GET_404_response_example.xml
+
+/numbersassignmentdata: !include numbersassignmentdata/numbersassignmentdata.raml

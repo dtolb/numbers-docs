@@ -1,0 +1,23 @@
+!fileScope internal
+description: |
+    This resource is used to retrieve detailed alternate end user identifiers (AEUIs).<br>
+
+!scope internal
+get:
+    description: |
+        GET is used to retrieve detailed information of Alternate end user identifiers by acid.
+    responses:
+        200:
+            description: |
+                OK - will return full information about AEUI for specified acid.
+            body:
+                application/xml:
+                    example: !include aeuis_GET_200_response_example.xml
+
+        404:
+            description: |
+                Not Found - if the account specified does not exist or is locked or there are no AEUI that corresponds to specified acid it will result in a not found.
+            body:
+                application/xml:
+                    example: !include aeuis_GET_404_response_example.xml
+

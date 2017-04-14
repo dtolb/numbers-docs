@@ -1,0 +1,101 @@
+!fileScope all
+
+description: This resource retrieves information associated with the port-out ID number specified.
+
+!scope external
+get:
+    description: Retrieves the information associated with the specified port-out ID number.
+    responses:
+        200:
+            description: The information has been successfully retrieved and displayed out to the payload.
+            body:
+                application/xml:
+                    example: |
+                        <LnpOrderResponse>
+                            <RequestedFocDate>2014-08-02T12:34:37Z</RequestedFocDate>
+                            <ActualFocDate>2014-08-02T12:34:37Z</ActualFocDate>
+                            <PON>8a89dea8-a145-4796-8e73-0d859fc74cad</PON>
+                            <AccountId>20</AccountId>
+                            <OrderCreateDate>2014-07-31T16:34:37.480Z</OrderCreateDate>
+                            <LastModifiedDate>2014-07-31T16:34:37.530Z</LastModifiedDate>
+                            <userId>System</userId>
+                            <PortOutStatus>NEW</PortOutStatus>
+                            <SPID>512E</SPID>
+                        </LnpOrderResponse>
+
+!scope internal
+put:
+    description: |
+        Updates or cancels a port-out ID. THe payload to this method is similar to the GET on /accounts/{accountid}/portouts.<br>
+        In the payload, CallbackUrl and InternalPort are optional additives.<br>
+        There are also multiple options for the following:
+        <table>
+            <tr>
+                <th>Option</th>
+                <th>Choices</th>
+            </tr>
+            <tr>
+                <td>Supplemental</td><td>NONE<br>CANCEL<br>UPDATE<br>OTHER<br></td>
+            </tr>
+            <tr>
+                <td>PortOutAction</td><td>NEW<br>SUPP<br>MODIFY<br>CANCEL<br></td>
+            </tr>
+        </table>
+    body:
+        application/xml:
+            example: |
+                <PortOutRequest>
+                    <Pin>1234</Pin>
+                    <NewNetworkSPID>2857</NewNetworkSPID>
+                    <TelephoneNumberToPort>2014087001</TelephoneNumberToPort>
+                    <FocDate>2014-08-11</FocDate>
+                  <PortOutAction>CANCEL</PortOutAction>
+                    <BulkPortOut>
+                        <Pin>1234</Pin>
+                        <NewNetworkSPID>2857</NewNetworkSPID>
+                        <FocDate>2014-08-11</FocDate>
+                        <Supplemental>CANCEL</Supplemental>
+                        <TelephoneNumberList>
+                            <TelephoneNumberToPort>2014087001</TelephoneNumberToPort>
+                        </TelephoneNumberList>
+                    </BulkPortOut>
+                </PortOutRequest>
+    responses:
+        200:
+            description: the update or cancellation was successful.
+            body:
+                application/xml:
+                    example: |
+                        <PortOutResponse>
+                            <Status>
+                                <Code>200</Code>
+                                <Description>Request is complete and results returned.</Description>
+                            </Status>
+                        </PortOutResponse>
+!scope internal
+delete:
+    description: |
+        Cancels the port-out order. 
+        Note that only a pending port-out order can be cancelled; if the order was previously cancelled or completed, then a DELETE will not be possible.
+    responses:
+        200:
+            description: The port-out order has been successfully deleted.
+        400:
+            description: The port-out order is already processed, and therefore cannot be deleted.
+            body:
+                application/xml:
+                    example: |
+                        <LnpOrderResponse>
+                            <OrderId>2ffd0af4-7c54-40dc-9bfe-40f08b57e63a</OrderId>
+                            <Status>
+                                <Code>400</Code>
+                                <Description>Validation Failed. Please check your input parameters.</Description>
+                            </Status>
+                            <Errors>
+                                <Code>7304</Code>
+                                <Description>The order is already complete and cannot be modified or cancelled</Description>
+                            </Errors>
+                            <ProcessingStatus>EXCEPTION</ProcessingStatus>
+                        </LnpOrderResponse>
+                        
+/adminparameters: !include ../../shared/adminparameters/adminparameters.raml

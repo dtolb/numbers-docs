@@ -1,0 +1,21 @@
+!fileScope internal
+description: |
+    This resource returns pre-processed data on account telephone numbers to track customer number assignment and usage.
+
+!scope internal
+get:
+    description: |
+        Retrieves general information about number assignment and usage.
+    responses:
+        200:
+            body:
+                application/xml:
+                    example: !include GET_200_response_example.xml
+
+        404:
+            description: |
+                Not Found - if the account does not have the capability to declare number assignment.
+            body:
+                application/xml:
+                    example: !include GET_404_response_example.xml
+

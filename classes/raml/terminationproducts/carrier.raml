@@ -1,0 +1,32 @@
+get:
+  description: |
+    This API allow get a list of all available carrier names from Roger.
+  responses:
+    200:
+      body:
+        application/xml:
+          example:
+            <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <TerminationCarriersResponse>
+              <TerminationCarriers>
+                <TerminationCarrier>
+                  <carriername>Carrier</carriername>
+                  <description>Some carrier</description>
+                  <profileId>6</profileId>
+                  <gatewayId>14</gatewayId>
+                  <carrierId>1</carrierId>
+                  <maskPosition>1</maskPosition>
+                </TerminationCarrier>
+              </TerminationCarriers>
+            </TerminationCarriersResponse>
+    500:
+      body:
+        application/xml:
+          example:
+            <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <TerminationCarriersResponse>
+              <ResponseStatus>
+                <ErrorCode>18000</ErrorCode>
+                <Description>Internal Roger error</Description>
+              </ResponseStatus>
+            </TerminationCarriersResponse>

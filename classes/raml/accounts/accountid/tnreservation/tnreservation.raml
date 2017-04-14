@@ -1,0 +1,53 @@
+!fileScope external
+
+description: |
+    Reserves a telephone number
+    !scope internal
+    or retrieves an account's telephone number reservation information
+    .
+
+!scope internal
+get:
+    description: Retrieves an account's telephone number reservations
+    responses:
+        200:
+            description: An account's information has been successfully retrieved
+            body:
+                application/xml:
+                    example: |
+                        <ReservationsResponse>
+                            <Reservations>
+                                <Count>1</Count>
+                                <Reservation>
+                                    <ReservationId>0559244b-11e3-474f-a4fe-303f0d19c296</ReservationId>
+                                    <AccountId>12346099</AccountId>
+                                    <ReservationExpires>1690</ReservationExpires>
+                                    <ReservedTn>4354776010</ReservedTn>
+                                </Reservation>
+                            </Reservations>
+                        </ReservationsResponse>
+
+post:
+    description: Reserves a telephone number or a set of telephone numbers for a default time of 4 hours. A successful reservation returns a location header that can be used to retrieve the reservation at a later time.
+    body:
+        application/xml:
+            example: |
+                <Reservation>
+                    <ReservedTn>4354770625</ReservedTn>
+                </Reservation>
+    responses:
+        201:
+            description: The TN or set of TNs have been successfully reserved, with the link to the reservation in the Location Header.
+        400:
+            description: The Telephone Number requested is not available.
+            body:
+                application/xml:
+                    example: |
+                        <ReservationResponse>
+                            <ResponseStatus>
+                                <ErrorCode>5041</ErrorCode>
+                                <Description>Reservation failed: telephone number 4354776010 is not available.</Description>
+                            </ResponseStatus>
+                        </ReservationResponse>
+
+/{reservationid}: !include reservationid/reservationid.raml

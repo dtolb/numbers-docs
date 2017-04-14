@@ -1,0 +1,98 @@
+!fileScope internal
+
+description: |
+    The "orderId" resource refers to a specific element of the orders collection.  Examining that resource provides detailed information on the specific identified order.
+    
+get:
+    description: |
+        Retrieve information about a specific New Number Order identified as the resource.
+
+    responses:    
+        200:
+            description: |
+                The descriptive payload for the New number Orders query provides a broad range of information about the New number Order identified in the URL.  Included amongst the information is:
+                <ul>
+                    <li>CompletedQuantity - the number of TNs returned by the Order</li>
+                    <li>ErrorList - the errors discovered with codes and explanations</li>
+                    <li>FailedNumbers - a list of numbers that were not orderable</li>
+                    <li>various dates</li>
+                    <li>Order - the order payload to record the request</li>
+                    <li>OrderStatus - the overall status of the order</li>
+                    <li>CompletedNumbers - details on each number returned as part of the order, containing geographic and telecom information about that number</li>
+                </ul>
+
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <OrderResponse>
+                            <CompletedQuantity>2</CompletedQuantity>
+                            <CreatedByUser>jbm</CreatedByUser>
+                            <ErrorList>
+                                <Error>
+                                    <Code>5005</Code>
+                                    <Description> The telephone number is unavailable for ordering : 8042100000</Description>
+                                    <TelephoneNumber>8042100000</TelephoneNumber>
+                                </Error>
+                            </ErrorList>
+                            <FailedNumbers>
+                                <FullNumber>8042100000</FullNumber>
+                            </FailedNumbers>
+                            <LastModifiedDate>2014-02-20T19:33:17.600Z</LastModifiedDate>
+                            <OrderCompleteDate>2014-02-20T19:33:17.600Z</OrderCompleteDate>
+                            <Order>
+                                <OrderCreateDate>2014-02-20T19:33:17.504Z</OrderCreateDate>
+                                <PeerId>303661</PeerId>
+                                <BackOrderRequested>false</BackOrderRequested>
+                                <ExistingTelephoneNumberOrderType>
+                                    <TelephoneNumberList>
+                                        <TelephoneNumber>8042105618</TelephoneNumber>
+                                        <TelephoneNumber>8042105760</TelephoneNumber>
+                                        <TelephoneNumber>8042100000</TelephoneNumber>
+                                    </TelephoneNumberList>
+                                </ExistingTelephoneNumberOrderType>
+                                <TnAttributes>
+                                        <TnAttribute>Protected</TnAttribute>
+                                </TnAttributes>
+                                <PartialAllowed>true</PartialAllowed>
+                                <SiteId>743</SiteId>
+                            </Order>
+                            <OrderStatus>PARTIAL</OrderStatus>
+                            <CompletedNumbers>
+                                <TelephoneNumber>
+                                    <City>GLOUCESTER</City>
+                                    <LATA>248</LATA>
+                                    <RateCenter>GLOUCESTER</RateCenter>
+                                    <State>VA</State>
+                                    <FullNumber>8042105618</FullNumber>
+                                    <Tier>0</Tier>
+                                    <VendorId>49</VendorId>
+                                    <VendorName>Bandwidth CLEC</VendorName>
+                                </TelephoneNumber>
+                                <TelephoneNumber>
+                                    <City>GLOUCESTER</City>
+                                    <LATA>248</LATA>
+                                    <RateCenter>GLOUCESTER</RateCenter>
+                                    <State>VA</State>
+                                    <FullNumber>8042105760</FullNumber>
+                                    <Tier>0</Tier>
+                                    <VendorId>49</VendorId>
+                                    <VendorName>Bandwidth CLEC</VendorName>
+                                </TelephoneNumber>
+                            </CompletedNumbers>
+                            <FailedQuantity>1</FailedQuantity>
+                        </OrderResponse>
+        404:
+            description: NOT FOUND - the order id does not exist in the system
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <TnOrderReportResponse>
+                            <ResponseStatus>
+                                <Description>The resource does not exist</Description>
+                            </ResponseStatus>
+                        </TnOrderReportResponse>
+
+!fileScope internal
+/history: !include history/orderhistory.raml

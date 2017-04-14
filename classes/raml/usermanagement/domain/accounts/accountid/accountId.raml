@@ -1,0 +1,34 @@
+!fileScope internal
+
+description: This resource retrieves information about account.
+
+get:
+    description: Retrieves the information about account by unique account id.
+    responses:
+        200:
+            description: The information has been successfully retrieved and displayed in the payload.
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LdapAccountResponse>
+                            <Account>
+                                <AccountId>5000056</AccountId>
+                                <AccountName>Comtel Connect LLC</AccountName>
+                            </Account>
+                        </LdapAccountResponse>
+        404:
+            description: The account does not exist.
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LdapAccountResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12020</ErrorCode>
+                                <Description>Account '500005' does not exist</Description>
+                            </ResponseStatus>
+                            <Account>
+                                <AccountId>500005</AccountId>
+                            </Account>
+                        </LdapAccountResponse>

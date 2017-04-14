@@ -1,0 +1,123 @@
+!fileScope all
+!scope external
+description: This method updates or deletes a site based on the id, as well as adds a SIP Peer to the given site.
+!scope external
+get:
+    description: retrieves the information associated with the site id
+
+    responses:
+        200:
+            description: site id successfully retrieved
+            body: 
+                application/xml:
+                    example: |
+                        <SiteResponse>
+                            <Site>
+                                <Id>3013</Id>
+                                <Name>Raleigh</Name>
+                                <Description>Test Gateway</Description>
+                                <CustomerName>BW</CustomerName>
+                                <Address>
+                                    <HouseNumber>6300</HouseNumber>
+                                    <StreetName>Example Street</StreetName>
+                                    <City>Raleigh</City>
+                                    <StateCode>NC</StateCode>
+                                    <Country>United States</Country>
+                                    <AddressType>Service</AddressType>
+                                </Address>
+
+                                <!-- Following appears only for sites on UC Trunking accounts. -->
+                                <UcTrunkingConfiguration>
+                                    <Type>Seats</Type>
+                                    <UsageCategory>UC500</UsageCategory>
+                                </UcTrunkingConfiguration>
+                            </Site>
+                        </SiteResponse>
+        404:
+            description: the site id entered does not exist
+            body:
+                application/xml:
+                    example: |
+                        <SiteResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12016</ErrorCode>
+                                <Description>Site '3014' does not exist</Description>
+                            </ResponseStatus>
+                        </SiteResponse>
+!scope external
+put:
+    description: updates the contents of a site id
+    body:
+        application/xml:
+            example:
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <Site>
+                    <Name>Raleigh</Name>
+                    <Description>SIP gateway</Description>
+                    <CustomerName>BW</CustomerName>
+                    <CustomerProvidedId>1234567890</CustomerProvidedId>
+                    <Address>
+                        <HouseNumber>900</HouseNumber>
+                        <StreetName>Main Campus Drive</StreetName>
+                        <City>Raleigh</City>
+                        <StateCode>NC</StateCode>
+                        <Zip>27606</Zip>
+                        <AddressType>Service</AddressType>
+                    </Address>
+
+                    <!-- Following applies only to sites on UC Trunking accounts. -->
+                    <UcTrunkingConfiguration>
+                        <Type>Seats</Type>
+                        <UsageCategory>UC500</UsageCategory>
+                    </UcTrunkingConfiguration>
+                </Site>
+
+    responses:
+        200:
+            description: the site id has been successfully updated
+        400:
+            description: Information essential to the site id is missing
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0"?>
+                        <SiteResponse>
+                            <ResponseStatus>
+                                <ErrorCode>1003</ErrorCode>
+                                <Description>Address is required</Description>
+                            </ResponseStatus>
+                        </SiteResponse>
+
+delete:
+    description: deletes the site - sites can only be deleted if there are no SIP Peers attached to it
+
+    responses:
+        200: 
+            description: the site has been successfully deleted
+        400:
+            description: DELETE request is invalid given the current state of the site
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0"?>
+                        <SiteResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12054</ErrorCode>
+                                <Description>
+                                    This site is currently locked for contract paperwork. Please contact support for further assistance.
+                                </Description>
+                            </ResponseStatus>
+                        </SiteResponse>
+
+/lock: !include lock/lock.raml
+/sippeers: !include sippeers/sippeers.raml
+/partnerpricing: !include partnerpricing/partnerpricing.raml
+/inserviceNumbers: !include inserviceNumbers/inserviceNumbers.raml
+/orders: !include orders/orders.raml
+/portins: !include portins/portins.raml
+/tftotals: !include tftotals/tftotals.raml
+/totaltns: !include totaltns/totaltns.raml
+/bdrsummary: !include bdrsummary/bdrsummary.raml
+/totalSeats: !include totalSeats/totalSeats.raml
+/billingId: !include billingId/billingId.raml
+/contract: !include contract/contract.raml

@@ -1,0 +1,59 @@
+!fileScope internal
+
+description: This resource is used to check key presence in the system and to initiate a validation action that the key was created for.
+get:
+    description: Determines whether the key exists in the system.
+    responses:
+	    200:
+            description: The key exists.
+        404:
+            description: The key is not present.
+put:
+    description: Validates the key providing user secrets if needed.
+    body:
+        application/xml:
+            example: |
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <ValidationRequest>
+                    <FirstName>John</FirstName>
+                    <LastName>Does</LastName>
+                    <PhoneNumber>2315342323</PhoneNumber>
+                    <!-- used in conjunction with password reset -->
+                    <!-- not used in validation of the email -->
+                    <Password>qwerty</Password>
+                </ValidationRequest>
+    responses:
+        200:
+            description: Key has been validated. Response body is empty for password recovery, but contains additional information after successful email validation.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <ValidationResponse>
+                            <!-- an email validated with this request -->
+                            <Email>test@bandwidth.com</Email>
+                            <!-- indicates whether current user has password -->
+                            <PasswordState>[none|current]</PasswordState>
+                        </ValidationResponse>
+        404:
+            description: The key is not present in the system.
+        400:
+            description: |
+                The key is present but validation failed because of one of reasons:
+                <ul>
+                    <li>the key is associated with userId that doesn't exist in the system at the moment (no payload)</li>
+                    <li>the key is associated with email but there is no user with such email in the system at the moment (no payload)</li>
+                    <li>you have exceeded maximum number of validation attempts</li>
+                    <li>some required user secret is missing in payload</li>
+                    <li>some provided user secret doesn't match</li>
+                </ul>
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <ValidationError>
+                            <Error>
+                                <ErrorCode>12714</ErrorCode>
+                                <Description>User information does not match</Description>
+                            </Error>
+                        </ValidationError>

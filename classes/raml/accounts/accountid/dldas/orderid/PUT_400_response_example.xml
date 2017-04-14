@@ -1,0 +1,8 @@
+!fileScope external
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<DldaOrderResponse>
+    <ResponseStatus>
+        <ErrorCode>16105</ErrorCode>
+        <Description>Order cannot be changed or cancelled because it is already being processed</Description>
+    </ResponseStatus>
+</DldaOrderResponse>

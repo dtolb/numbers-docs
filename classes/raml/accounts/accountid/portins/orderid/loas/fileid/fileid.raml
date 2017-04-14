@@ -1,0 +1,80 @@
+!fileScope all
+
+description: |
+    A GET on the loas file resource will cause the downloading of the file in a manner consistent with typical browser file downloads.
+
+!scope all
+get:
+    description: Retrieves the list of the loa (and other) files associated with the portin order
+    responses:
+        200:
+            description: |
+                The 200 OK  indicates a successful download request.<br>
+                The response to the get on a filename will result in the file being prepared and delivered in a manner consistent with browser download.  The Response headers include the content-disposition header describing the file download.<br>
+                Headers:
+                <code>
+                Content-Type → application/octet-stream<br>
+                Date → Mon, 20 Apr 2015 17:19:26 GMT<br>
+                Server → Apache-Coyote/1.1<br>
+                Transfer-Encoding → <br>
+                content-disposition → attachment; filename=63097af1-37ae-432f-8a0d-9b0e6517a35b-1429550165581.pdf<br>
+                </code>
+        404:
+            description: |
+                a 404 indicates that the indicated file was not found in conjunction with the portin id.
+!scope all
+put:
+    description: |
+        A PUT on the filename will update / replace the identified file id.  The format of the PUT is identical to that of the POST.<br>
+        Header settings typical of a valid upload are...<br>
+        <code>
+        Host: api.inetwork.com <br>
+        Authorization: Basic xxxxxxxxxxxxxxxxxxxx== <br>
+        Content-Type: application/pdf <br>
+        Accept: */* <br>
+        Accept-Encoding: gzip, deflate <br>
+        Accept-Language: en-US,en;q=0.8 <br>
+        Cache-Control: no-cache <br>
+            <br>
+        ----WebKitFormBoundaryE19zNvXGzXaLvS5C <br>
+        Content-Disposition: form-data; name="george"; filename="Bandwidth Dashboard.pdf" <br>
+        Content-Type: application/pdf <br>
+            <br>
+            <br>
+        ----WebKitFormBoundaryE19zNvXGzXaLvS5C <br>
+        </code>
+
+    responses:
+        200:
+            description: |
+                The 200 response indicates the successful replacement of a file resource containing the uploaded content.
+
+                The response header will include a link to the created file as a GET on the identified resource.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <fileUploadResponse>
+                            <filename>63097af1-37ae-432f-8a0d-9b0e6517a35b-1429550165581.pdf</filename>
+                            <resultCode>0</resultCode>
+                            <resultMessage>LOA file uploaded successfully for order 63097af1-37ae-432f-8a0d-9b0e6517a35b</resultMessage>
+                        </fileUploadResponse>
+        400:
+            description: A 400 indicates that the requested upload failed.
+
+        404:
+            description: A 404 indicates that the file was not available for replacement.
+
+delete:
+    description: Retrieves the list of the loa (and other) files associated with the portin order
+
+    responses:
+        200:
+            description: |
+                The 200 OK  indicates a successful deletion of the identified file.
+
+        404:
+            description: |
+                a 404 indicates that the indicated file was not found in conjunction with the portin id.
+
+/metadata: !include metadata/metadata.raml

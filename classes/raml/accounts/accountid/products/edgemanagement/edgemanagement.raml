@@ -1,0 +1,52 @@
+!fileScope internal
+
+!scope all
+description: | 
+    Edge Management is the product capability that aggregates the collection of capabilities typically managed by the SBCs at the edge of the network.  At this stage the Edge Management product simply enables or disables the routing of calls via the SBCs
+
+!scope all
+get:
+    description: A GET on the edgemanagement product indicates the support (or lack of support) for the Edge Management capabilities for the specified account.
+    responses: 
+        200:
+            description: the 200 response returns with a small payload that indicates that the Edge Management product is provisioned for the account.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <AccountProductResponse>
+                            <Product>
+                                <Name>EdgeManagement</Name>
+                            </Product>
+                        </AccountProductResponse>
+        404:
+            description: |
+                NOT FOUND
+
+                is returned if the EdgeManagement Resource is not found.  An explanatory payload will be returned with explanation and an error code.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <AccountProductResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12017</ErrorCode>
+                                <Description>Account '138' does not have product 'EdgeManagement'</Description>
+                            </ResponseStatus>
+                        </AccountProductResponse> 
+
+put:
+    description: | 
+        a PUT on an edgemanagement resource that already exists will succeed, but does not change the edge Management product assignment.
+    body:
+        application/xml:
+            example: |
+                <?xml version="1.0"?>
+                <Product>
+                    <Name>EdgeManagement</Name>
+                </Product>
+    responses:
+        200:
+            description: 200 OK indicates that the EdgeManagement capability is associated with the account. If EdgeManagement is not already associated with the account then a 404 is returned. NO payload is returned with the 200 OK 
+
+/settings: !include settings/edgemanagementsettings.raml

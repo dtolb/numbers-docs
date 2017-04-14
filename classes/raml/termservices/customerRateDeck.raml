@@ -1,0 +1,76 @@
+!fileScope internal
+get:
+    description: get all rate decks (metadata)
+    responses:
+        200:
+            description: managed to get all accounts
+            body:
+                application/json:
+                    example: |
+                        [
+                            {
+                                "id":1,
+                                "name":"npanxx1.xlsx",
+                                "deckType":"NPANXX",
+                                "rows":5,
+                                "fileName":"npanxx1.xlsx"
+                            }
+                        ]
+post:
+    description: load rate deck file
+    body:
+        application/x-www-form-urlencoded:
+            formParameters:
+              file:
+                    type: file
+                    description: file to upload
+    responses:
+        201:
+            description: file was successfully loaded
+        400:
+            description: deck file is empty
+/{deckId}:
+    get:
+        description: return rate deck metadata or file if filetype parameter is not null
+        queryParameters:
+            filetype:
+                description: define in what format deck file will be loaded
+                example: text/csv or application/vnd.ms-excel
+        responses:
+            200:
+                body:
+                    application/json:
+                        example: |
+                            {
+                                "id":1,
+                                "name":"npanxx1.xlsx",
+                                "deckType":"NPANXX",
+                                "rows":5,
+                                "fileName":"npanxx1.xlsx"
+                            }
+            404:
+                description: rate deck was not found
+/{id}:
+    delete:
+        description: delete rate deck
+        responses:
+            202:
+                description: rate deck was deleted
+/type/{deckType}:
+    get:
+        description: return rate decks of specific type (NPANXX, LATAOCN)
+        responses:
+            200:
+                description: managed to get all rate decks by type
+                body:
+                    application/json:
+                        example: |
+                            [
+                                {
+                                    "id":1,
+                                    "name":"npanxx1.xlsx",
+                                    "deckType":"NPANXX",
+                                    "rows":5,
+                                    "fileName":"npanxx1.xlsx"
+                                }
+                            ]

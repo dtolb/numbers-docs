@@ -1,0 +1,51 @@
+get:
+  description: |
+    Get termination product by id.
+  queryParameters:
+    toAssign:
+      description: if toAssign = true response is a formated json response of the product assignment JSON. So that an upstream system can take this json, fill in the values, and submit it to a product assignment.
+  responses:
+    200:
+      body:
+        application/xml:
+          example: |
+            <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <TerminationProductResponse>
+              <TerminationProduct>
+                <id>1</id>
+                <name>TermProduct</name>
+                <description>test product</description>
+                <terminationAttributes>
+                  <terminationAttribute>
+                    <id>8</id>
+                    <type>TRACE</type>
+                    <value>true</value>
+                    <effectiveDate>2014-10-23T14:27:33</effectiveDate>
+                    <inEffectiveDate>2014-10-23T14:27:33</inEffectiveDate>
+                    <externalId>12</externalId>
+                  </terminationAttribute>
+                </terminationAttributes>
+              </TerminationProduct>
+            </TerminationProductResponse>
+
+    404:
+      description: |
+        Could not find product by id.
+    500:
+      description: |
+        System error.
+
+delete:
+  description: |
+    Delete termination product by id.
+  responses:
+    200:
+      description: |
+        product was successfully removed.
+    404:
+      description: |
+        Could not find product by id.
+    500:
+      description: |
+        System error.
+/attribute: !include attribute/attribute.raml

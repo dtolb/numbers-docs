@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<Account>
+    <GlobalAccountNumber>globalAccount</GlobalAccountNumber>
+    <CompanyName>ABC Corp</CompanyName>
+    <AccountType>Business</AccountType>
+    <Tiers>
+        <Tier>0</Tier>
+    </Tiers>
+    <ExternalId>123</ExternalId>
+    <BillingCycle>1</BillingCycle>
+    <Pricing>1</Pricing>
+    <NenaId>A123</NenaId>
+    <PenaltyType/>
+    <LnpEnabled>true</LnpEnabled>     <!-- true or false - optional - default is False -->
+    <ProtectedTnsAllowed>true</ProtectedTnsAllowed>
+    <CustomerProvidedTnsAllowed>true</CustomerProvidedTnsAllowed>
+    <TnsAssignmentAllowed>true</TnsAssignmentAllowed>
+    <Contact>
+        <FirstName>John</FirstName>
+        <LastName>Doe</LastName>
+        <Suffix>Jr</Suffix>
+        <Title/>
+        <Phone>9199919999</Phone>
+        <Fax/>
+        <Mobile/>
+        <OtherPhone/>
+        <Email>johndoe@abc.com</Email>
+        <WebsiteAddress/>
+    </Contact>
+    <Address>
+        <HouseNumber>123</HouseNumber>
+        <HouseSuffix/>
+        <PreDirectional/>
+        <StreetName>Main Street</StreetName>
+        <StreetSuffix/>
+        <PostDirectional/>
+        <AddressLine2/>
+        <City>RALEIGH</City>
+        <StateCode>NC</StateCode>
+        <Zip>27606</Zip>
+        <PlusFour/>
+        <County>WAKE</County>
+        <Country>United States</Country>
+        <AddressType>Billing</AddressType>
+    </Address>
+</Account>

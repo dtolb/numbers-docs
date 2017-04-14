@@ -1,0 +1,109 @@
+!fileScope all
+
+description: |
+    Use this method to add or update a site to an existing account. <br>
+    Each site creation or update must have the following input parameters:
+    <table>
+        <tr>
+            <th>Parameter</th><th>Description</th>
+        </tr>
+        <tr>
+            <td>accountid</td><td>The numerical Account ID that you will be adding the site to.</td>
+        </tr>
+        <tr>
+            <td>Name</td><td>The name of the site. Max length restricted to 10 characters.</td>
+        </tr>
+        <tr>
+            <td>Description</td><td>Customer provided description of the site.</td>
+        </tr>
+        <tr>
+            <td>Address</td><td>Service Address for the site.</td>
+        </tr>
+        <tr>
+            <td>CustomerProvidedID</td><td>Customer can provide an optional id (max 10 digits). Note that the customer can use the same id across multiple orders.</td>
+        </tr>
+        <tr>
+            <td>CustomerName</td><td>Customer can provide an optional name</td>
+        </tr>
+        <tr>
+            <td>UcTrunkingConfiguration</td><td>For UC Trunking accounts the UcTrunkingConfiguration element describes the kind of UC trunking that is provided.  The <b>Type</b> parameter is one of Seats, Premise, or Cloud, and the <b>UsageCategory</b> parameter is one of UC250, UC500 or UC1000. </td>
+        </tr>
+    </table>
+
+!scope external
+get:
+    description: retrieve a list of all the sites associated with the account
+    responses:
+        200:
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0"?>
+                        <SitesResponse>
+                            <Sites>
+                                <Site>
+                                    <Id>399</Id>
+                                    <Name>Testsite</Name>
+                                    <Description>NewSite</Description>
+                                </Site>
+                                <Site>
+                                    <Id>403</Id>
+                                    <Name>GABESITEa</Name>
+                                    <Description>Awesomeness</Description>
+                                </Site>
+                            </Sites>
+                        </SitesResponse>
+!scope external
+post:
+    description: Add a site to the account
+    body:
+        application/xml:
+            example: |
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <Site>
+                    <Name>Raleigh</Name>
+                    <Description>Test Gateway</Description>
+                    <CustomerName>BW</CustomerName>
+                    <Address>
+                        <HouseNumber>6300</HouseNumber>
+                        <StreetName>Lee Hall</StreetName>
+                        <City>Raleigh</City>
+                        <StateCode>NC</StateCode>
+                        <Zip>27606</Zip>
+                        <AddressType>Service</AddressType>
+                    </Address>
+                </Site>
+                <!-- and for a UC account ... -->
+                <Site>
+                    <Name>Raleigh</Name>
+                    <Description>Test Gateway</Description>
+                    <CustomerName>BW</CustomerName>
+                    <Address>
+                        <HouseNumber>6300</HouseNumber>
+                        <StreetName>Lee Hall</StreetName>
+                        <City>Raleigh</City>
+                        <StateCode>NC</StateCode>
+                        <Zip>27606</Zip>
+                        <AddressType>Service</AddressType>
+                    </Address>
+                    <UcTrunkingConfiguration>
+                        <Type>Seats</Type>
+                        <UsageCategory>UC500</UsageCategory>
+                    </UcTrunkingConfiguration>
+                </Site>
+    responses:
+        201:
+            description: The site has been successfully added to the account
+        400:
+            description: Information is missing from the body of the add site request
+            body:
+                application/xml:
+                    example: |
+                        <SiteResponse>
+                            <ResponseStatus>
+                                <ErrorCode>1003</ErrorCode>
+                                <Description>Address is required</Description>
+                            </ResponseStatus>
+                        </SiteResponse>
+
+/{siteId}: !include siteid/siteid.raml

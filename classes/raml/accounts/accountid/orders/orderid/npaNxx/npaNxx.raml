@@ -1,0 +1,18 @@
+!fileScope external
+
+description: Retrieves the Npa-Nxx of the phone numbers from the specified order.
+
+!scope external
+get:
+    description: Retrieves the Npa-Nxx of the phone numbers from the specified order.
+    responses:
+        200:
+            body:
+                application/xml:
+                    example: |
+                        <TelephoneDetailsReports>
+                            <TelephoneDetailsReport>
+                                <NPA-NXX>888424</NPA-NXX>
+                                <Count>1</Count>
+                            </TelephoneDetailsReport>
+                        </TelephoneDetailsReports>

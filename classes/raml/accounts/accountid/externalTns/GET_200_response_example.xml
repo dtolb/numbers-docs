@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ExternalTnsOrders>
+    <TotalCount>2</TotalCount>
+    <ExternalTnsOrderSummary>
+        <!-- Account ID preserved for uniformity with global list -->
+        <accountId>1</accountId>
+        <CompletedQuantity>3</CompletedQuantity>
+        <userId>jbm</userId>
+        <OrderDate>2016-01-15T11:36:52.727Z</OrderDate>
+        <OrderType>ExternalTnsOrder</OrderType>
+        <OrderStatus>COMPLETE</OrderStatus>
+        <OrderId>65e03a35-6b97-48a5-8126-f47bad02df2a</OrderId>
+    </ExternalTnsOrderSummary>
+    <ExternalTnsOrderSummary>
+        <accountId>9900012</accountId>
+        <CompletedQuantity>5</CompletedQuantity>
+        <userId>jbm</userId>
+        <OrderDate>2016-01-15T11:36:26.633Z</OrderDate>
+        <OrderType>ExternalTnsOrder</OrderType>
+        <OrderStatus>PARTIAL</OrderStatus>
+        <OrderId>d8f5abc0-1a4c-4c36-b387-93fb5b430784</OrderId>
+    </ExternalTnsOrderSummary>
+</ExternalTnsOrders>

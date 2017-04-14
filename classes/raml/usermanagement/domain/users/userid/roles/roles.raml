@@ -1,0 +1,167 @@
+!fileScope internal
+
+description: |
+    This resource retrieves information about roles to user relationship.
+get:
+    responses:
+        200:
+            description: |
+                Return all existing roles for user
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LdapUserRolesResponse>
+                            <User>
+                                <RoleList>
+                                    <Role>
+                                        <RoleId>test-role</RoleId>
+                                        <RoleSimpleName>Simple Name</RoleSimpleName>
+                                        <RoleDescription>555</RoleDescription>
+                                    </Role>
+                                    <Role>
+                                        <RoleId>test-1234</RoleId>
+                                        <RoleSimpleName>Simple Name</RoleSimpleName>
+                                        <RoleDescription>1234567</RoleDescription>
+                                    </Role>
+                                </RoleList>
+                            </User>
+                        </LdapUserRolesResponse>
+
+!scope internal
+put:
+    description: Rewrites all existing roles, related to user.
+    body:
+        application/xml:
+            example:
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <RoleList>
+                        <Role>
+                            <RoleId>test-role</RoleId>
+                        </Role>
+                        <Role>
+                            <RoleId>test-1234</RoleId>
+                        </Role>
+                        <Role>
+                            <RoleId>report-editor</RoleId>
+                        </Role>
+                </RoleList>
+    responses:
+        200:
+             description: The user-roles relations has been successfully updated or created and displayed in the payload.
+             body:
+                 application/xml:
+                     example:
+                          <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                          <LdapUserRolesResponse>
+                                <User>
+                                    <UserId>vboginskiy</UserId>
+                                    <RoleList>
+                                        <Role>
+                                            <RoleId>test-role</RoleId>
+                                            <RoleSimpleName>Simple Name</RoleSimpleName>
+                                            <RoleDescription>555</RoleDescription>
+                                            <Internal>false</Internal>
+                                        </Role>
+                                        <Role>
+                                            <RoleId>test-1234</RoleId>
+                                            <RoleSimpleName>Simple Name</RoleSimpleName>
+                                            <RoleDescription>1234567</RoleDescription>
+                                            <Internal>false</Internal>
+                                        </Role>
+                                        <Role>
+                                            <RoleId>report-editor</RoleId>
+                                            <RoleSimpleName>Simple Name</RoleSimpleName>
+                                            <RoleDescription>123</RoleDescription>
+                                            <Internal>false</Internal>
+                                        </Role>
+                                    </RoleList>
+                                </User>
+                          </LdapUserRolesResponse>
+        400:
+             description: Data in body formed in wrong way, validation error appears.
+             body:
+                 application/xml:
+                     example:
+                         <LdapUserRolesResponse>
+                              <ResponseStatus>
+                                  <ErrorCode>1012</ErrorCode>
+                                  <Description>RoleId is too short. Min length 4 characters</Description>
+                              </ResponseStatus>
+                              <User>
+                                  <UserId>vboginskiy</UserId>
+                                  <RoleList>
+                                      <Role>
+                                          <RoleId>tes</RoleId>
+                                      </Role>
+                                      <Role>
+                                          <RoleId>test-1234</RoleId>
+                                      </Role>
+                                      <Role>
+                                          <RoleId>report-editor</RoleId>
+                                      </Role>
+                                  </RoleList>
+                              </User>
+                         </LdapUserRolesResponse>
+        403:
+             description: Update failed, some of roles cannot be associated with user.
+             body:
+                 application/xml:
+                     example:
+                         <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                         <LdapUserRolesResponse>
+                              <ResponseStatus>
+                                  <ErrorCode>12085</ErrorCode>
+                                  <Description>Some of role(s) '[test]' defined as internal. Internal roles cannot be associated to user 'vboginskiy' with scope 'Account'</Description>
+                              </ResponseStatus>
+                              <User>
+                                  <UserId>vboginskiy</UserId>
+                                  <RoleList>
+                                      <Role>
+                                          <RoleId>test</RoleId>
+                                          <RoleSimpleName>Simple Name</RoleSimpleName>
+                                          <RoleDescription>1234567</RoleDescription>
+                                          <Internal>true</Internal>
+                                      </Role>
+                                      <Role>
+                                          <RoleId>test-1234</RoleId>
+                                          <RoleSimpleName>Simple Name</RoleSimpleName>
+                                          <RoleDescription>1234567</RoleDescription>
+                                          <Internal>false</Internal>
+                                      </Role>
+                                      <Role>
+                                          <RoleId>report-editor</RoleId>
+                                          <RoleSimpleName>Simple Name</RoleSimpleName>
+                                          <RoleDescription>123</RoleDescription>
+                                          <Internal>false</Internal>
+                                      </Role>
+                                  </RoleList>
+                              </User>
+                         </LdapUserRolesResponse>
+        422:
+             description: Some of roles cannot be found.
+             body:
+                 application/xml:
+                     example:
+                         <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                         <LdapUserRolesResponse>
+                              <ResponseStatus>
+                                  <ErrorCode>12084</ErrorCode>
+                                  <Description>Some of your role(s) '[test1234]' do not exist</Description>
+                              </ResponseStatus>
+                              <User>
+                                  <UserId>vboginskiy</UserId>
+                                  <RoleList>
+                                      <Role>
+                                          <RoleId>test1234</RoleId>
+                                      </Role>
+                                      <Role>
+                                          <RoleId>test-1234</RoleId>
+                                      </Role>
+                                      <Role>
+                                          <RoleId>report-editor</RoleId>
+                                      </Role>
+                                  </RoleList>
+                              </User>
+                         </LdapUserRolesResponse>
+/{roleId}: !include roleId/roleId.raml

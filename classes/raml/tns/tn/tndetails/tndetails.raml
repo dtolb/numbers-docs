@@ -1,0 +1,21 @@
+!fileScope all
+
+description: The get method retrieves detailed information about the phone number.
+
+get:
+    description: |
+        Retrieves detailed information about the phone number.
+        TnAttributes - Does this telephone number is protected or not.
+    responses:
+        200:
+            description: |
+                OK - the detailed information about the phone number has been successfully retrieved and displayed.<br>
+                TnAttributes is not required in the response.
+            body:
+                application/xml:
+                    example: !include GET_200_response_example.xml
+        400:
+            description: Bad Request - failed to get detailed information about the current phone number.
+            body:
+                application/xml:
+                    example: !include GET_400_response_example.xml

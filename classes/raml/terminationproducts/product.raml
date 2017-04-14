@@ -1,0 +1,63 @@
+get:
+  description: |
+    Get all products from term services.
+  responses:
+    200:
+      body:
+        application/xml:
+          example: |
+            <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <TerminationProductsResponse>
+              <TerminationProducts>
+                <TerminationProduct>
+                  <id>1</id>
+                  <name>TermProduct</name>
+                  <description>test product</description>
+                  <terminationAttributes>
+                    <terminationAttribute>
+                      <id>8</id>
+                      <type>TRACE</type>
+                      <value>true</value>
+                      <effectiveDate>2014-10-23T14:27:33</effectiveDate>
+                      <inEffectiveDate>2014-10-23T14:27:33</inEffectiveDate>
+                      <externalId>12</externalId>
+                    </terminationAttribute>
+                  </terminationAttributes>
+                </TerminationProduct>
+              </TerminationProducts>
+            </TerminationProductsResponse>
+post:
+    description: create product
+    body:
+      application/xml:
+        example: |
+            <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <TerminationProduct>
+              <id>1</id>
+              <name>TermProduct</name>
+              <description>test product</description>
+            </TerminationProduct>
+    responses:
+      201:
+        description: product was successfully created
+        headers:
+          Location:
+            description: contains created termination product id<br>
+            example: http://termservices.url/product/1
+        body:
+          application/xml:
+            example: |
+              <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+              <TerminationProductResponse>
+                <TerminationProduct>
+                  <id>1</id>
+                  <name>TermProduct</name>
+                  <description>test product</description>
+                  <terminationAttributes>
+                  </terminationAttributes>
+                </TerminationProduct>
+              </TerminationProductResponse>
+      400:
+        description: required fields are absent, attribute list is not empty
+
+/{productId}: !include productId/productId.raml

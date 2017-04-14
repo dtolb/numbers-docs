@@ -1,0 +1,59 @@
+!fileScope all
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<NumberPortabilityResponse>
+    <SupportedRateCenters />
+    <UnsupportedRateCenters>
+        <RateCenterGroup>
+            <RateCenter>BALTIMORE</RateCenter>
+            <City>BALTIMORE</City>
+            <State>MD</State>
+            <LATA>238</LATA>
+            <TnList>
+                <Tn>4109255199</Tn>
+                <Tn>4104685864</Tn>
+            </TnList>
+        </RateCenterGroup>
+        <RateCenterGroup>
+            <RateCenter>SPARKSGLNC</RateCenter>
+            <City>SPARKS GLENCOE</City>
+            <State>MD</State>
+            <LATA>238</LATA>
+            <TnList>
+                <Tn>4103431313</Tn>
+                <Tn>4103431561</Tn>
+            </TnList>
+        </RateCenterGroup>
+    </UnsupportedRateCenters>
+    <PartnerSupportedRateCenters>                <!-- Only available for fullCheck=offnetportability -->
+        <RateCenterGroup>
+            !scope internal
+            <Vendor>Vendor 1</Vendor>
+            <RateCenter>FT COLLINS</RateCenter>
+            <City>FORT COLLINS</City>
+            <State>CO</State>
+            <LATA>656</LATA>
+            <Tiers>
+                <Tier>1</Tier>
+            </Tiers>
+            <TnList>
+                <Tn>4109235436</Tn>
+            </TnList>
+        </RateCenterGroup>
+    </PartnerSupportedRateCenters>
+    <SupportedLosingCarriers>
+        <LosingCarrierTnList>
+            <LosingCarrierSPID>9998</LosingCarrierSPID>
+            <LosingCarrierName>Test Losing Carrier L3</LosingCarrierName>
+            <LosingCarrierIsWireless>false</LosingCarrierIsWireless>
+            <LosingCarrierAccountNumberRequired>false</LosingCarrierAccountNumberRequired>
+            <LosingCarrierMinimumPortingInterval>5</LosingCarrierMinimumPortingInterval>
+            <TnList>
+                <Tn>4109255199</Tn>
+                <Tn>4104685864</Tn>
+                <Tn>4103431313</Tn>
+                <Tn>4103431561</Tn>
+            </TnList>
+        </LosingCarrierTnList>
+    </SupportedLosingCarriers>
+    <UnsupportedLosingCarriers />
+</NumberPortabilityResponse>

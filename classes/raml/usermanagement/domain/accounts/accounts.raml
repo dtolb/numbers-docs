@@ -1,0 +1,48 @@
+!fileScope internal
+
+description: |
+    This resource retrieves information about accounts.
+get:
+    queryParameters:
+        suggestions:
+            description: The text on which to search
+            type: string
+            example: name
+            required: false
+        page:
+            description: The number of page
+            type: integer
+            example: 2
+            required: false
+        size:
+            description: The number of items to include in a page.
+            type: integer
+            example: 100
+            required: false
+    responses:
+        200:
+            description: |
+                Return all existed accounts
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LdapAccountsResponse>
+                            <AccountList>
+                                <totalCount>10</totalCount>
+                                <Account>
+                                    <AccountId>1</AccountId>
+                                    <AccountName>OneCompany</AccountName>
+                                </Account>
+                                <Account>
+                                    <AccountId>2</AccountId>
+                                    <AccountName>Test Republic Wireless</AccountName>
+                                </Account>
+                                <Account>
+                                    <AccountId>753</AccountId>
+                                    <AccountName>Bandwidth CLEC</AccountName>
+                                </Account>
+                            </AccountList>
+                        </LdapAccountsResponse>
+
+/{accountId}: !include accountid/accountId.raml

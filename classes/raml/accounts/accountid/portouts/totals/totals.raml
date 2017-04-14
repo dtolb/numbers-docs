@@ -1,0 +1,23 @@
+!fileScope external
+
+description: Retrieves a total count of port-in requests.
+
+!scope external
+get:
+    description: Retrieves a total count of port-in requests and displays them in the payload.
+    queryParameters:
+        vendorId:
+            description: the vendor ID in question.
+            type: String
+        status:
+            description: the status of the port-in requests.
+            type: string
+    responses:
+        200:
+            description: The total count of port-in requests have been successfully retrieved and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <Quantity>
+                            <Count>20</Count>
+                        </Quantity>

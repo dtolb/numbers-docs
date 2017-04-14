@@ -1,0 +1,161 @@
+!fileScope internal
+
+description: |
+    Port-Ins are perhaps the most critical order-type managed by the Bandwidth Dashboard.  The Port-in order type is used to manage the porting of numbers into the Bandwidth CLEC network, and as such are responsible for managing and tracking the most complex business process in the CLEC provisioning domain.
+    The portins resource is representative of the set of all Port-in orders ( for all accounts ) managed by the Bandwidth Dashboard.
+    This API is used to search that set of records.
+get:
+    description: |
+        Retrieve information about one or more Port-in Orders (portins), where the orders are chosen based on the search parameters provided in the API Call. 
+    queryParameters:
+        accountId:
+            description: This is the account that the searched-for order will be contributing to.  Specifying this parameter will restrict the search to portin orders within the specified account.
+            type: integer
+            example: 9900012
+            repeat: true
+        invertAccountIdSearch:
+            description: This flag makes it possible to exclude accounts from the search.
+            type: boolean
+            example: true
+        status:
+            description: The status of the portin order being searched for.
+            type: string
+            example: EXCEPTION
+            enum: [SUBMITTED, EXCEPTION, FOC, CANCELLED, COMPLETE]
+            repeat: true
+        tn:
+            description: A Telephone Number (TN) that is referenced in the order - a TN ported by the Port Order
+            type: string
+            example: 9199918388
+        pon:
+            description: The PON that is referenced in the Port Order.  A PON is a number assigned to the Port-in Order as part of the porting process by the partner or winner to aid in the identificatoin of a Port Order.
+            type: string
+            example: Available
+        btn:
+            description: The BTN (Business Telephone Number) is typically the telephone number associated with the business owner of the TN.
+            type: string
+            example: 9199918388
+        customerOrderId:
+            description: The Customer Order ID is an ID assigned by the account owner to provide a reference number for the Port.
+            type: string
+            example: ABCCorp12345
+        orderIdFragment:
+            description: This search parameter represents the internal Bandwidth Dashboard ID that has been assigned to the Port Order.  This parameter is the first few characters of the internal ID - the entire ID does not need to be specified.
+            type: string
+            example: ed1c0bed-e2
+        requestedFocDate:
+            description: This is the FOC (Final Order Commit) Date requested by the person (or machine) creating the Port-in Order.
+            type: string
+            example: 13-10-22
+        actualFocDate:
+            description: This is the FOC (Final Order Commit) Date assigned to the Port-in Order by the loosing carrier or their agent.
+            type: string
+            example: 13-10-22
+        lastModifiedBy:
+            description: This is the user-id of the user that last modified the Port-in Order.
+            type: string
+            example: smckinnon
+        siteId:
+            description: The numeric designation for the Site ID that applied to the Port-in Order.  The SiteId is used to provide a home within the account for the TN(s) that were ported in by the Port-in Order.
+            type: integer
+            example: 645881
+        sippeerId:
+            description: The numeric designation for the Location or SIP PEER ID that applied to the Port-in Order.  The SIP Peer ID is used to provide a home within the location for the TN(s) that were ported in by the Port-in Order.
+            type: integer
+            example: 456
+        activityState:
+            description: The Order-Management state of the Port-in Order - used to manage orders within Bandwidth.  This parameter may not be exposed in the external representation of the API
+            type: string
+            enum: [quiet, responded, changed, seen]
+            example: responded
+            repeat: true
+        bandwidthPrime:
+            description: The name of the Bandwidth person responsible for managing the Port-in Order - used to manage orders within Bandwidth.  This parameter may not be exposed in the external representation of the API.
+            type: string
+            example: GeorgeB
+            repeat: true
+        modifiedFromDate:
+            description: For Date-based searches, the starting date of a date range that will be used to find Port-in Orders that were modified within the date range.  It is in the form YY-MM-DD.
+            type: string
+            example: 13-10-22
+        modifiedToDate:
+            description: For Date-based searches, the ending date of a date range that will be used to find Port-in Orders that were modified within the date range.  It is in the form YY-MM-DD.
+            type: string
+            example: 13-10-25
+    responses:    
+        200:
+            description: |
+                The descriptive payload for the Port-in Orders query provides a broad range of information about the Port-in Orders found by the query, including the data associated with the order, the state of the order, and information about any error conditions encountered in processing of the order
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0"?>
+                        <LNPResponseWrapper>
+                            <TotalCount>20</TotalCount>
+                            <lnpPortInfoForGivenStatus>
+                                <accountId>2</accountId>
+                                <CountOfTNs>1</CountOfTNs>
+                                <lastModifiedDate>2014-02-10T12-52-27.021Z</lastModifiedDate>
+                                <LNPLosingCarrierId>1537</LNPLosingCarrierId>
+                                <LNPLosingCarrierName>Test Losing Carrier L3</LNPLosingCarrierName>
+                                <OrderDate>2013-11-19T22-29-01.336Z</OrderDate>
+                                <OrderId>7b08cec0-390b-4a27-a30f-3bcb8876cb8e</OrderId>
+                                <ProcessingStatus>CANCELLED</ProcessingStatus>
+                                <RequestedFOCDate>2013-11-25T13-00-00.000Z</RequestedFOCDate>
+                                <userId>jbm</userId>
+                                <VendorId>49</VendorId>
+                                <VendorName>Bandwidth CLEC</VendorName>
+                            </lnpPortInfoForGivenStatus>
+                            <lnpPortInfoForGivenStatus>
+                                <accountId>1</accountId>
+                                <BillingTelephoneNumber>3125462291</BillingTelephoneNumber>
+                                <CountOfTNs>1</CountOfTNs>
+                                <lastModifiedDate>2014-02-04T19-41-15.313Z</lastModifiedDate>
+                                <Errors>
+                                    <Error>
+                                        <Code>7300</Code>
+                                        <Description>
+                                            The order cannot be modified because the order is awaiting a response from the losing carrier
+                                        </Description>
+                                    </Error>
+                                </Errors>
+                                <LNPLosingCarrierId>1536</LNPLosingCarrierId>
+                                <LNPLosingCarrierName>Neustar Test Carrier</LNPLosingCarrierName>
+                                <OrderId>792f12d4-2367-4282-9cec-7b4f92b75eeb</OrderId>
+                                <ProcessingStatus>REQUESTED_SUPP</ProcessingStatus>
+                                <RequestedFOCDate>2014-02-05T19-36-13.000Z</RequestedFOCDate>
+                                <userId>jbm</userId>
+                                <VendorId>49</VendorId>
+                                <VendorName>Bandwidth CLEC</VendorName>
+                                <PON>979E0122150001D5</PON>
+                            </lnpPortInfoForGivenStatus>
+                            <lnpPortInfoForGivenStatus> ... </lnpPortInfoForGivenStatus>
+                            ... snip ...
+                            <lnpPortInfoForGivenStatus>
+                                <accountId>1</accountId>
+                                <BillingTelephoneNumber>6882011401</BillingTelephoneNumber>
+                                <CountOfTNs>1</CountOfTNs>
+                                <lastModifiedDate>2014-02-16T13-51-06.417Z</lastModifiedDate>
+                                <Errors>
+                                    <Error>
+                                        <Code>7205</Code>
+                                        <Description>
+                                            Telephone number is already being processed on another order
+                                        </Description>
+                                    </Error>
+                                </Errors>
+                                <LNPLosingCarrierId>1536</LNPLosingCarrierId>
+                                <LNPLosingCarrierName>Neustar Test Carrier</LNPLosingCarrierName>
+                                <OrderDate>2014-02-16T13-51-05.697Z</OrderDate>
+                                <OrderId>af1df8a9-4d6f-4d23-a7c5-ef7d1561af26</OrderId>
+                                <ProcessingStatus>CANCELLED</ProcessingStatus>
+                                <RequestedFOCDate>2014-02-17T13-51-06.056Z</RequestedFOCDate>
+                                <userId>jbm</userId>
+                                <VendorId>49</VendorId>
+                                <VendorName>Bandwidth CLEC</VendorName>
+                            </lnpPortInfoForGivenStatus>
+                        </LNPResponseWrapper>
+        404:
+            description: Not Found.  If any errors are found in the processing of the query string a 404 will be returned.  Note that parameters that are not recognized are not considered errors, and are just ignored. 
+
+/{orderid}: !include orderid/orderid.raml

@@ -1,0 +1,54 @@
+!fileScope internal
+
+description: |
+    Supplying an order id to the import to account API call will return a description of that order if the order-id is valid, and return a 404 otherwise.
+get:
+    description: |
+         A GET will return an order that have previously performed on the account.
+    responses:   
+        200:
+            description: The identified order has been retrieved.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <ImportToAccountNumberOrderResponse>
+                            <ErrorList/>
+                            <ImportedTelephoneNumberList>
+                                <TelephoneNumber>9199918393</TelephoneNumber>
+                                <TelephoneNumber>9199918394</TelephoneNumber>
+                            </ImportedTelephoneNumberList>
+                            <orderRequest>
+                                <OrderCreateDate>2014-04-18T16:38:05.001Z</OrderCreateDate>
+                                <PeerId>303716</PeerId>
+                                <ImportToAccountNumberOrderType>
+                                    <BatchId>TestId1234</BatchId>
+                                    <BatchSize>2</BatchSize>
+                                    <OverridePortFees>false</OverridePortFees>
+                                    <PortedIn>false</PortedIn>
+                                    <InitialStatus>Available</InitialStatus>
+                                    <TnAttributes>
+                                        <TnAttribute>Protected</TnAttribute>
+                                    </TnAttributes>
+                                    <TelephoneNumberList>
+                                        <TelephoneNumber>9199918393</TelephoneNumber>
+                                        <TelephoneNumber>9199918394</TelephoneNumber>
+                                    </TelephoneNumberList>
+                                    <VendorName>Bandwidth CLEC</VendorName>
+                                </ImportToAccountNumberOrderType>
+                                <SiteId>743</SiteId>
+                            </orderRequest>
+                            <OrderStatus>COMPLETE</OrderStatus>
+                            <ImportedTelephoneNumberDetailList>
+                                <TelephoneNumberDetail>
+                                    <FullNumber>9199918393</FullNumber>
+                                </TelephoneNumberDetail>
+                                <TelephoneNumberDetail>
+                                    <FullNumber>9199918394</FullNumber>
+                                </TelephoneNumberDetail>
+                            </ImportedTelephoneNumberDetailList>
+                        </ImportToAccountNumberOrderResponse>
+        404:
+            description: No import to account order resource was found - the order-id in the URL is likely in error.
+
+/notes: !include ../../shared/notes/notes.raml

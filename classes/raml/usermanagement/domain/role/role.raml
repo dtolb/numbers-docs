@@ -1,0 +1,31 @@
+!fileScope internal
+
+description: |
+    This resource retrieves information about roles.
+get:
+    responses:
+        200:
+            description: |
+                Return all existed roles
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LdapRolesResponse>
+                            <RoleList>
+                                <Role>
+                                    <RoleId>report-editor</RoleId>
+                                    <RoleSimpleName>Simple Name</RoleSimpleName>
+                                    <RoleDescription>report editor role</RoleDescription>
+                                    <Internal>false</Internal>
+                                </Role>
+                                <Role>
+                                    <RoleId>admin-role</RoleId>
+                                    <RoleSimpleName>Simple Name</RoleSimpleName>
+                                    <RoleDescription>Admin role</RoleDescription>
+                                    <Internal>true</Internal>
+                                </Role>
+                            </RoleList>
+                        </LdapRolesResponse>
+
+/{roleId}: !include roleid/roleId.raml

@@ -1,0 +1,141 @@
+!fileScope all
+
+description: This API retrieves and updates an account's information as specified by the given account ID. Access to information pertaining to a specific account will require credentials that have been assigned to that account, preserving the security of a customer’s information. <br>Note that DELETE is currently unsupported.
+
+!scope internal
+put:
+    description: Updates Account. Note that the body is similar in structure to POST for /accounts
+    body:
+        application/xml:
+            example:
+                <Account>
+                    <GlobalAccountNumber>globalAccount</GlobalAccountNumber>
+                    <CompanyName>ABC Corp</CompanyName>
+                    <AccountType>Business</AccountType>
+                    <Tiers>
+                        <Tier>0</Tier>
+                    </Tiers>
+                    <ExternalId>123</ExternalId>
+                    <BillingCycle>1</BillingCycle>
+                    <Pricing>1</Pricing>
+                    <NenaId>A123</NenaId>
+                    <ReservationAllowed>[true|false]</ReservationAllowed>
+                    <LnpEnabled>[true|false]</LnpEnabled>
+                    <ProtectedTnsAllowed>[true|false]</ProtectedTnsAllowed>
+                    <CustomerProvidedTnsAllowed>[true|false]</CustomerProvidedTnsAllowed>
+                    <TnsAssignmentAllowed>[true|false]</TnsAssignmentAllowed>
+                    <AltSpid>X455</AltSpid>   <!-- 5 alphanumeric -->
+                    <SPID>1235</SPID>         <!-- 4 alphanumeric or 'mult' -->
+                    <PenaltyType/>
+                    <Contact>
+                        <FirstName>John</FirstName>
+                        <LastName>Doe</LastName>
+                        <Suffix>Jr</Suffix>
+                        <Title/>
+                        <Phone>9199919999</Phone>
+                        <Fax/>
+                        <Mobile/>
+                        <OtherPhone/>
+                        <Email>johndoe@abc.com</Email>
+                        <WebsiteAddress/>
+                    </Contact>
+                    <Address>
+                        <HouseNumber>123</HouseNumber>
+                        <HouseSuffix/>
+                        <PreDirectional/>
+                        <StreetName>Main Street</StreetName>
+                        <StreetSuffix/>
+                        <PostDirectional/>
+                        <AddressLine2/>
+                        <City>RALEIGH</City>
+                        <StateCode>NC</StateCode>
+                        <Zip>27606</Zip>
+                        <PlusFour/>
+                        <County>WAKE</County>
+                        <Country>United States</Country>
+                        <AddressType>Billing</AddressType>
+                    </Address>
+                </Account>
+    responses:
+        200:
+
+!scope all
+get:
+    description: This API call retrieves information about the account indicated by the Account ID.
+    responses:
+        200:
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <AccountResponse>
+                            <Account>
+                                <AccountId>14</AccountId>
+                                <GlobalAccountNumber>globalAccount</GlobalAccountNumber>
+                                <CompanyName>CWI Hosting</CompanyName>
+                                <AccountType>Business</AccountType>
+                                <NenaId></NenaId>
+                                <Tiers>
+                                    <Tier>0</Tier>
+                                </Tiers>
+                                <Address>
+                                    <HouseNumber>60</HouseNumber>
+                                    <HouseSuffix></HouseSuffix>
+                                    <PreDirectional></PreDirectional>
+                                    <StreetName>Pine</StreetName>
+                                    <StreetSuffix>St</StreetSuffix>
+                                    <PostDirectional></PostDirectional>
+                                    <AddressLine2></AddressLine2>
+                                    <City>Denver</City>
+                                    <StateCode>CO</StateCode>
+                                    <Zip>80016</Zip>
+                                    <PlusFour></PlusFour>
+                                    <County></County>
+                                    <Country>United States</Country>
+                                    <AddressType>Service</AddressType>
+                                </Address>
+                                <Contact>
+                                    <FirstName>Sanjay</FirstName>
+                                    <LastName>Rao</LastName>
+                                    <Phone>9195441234</Phone>
+                                    <Email>srao@bandwidth.com</Email>
+                                </Contact>
+                                <ReservationAllowed>true</ReservationAllowed>
+                                <LnpEnabled>true</LnpEnabled>
+                                <AltSpid>X455</AltSpid>
+                                <SPID>9999</SPID>
+                                <PortCarrierType>WIRELINE</PortCarrierType>
+                            </Account>
+                        </AccountResponse>
+
+/aeuis: !include aeuis/aeuis.raml
+/availableNumbers: !include availableNumbers/availableNumbers.raml
+/inserviceNumbers: !include inserviceNumbers/inserviceNumbers.raml
+/orders: !include orders/orders.raml
+/lnpchecker: !include lnpchecker/lnpchecker.raml
+/portins: !include portins/portins.raml
+/disconnects: !include disconnects/disconnects.raml
+/discnumbers: !include discNumbers/discNumbers.raml
+/hosts: !include hosts/hosts.raml
+/portouts: !include portouts/portouts.raml
+/lsrorders: !include lsrorders/lsrorders.raml
+/lidbs: !include lidbs/lidbs.raml
+/dldas: !include dldas/dldas.raml
+/e911s: !include e911s/e911s.raml
+/tnoptions: !include tnoptions/tnoptions.raml
+/lineOptionOrders: !include lineoptionorders/lineOptionOrders.raml
+/subscriptions: !include subscriptions/subscriptions.raml
+/availableNpaNxx: !include availableNpaNxx/availableNpaNxx.raml
+/reports: !include reports/reports.raml
+/tnreservation: !include tnreservation/tnreservation.raml
+/billingreports: !include billingreports/billingreports.raml
+/bdrs: !include bdrs/bdrs.raml
+/users: !include users/users.raml
+/sites: !include sites/sites.raml
+/products: !include products/products.raml
+/importToAccount: !include importtoaccount/importtoaccount.raml
+/sipcredentials: !include sipcredentials/sipcredentials.raml
+/externalTns: !include externalTns/externalTns.raml
+/numbersAssignment: !include numbersAssignment/numbersAssignment.raml
+/analytics: !include analytics/analytics.raml
+/trunkgroups: !include trunkgroups/trunkgroups.raml

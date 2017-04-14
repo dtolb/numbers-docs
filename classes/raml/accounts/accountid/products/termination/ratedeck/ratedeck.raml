@@ -1,0 +1,50 @@
+!fileScope internal
+post:
+    description: assign rate deck to customer
+    body:
+      application/xml:
+          example:
+              <TerminationRateDeckAssignment>
+                <termServiceRateDeckId>4</termServiceRateDeckId>
+                <termServiceAccountId>50</termServiceAccountId>
+                <externalProfileId>77</externalProfileId>
+                <externalAssignmentId>12</externalAssignmentId>
+                <billingAccountId>2</billingAccountId>
+                <increaseDate>2014-10-23T14:27:33</increaseDate>
+                <decreaseDate>2014-10-23T14:27:33</decreaseDate>
+              </TerminationRateDeckAssignment>
+    responses:
+        201:
+            description: rate deck was successfully assigned
+        404:
+            description: account or ratedeck was not found
+/{assignmentId}:
+    get:
+        description: get assignment by id
+        responses:
+          200:
+            body:
+              application/xml:
+                example:
+                  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                  <TerminationRateDeckAssignmentResponse>
+                    <TerminationRateDeckAssignment>
+                        <id>4</id>
+                        <termServiceRateDeckId>5</termServiceRateDeckId>
+                        <termServiceAccountId>51</termServiceAccountId>
+                        <externalProfileId>78</externalProfileId>
+                        <externalAssignmentId>4</externalAssignmentId>
+                        <billingAccountId>1000</billingAccountId>
+                        <increaseDate>2014-10-23T12:10:35</increaseDate>
+                        <decreaseDate>2014-10-23T12:10:35</decreaseDate>
+                    </TerminationRateDeckAssignment>
+                  </TerminationRateDeckAssignmentResponse>
+          404:
+            description: account or rate deck assignment was not found
+    delete:
+        description: delete rate deck assignment
+        responses:
+            200:
+                description: rate deck assignment was deleted
+            404:
+                description:  account or rate deck assignment was not found

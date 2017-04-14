@@ -1,0 +1,84 @@
+!fileScope internal
+
+description: This resource retrieves information about users.
+get:
+    description: Retrieves the information about  all users.
+    queryParameters:
+        suggestions:
+            description: The text on which to search
+            type: string
+            example: name
+            required: false
+        page:
+            description: The number of page
+            type: integer
+            example: 2
+            required: false
+        size:
+            description: The number of items to include in a page.
+            type: integer
+            example: 100
+            required: false
+        scope:
+            description: The scope typification - internal (System, All) or external (AccountAdmin, Account).
+            type: string
+            example: external
+            required: false
+        isActive:
+            description: Filtering active and inactive users.
+            type: boolean
+            example: true
+            required: false
+    responses:
+        200:
+            description: The information has been successfully retrieved and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LdapUsersResponse>
+                            <UserList>
+                            <totalCount>4030</totalCount>
+                            <User>
+                                <FirstName>Addindg</FirstName>
+                                <LastName>User 1</LastName>
+                                <UserId>addinguser1</UserId>
+                                <Email>addinguser1@gmail.com</Email>
+                                <Scope>All</Scope>
+                                <EmailValidated>false</EmailValidated>
+                                <Active>true</Active>
+                            </User>
+                            <User>
+                                <FirstName>Adding</FirstName>
+                                <LastName>User 2</LastName>
+                                <UserId>addinguser2</UserId>
+                                <Email>addinguser2@gmail.com</Email>
+                                <Scope>All</Scope>
+                                <EmailValidated>false</EmailValidated>
+                                <Active>true</Active>
+                            </User>
+                        </LdapUsersResponse>
+
+!scope internal
+/permittedaccess:
+  description:  Indicates whether or not the user invoking the call has the named permission.
+  get:
+      description: Determine whether the current user has named permission
+      queryParameters:
+              permission:
+                  description: This is the permissionId that should be checked for user invoking the call
+                  type: string
+                  example: user-users-rd
+      responses:
+          200:
+              description: The user does have the named permission
+              body:
+                  application/xml:
+                      example: empty body
+          404:
+              description: User does not have the named permission in their set of named permissions
+              body:
+                  application/xml:
+                      example: empty body
+
+/{userId}: !include userid/userId.raml

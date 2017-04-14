@@ -1,0 +1,135 @@
+!fileScope internal
+!scope internal
+description: |
+    The Messaging settings resource is used to specialize the Messaging product for the specific wholesale account.
+
+
+!scope internal
+get:
+    description: |
+        The GET returns the current settings, indicating is Messaging product enabled now and if yes will Messaging feature be enabled on each new telephone number.
+
+    responses:
+        200:
+            description: The Messaging settings element is returned.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <MessagingSettingsResponse>
+                            <MessagingSettings>
+                                <Enabled>true</Enabled>
+                                <EnabledOnNewTN>true</EnabledOnNewTN>
+                                <OnNetRoute>X641</OnNetRoute>
+                                <OffNetUsRoute>E830</OffNetUsRoute>
+                                <OffNetCaRoute>E830</OffNetCaRoute>
+                                <ExternalCustomerOwned>E830</ExternalCustomerOwned>
+                                <ExternalThirdParty>E830</ExternalThirdParty>
+                            </MessagingSettings>
+                        </MessagingSettingsResponse>
+
+        404:
+            description: |
+                NOT FOUND
+                If the Messaging product exists on the account, but settings are missing, then the 404 not found response is used.
+                If the Messaging product does not exist on the account then the 404 will indicate that the Messaging products resource cannot be found.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <MessagingSettingsResponse>
+                            <ResponseStatus>
+                                <!-- possibly a different Errorcode will be required -->
+                                <ErrorCode>12030</ErrorCode>
+                                <Description>Messaging product settings have not been configured</Description>
+                            </ResponseStatus>
+                        </MessagingSettingsResponse>
+
+post:
+    description: |
+
+        This resource can be used for POST to establish the appropriate settings.
+
+        Some of the important values that are established as part of this termination are...
+        <table>
+            <tr><th>parameter</th><th>description</th></tr>
+            <tr><td>Enabled</td><td>[Boolean] flag to enable/disable Messaging product on the account. Value is required.</td></tr>
+            <tr><td>EnabledOnNewTN</td><td>[Boolean] flag to enable/disable Messaging feature on each new telephone number. Value is required if Enabled = true </td></tr>
+            <tr><td>ExistingTNAction</td><td>[Enum] action will be performed to all existing telephone numbers on the account. Valid values: enable, disable, nochange.</td></tr>
+            <tr><td>OnNetRoute</td><td>[String] route will be provisioned for OnNet TNs.</td></tr>
+            <tr><td>OffNetUsRoute</td><td>[String] route will be provisioned for OffNetUs TNs.</td></tr>
+            <tr><td>OffNetCaRoute</td><td>[String] route will be provisioned for OffNetCa TNs.</td></tr>
+            <tr><td>ExternalCustomerOwned</td><td>[String] route will be provisioned for ExternalCustomerOwned TNs.</td></tr>
+            <tr><td>ExternalThirdParty</td><td>[String] route will be provisioned for ExternalThirdParty TNs.</td></tr>
+        </table>
+    body:
+        application/xml:
+            example: |
+                <MessagingSettings>
+                    <Enabled>true</Enabled>
+                    <EnabledOnNewTN>true</EnabledOnNewTN>
+                    <ExistingTNAction>enable</ExistingTNAction>
+                    <OnNetRoute>X641</OnNetRoute>
+                    <OffNetUsRoute>E830</OffNetUsRoute>
+                    <OffNetCaRoute>E830</OffNetCaRoute>
+                    <ExternalCustomerOwned>E830</ExternalCustomerOwned>
+                    <ExternalThirdParty>E830</ExternalThirdParty>
+                </MessagingSettings>
+    responses:
+        200:
+            description: a 200 OK is returned on successful updating of the Messaging Settings. There is no payload returned with a 200 OK.
+        400:
+            description: a 400 BAD REQUEST will be returned with a descriptive payload if the XML describing the Messaging settings resource is incorrect or other factors prevent execution of the POST. The error contains an error code and description.
+            body:
+                application/xml:
+                    example: |
+                        <MessagingSettingsResponse>
+                            <ResponseStatus>
+                                <ErrorCode>******</ErrorCode>
+                                <Description>The supplied ExistingTNAction 'foo' is not valid. Valid values: ENABLE, DISABLE, NOCHANGE</Description>
+                            </ResponseStatus>
+                        </MessagingSettingsResponse>
+put:
+    description: |
+
+        This resource can be used for PUT to establish the appropriate settings. Messaging settings cannot be changed if previous settings are not applied yet.
+
+        Some of the important values that are established as part of this termination are...
+        <table>
+            <tr><th>parameter</th><th>description</th></tr>
+            <tr><td>Enabled</td><td>[Boolean] flag to enable/disable Messaging product on the account. Value is required.</td></tr>
+            <tr><td>EnabledOnNewTN</td><td>[Boolean] flag to enable/disable Messaging feature on each new telephone number. Value is required if Enabled = true </td></tr>
+            <tr><td>ExistingTNAction</td><td>[Enum] action will be performed to all existing telephone numbers on the account. Valid values: enable, disable, nochange.</td></tr>
+            <tr><td>OnNetRoute</td><td>[String] route will be provisioned for OnNet TNs.</td></tr>
+            <tr><td>OffNetUsRoute</td><td>[String] route will be provisioned for OffNetUs TNs.</td></tr>
+            <tr><td>OffNetCaRoute</td><td>[String] route will be provisioned for OffNetCa TNs.</td></tr>
+            <tr><td>ExternalCustomerOwned</td><td>[String] route will be provisioned for ExternalCustomerOwned TNs.</td></tr>
+            <tr><td>ExternalThirdParty</td><td>[String] route will be provisioned for ExternalThirdParty TNs.</td></tr>
+        </table>
+    body:
+        application/xml:
+            example: |
+                <MessagingSettings>
+                    <Enabled>true</Enabled>
+                    <EnabledOnNewTN>true</EnabledOnNewTN>
+                    <ExistingTNAction>enable</ExistingTNAction>
+                    <OnNetRoute>X641</OnNetRoute>
+                    <OffNetUsRoute>E830</OffNetUsRoute>
+                    <OffNetCaRoute>E830</OffNetCaRoute>
+                    <ExternalCustomerOwned>E830</ExternalCustomerOwned>
+                    <ExternalThirdParty>E830</ExternalThirdParty>
+                </MessagingSettings>
+    responses:
+        200:
+            description: a 200 OK is returned on successful updating of the SMS Settings. There is no payload returned with a 200 OK.
+        400:
+            description: a 400 BAD REQUEST will be returned with a descriptive payload if the XML describing the SMS settings resource is incorrect or other factors prevent execution of the POST. The error contains an error code and description.
+            body:
+                application/xml:
+                    example: |
+                        <MessagingSettingsResponse>
+                            <ResponseStatus>
+                                <ErrorCode>******</ErrorCode>
+                                <Description>MessagingSettings are processing now. You cannot change it before previous settings was applied.</Description>
+                            </ResponseStatus>
+                        </MessagingSettingsResponse>

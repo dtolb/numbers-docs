@@ -1,0 +1,40 @@
+!fileScope external
+        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<E911Order>
+    <OrderCreateDate>2015-06-16T14:03:10.199Z</OrderCreateDate>
+    <AccountId>111</AccountId>
+    <CreatedByUser>admin</CreatedByUser>
+    <OrderId>8578086b-f73d-4a0f-bba6-d20399c7de31</OrderId>
+    <LastModifiedDate>2015-06-16T14:03:10.789Z</LastModifiedDate>
+    <ErrorList>
+        <Error>
+            <Code>8003</Code>
+            <Description>Telephone numbers does not belong to this account.</Description>
+            <TelephoneNumbers>
+                <TelephoneNumber>3172000000</TelephoneNumber>
+            </TelephoneNumbers>
+        </Error>
+        <Error>
+            <Code>8009</Code>
+            <Description>Telephone numbers not in 'Inservice'</Description>
+            <TelephoneNumbers>
+                <TelephoneNumber>3172000000</TelephoneNumber>
+            </TelephoneNumbers>
+        </Error>
+    </ErrorList>
+    <Address>
+        <HouseNumber>901</HouseNumber>
+        <StreetName>Main Campus Drive</StreetName>
+        <City>Raleigh</City>
+        <StateCode>NC</StateCode>
+        <Zip>27606</Zip>
+        <Country>United States</Country>
+    </Address>
+    <CallerName>testName111111</CallerName>
+    <CustomerOrderId>test</CustomerOrderId>
+    <ProcessingStatus>PARTIAL</ProcessingStatus>
+    <TelephoneNumbers>
+        <TelephoneNumber>3172000218</TelephoneNumber>
+        <TelephoneNumber>3172000000</TelephoneNumber>
+    </TelephoneNumbers>
+</E911Order>

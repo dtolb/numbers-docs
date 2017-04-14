@@ -1,0 +1,19 @@
+!fileScope external
+
+description: Retrieves a list of all area codes of the telephone numbers associated with the specified port-in number.
+
+!scope external
+get:
+    description: Retrieves a list of area codes associated with the specified port-in number and displays them in the payload.
+    responses:
+        200:
+            description: The area codes have been successfully retrieved and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <TelephoneDetailsReports>
+                            <TelephoneDetailsReport>
+                                <AreaCode>919</AreaCode>
+                                <Count>1</Count>
+                            </TelephoneDetailsReport>
+                        </TelephoneDetailsReports>

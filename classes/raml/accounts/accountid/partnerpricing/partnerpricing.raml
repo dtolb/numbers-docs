@@ -1,0 +1,155 @@
+!fileScope internal
+
+description: |
+    The account-level partner pricing API provides resellers the ability to enter details regarding the marked-up prices they charge their own
+    customers for the services Bandwidth provides.  This information is required to calculate the federal, state, and local taxes on behalf of the
+    reseller, and create an invoice resellers can pass along to their customers.<br /><br />
+    While this API allows partner pricing to be set globally for a reseller at the account level, a similar API exists at the site level.  The
+    site-level partner pricing API is optional and overrides account-level partner pricing values where configured.  A zero value for a pricing entry
+    at the site level implies that the account-level partner pricing value should be used.
+get:
+    description:
+        Retrieve account-level partner pricing information.
+    responses:
+        200:
+            description:
+                An HTTP 200 (OK) is returned when the call to retrieve partner pricing details was successful.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <PartnerPricingResponse>
+                            <PartnerPricing>
+                                <Seat>
+                                    <SeatActivation>0.05</SeatActivation>
+                                    <SeatRecurring>
+                                        <UC250>0.02</UC250>
+                                        <UC500>0.03</UC500>
+                                        <UC1000>0.04</UC1000>
+                                    </SeatRecurring>
+                                </Seat>
+                                <TollFree>
+                                    <Activation>0.05</Activation>
+                                    <Recurring>0.06</Recurring>
+                                    <PerMinute>0.07</PerMinute>
+                                </TollFree>
+                                <E911>
+                                    <Activation>0.08</Activation>
+                                    <Recurring>0.09</Recurring>
+                                </E911>
+                                <N11Cost>1.00</N11Cost>
+                                <CNAM>
+                                    <Activation>1.01</Activation>
+                                    <Recurring>1.02</Recurring>
+                                </CNAM>
+                                <DLDA>
+                                    <Activation>1.03</Activation>
+                                    <Recurring>1.04</Recurring>
+                                </DLDA>
+                                <OveragePerMinute>1.05</OveragePerMinute>
+                                <Port>1.06</Port>
+                                <Disconnection>1.07</Disconnection>
+                                <TrunkActivation>1.08</TrunkActivation>
+                                <CloudTrunkRecurring>1.09</CloudTrunkRecurring>
+                                <PremiseTrunkRecurring>2.00</PremiseTrunkRecurring>
+                                <Number>
+                                    <Activation>2.01</Activation>
+                                    <Recurring>2.02</Recurring>
+                                </Number>
+                                <Countries>
+                                    <Country>
+                                        <Name>Canada</Name>
+                                        <PerMinute>2.14</PerMinute>
+                                    </Country>
+                                    <Country>
+                                        <Name>United States</Name>
+                                        <PerMinute>2.13</PerMinute>
+                                    </Country>
+                                </Countries>
+                            </PartnerPricing>
+                        </PartnerPricingResponse>
+        400:
+            description: |
+                An HTTP 400 (BAD REQUEST) is returned if request is invalid, e.g. if the account is one for which partner pricing information is not applicable.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <PartnerPricingResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12017</ErrorCode>
+                                <Description>Account '1234' does not have product 'UcTrunking'</Description>
+                            </ResponseStatus>
+                        </PartnerPricingResponse>
+
+put:
+    description: |
+        Updates the partner pricing information for the account with the values provided.
+    body:
+        application/xml:
+            example: |
+                <PartnerPricing>
+                    <Seat>
+                        <SeatActivation>0.05</SeatActivation>
+                        <SeatRecurring>
+                            <UC250>0.02</UC250>
+                            <UC500>0.03</UC500>
+                            <UC1000>0.04</UC1000>
+                        </SeatRecurring>
+                    </Seat>
+                    <TollFree>
+                        <Activation>0.05</Activation>
+                        <Recurring>0.06</Recurring>
+                        <PerMinute>0.07</PerMinute>
+                    </TollFree>
+                    <E911>
+                        <Activation>0.08</Activation>
+                        <Recurring>0.09</Recurring>
+                    </E911>
+                    <N11Cost>1.00</N11Cost>
+                    <CNAM>
+                        <Activation>1.01</Activation>
+                        <Recurring>1.02</Recurring>
+                    </CNAM>
+                    <DLDA>
+                        <Activation>1.03</Activation>
+                        <Recurring>1.04</Recurring>
+                    </DLDA>
+                    <OveragePerMinute>1.05</OveragePerMinute>
+                    <Port>1.06</Port>
+                    <Disconnection>1.07</Disconnection>
+                    <TrunkActivation>1.08</TrunkActivation>
+                    <CloudTrunkRecurring>1.09</CloudTrunkRecurring>
+                    <PremiseTrunkRecurring>2.00</PremiseTrunkRecurring>
+                    <Number>
+                        <Activation>2.01</Activation>
+                        <Recurring>2.02</Recurring>
+                    </Number>
+                    <Countries>
+                        <Country>
+                            <Name>Canada</Name>
+                            <PerMinute>2.14</PerMinute>
+                        </Country>
+                        <Country>
+                            <Name>United States</Name>
+                            <PerMinute>2.13</PerMinute>
+                        </Country>
+                    </Countries>
+                </PartnerPricing>
+    responses:
+        200:
+            description:
+                An HTTP 200 (OK) is returned when the call to update partner pricing details was successful.
+        400:
+            description:
+                An HTTP 400 (BAD REQUEST) is returned if request is invalid, e.g. if the account is one for which partner pricing information is not applicable.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <PartnerPricingResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12017</ErrorCode>
+                                <Description>Account '1234' does not have product 'UcTrunking'</Description>
+                            </ResponseStatus>
+                        </PartnerPricingResponse>

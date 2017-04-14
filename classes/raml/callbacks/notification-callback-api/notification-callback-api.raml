@@ -1,0 +1,57 @@
+!fileScope all
+
+description: |
+    The notification callback API is used notify customers of events and changes that occur with various feature and service orders that are being processed by the Bandwidth Dashboard on their behalf.  In general this notification callback will be called whenever an order that is in-scope changes state or has a note added to it.<br><br>
+
+    When an order changes the Bandwidth Dashboard will POST a pre-defined payload to our customer at the URL that they have defined by use of the /accounts/<account-id>/subscriptions API call.  Please see the documentation on that API call to understand how to register the notification callback API with the Bandwidth Dashboard.<br><br>
+
+post:
+    description: |
+        The POST to the callback API contains a summary of the order that is independent of the type of the order that caused the event that in turn caused the notification callback.  This requires that the customer's end system place an API call to the Bandwidth Dashboard to gather additional details on the change to the order if that is important.  <br><br>
+
+        This approach was taken for two reasons:
+        <ul>
+        <li>some (or many) of the notifications might not require action.</li>
+        <li>since orders contain different information, providing order-specific information would cause an undesirable tight linkage between notifications and every type of order, mandating API changes whenever the data associated with an order changed. </li>
+        </ul><br><br>
+
+        The payload of the POST contains:
+        <ul>
+        <li> the Subscription ID that the notification is in response to.</li>
+        <li> the type of order that the notification applies to.</li>
+        <li> the order ID of the order that has changed </li>
+        <li> the new state of the order </li>
+        <li> a message if one was attached as part of the state change.  This will often be present in error cases.</li>
+        <li> the body of any note that was attached to the order, if applicable</li>
+        <li> list of the completed telephone numbers for Port-in/Port-out/New Number/Disconnect orders in terminal state</li>
+        </ul><br><br>
+
+        The Payload follows
+
+    body:
+        application/xml:
+            example: |
+                <?xml version="1.0"?>
+                <Notification>
+                    <SubscriptionId>...</SubscriptionId>
+                    <OrderType>portins | portouts | orders | disconnects | dldas | lsrorders | e911s | tnoptions</OrderType>
+                    <OrderId>...</OrderId>
+                    <!-- for order update events -->
+                    <Status>COMPLETE | FAILED | PARTIAL | EXCEPTION ... </Status>
+                    <!-- for order update events -->
+                    <Message>...</Message>
+                    <!-- for note events -->
+                    <Note>...</Note>
+                    <!-- for portins/portouts/orders/disconnects OrderTypes -->
+                    <CompletedTelephoneNumbers>
+                        <TelephoneNumber> ... </TelephoneNumber>
+                        <!-- ... -->
+                    </CompletedTelephoneNumbers>
+                </Notification>
+    responses:
+        200:
+            description: |
+                a 200 OK is presumed to be acceptance of the API call.  In the case of the notification callback API the response code and any returned message is stored in the &lt;Status&gt; element of the &lt;Subscription&gt;
+        400:
+            description: |
+                Anything other than a 200 OK is presumed to be a failure of the API call.  In the case of the notification callback API the response code and any returned message is stored in the &lt;Status&gt; element of the &lt;Subscription&gt;.  No subsequent action is taken is based on the error.

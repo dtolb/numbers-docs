@@ -1,0 +1,83 @@
+!fileScope internal
+description: |
+    Lidb orders track the assignment of TNs to Accounts, and comprise the most common use of the Bandwidth Dashboard API.
+    The *+orders+* global search API will search the system for lidb orders, filtered by a wide range of filter parameters.
+    
+get:
+    description: |
+        Retrieve information about one or more Lidb Orders (lidbs), where the orders are chosen based on the search parameters provided in the API Call. 
+        Not all search parameters are compatible with all other search parameters, due to the complexity of searching for historical records using highly parameterize or complex searches.  As a result:
+        <ul>
+             <li>all query parameters are compatible with the exception of...</li>
+             <li>if modifiedFromDate or modifiedToDate are specified, then the only other valid search parameters are accountId, sippeerId or siteId</li>
+             <li>sippeerId and siteId are only compatible with searches that have a date range parameter.</li>
+        </ul>
+    queryParameters:
+        accountId:
+            description: This is the account that the searched-for order will be contributing to.  Specifying this parameter will restrict the search to lidb orders within the specified account.
+            type: integer
+            example: 9900012
+            repeat: true
+        status:
+            description: The status of the lidb order being searched for.
+            type: string
+            example: PROCESSING
+            enum: [RECEIVED, PROCESSING, COMPLETE, PARTIAL, FAILED]
+            repeat: true
+        tn:
+            description: A Telephone Number (TN) that is referenced in the order
+            type: string
+            example: 9199918388
+        customerOrderId:
+            description: The Customer Order ID is an ID assigned by the account owner to provide a reference number for the Lidb order.
+            type: string
+            example: ABCCorp12345
+        orderIdFragment:
+            description: This search parameter represents the internal Bandwidth Dashboard ID that has been assigned to the Lidb Order.  This parameter is the first few characters of the internal ID - the entire ID does not need to be specified.
+            type: string
+            example: ed1c0bed-e2
+        siteId:
+            description: The numeric designation for the Site ID that applied to the Lidb Order.  The SiteId is used to provide a home within the account for the TN(s) that were in Lidb Order.
+            type: integer
+            example: 645881
+        sippeerId:
+            description: The numeric designation for the Location or SIP PEER ID that applied to the Lidb Order.  The SIP Peer ID is used to provide a home within the location for the TN(s) that were in Lidb Order.
+            type: integer
+            example: 456        
+        modifiedDateFrom:
+            description: For Date-based searches, the starting date of a date range that will be used to find Lidb Orders that were modified within the date range.  It is in the form yyyy-MM-dd.
+            type: string
+            example: 2013-10-22
+        modifiedDateTo:
+            description: For Date-based searches, the ending date of a date range that will be used to find Lidb Orders that were modified within the date range.  It is in the form yyyy-MM-dd.
+            type: string
+            example: 2013-10-25
+        createdDateFrom: 
+            description: Checks the order's creation date against this value. Orders that have a creation date after this date will be included. Format is yyyy-MM-dd 
+            type: string
+            example: 2013-10-22
+        createdDateTo:
+            description: Checks the order's creation date against this value. Orders that have a creation date before this date will be included. Format is yyyy-MM-dd 
+            type: string
+            example: 2013-10-25
+        lastModifiedAfter:
+            description: Checks the order's last modified date against this value. Orders that have a modification date after this date will be included. Format is yyyy-MM-dd 
+            type: string
+            example: 2013-10-25
+        lastModifiedBy:
+            description: This is the user-name of the user that last modified the LIDB Order.
+            type: string
+            example: smckinnon
+    responses:    
+        200:
+            description: |
+                The descriptive payload for the E911 Orders query provides a broad range of information about the Lidb  Orders found by the query, including the data associated with the order, the state of the order, and details about the order if it was successful.
+
+            body: 
+                application/xml:
+                      example: !include GET_200_response_example.xml
+        404:
+            description: Not Found.  If any errors are found in the processing of the query string a 404 will be returned.  Note that parameters that are not recognized are not considered errors, and are just ignored. 
+            
+!fileScope internal
+/{orderId}: !include orderid/orderid.raml

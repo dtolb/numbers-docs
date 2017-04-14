@@ -1,0 +1,16 @@
+!fileScope external
+
+description: The get method retrieves the sippeers associated with that telephone number.
+
+get:
+    description: Retrieves the sippeers associated with that telephone number.
+    responses:
+        200:
+            description: The sippeers have been successfully retrieved and displayed.
+            body:
+                application/xml:
+                    example:
+                        <SipPeer>
+                            <Id>305643</Id>
+                            <Name>PeerOneSiteThree</Name>
+                        </SipPeer>

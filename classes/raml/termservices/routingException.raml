@@ -1,0 +1,49 @@
+!fileScope internal
+get:
+    description: get all get routing exception
+    responses:
+        200:
+            description: managed to get all accounts
+            body:
+                application/json:
+                    example: |
+                        [
+                            {
+                              "id" : null,
+                              "routingExceptionName" : "ROUTING_EXCEPTION_14111",
+                              "routingExceptions" : [
+                                {
+                                    "routingExceptionType" : "BLOCK",
+                                    "prefix" : "303456"
+                                }
+                              ]
+                            }
+                        ]
+post:
+    description: create routing exception
+    body:
+        application/json:
+            example: |
+                {
+                  "id" : null,
+                  "routingExceptionName" : "ROUTING_EXCEPTION_1411116563654",
+                  "routingExceptions" : [
+                    {
+                        "routingExceptionType" : "BLOCK",
+                        "prefix" : "303456"
+                    }
+                  ]
+                }
+    responses:
+        201:
+            description: routing exception was successfully created
+        400:
+            description: required fields are absent
+/{id}:
+    delete:
+        description: delete routing exception
+        responses:
+            200:
+                description: routing exception was deleted
+            404:
+                description: routing exception with specified id was not found

@@ -1,0 +1,23 @@
+!fileScope internal
+
+description: the <b>testapi</b> resource is a hidden resource that is used to create test stubs and similar entities.  All attempts to do anything with directly with this resource will respond with a 404 not found.
+
+get:
+    responses: 
+        404:
+            description: Not Found - this resource is not seen to exist
+post:
+    responses: 
+        404:
+            description: Not Found - this resource is not seen to exist
+put:
+    responses:    
+        404:
+            description: Not Found - this resource is not seen to exist
+delete:
+    responses:   
+        404:
+            description: Not Found - this resource is not seen to exist
+
+/notesTest: !include notestest/notestest.raml
+/mockpot/portouts: !include mockpot/portouts/portouts.raml

@@ -1,0 +1,31 @@
+!fileScope internal
+!scope internal
+description: This resource provides information about losing carrier that ownes telephone numbers which are being ported.
+get:
+    description: Retrieves information about losing carrier.
+    responses:
+        200:
+            description: Losing carrier information has been successfully retrieved and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <PortinLosingCarrierResponse>
+                            <LosingCarrier>
+                                <Spid>979E</Spid>
+                                <Name>Bandwidth</Name>
+                                <Wireless>false</Wireless>
+                                <AccountNumberRequired>false</AccountNumberRequired>
+                                <MinimumPortingInterval>1</MinimumPortingInterval>
+                            </LosingCarrier>
+                        </PortinLosingCarrierResponse>
+        404:
+            description: order is not found.
+            body:
+                application/xml:
+                    example: |
+                        <PortinLosingCarrierResponse>
+                            <ResponseStatus>
+                                <ErrorCode>5035</ErrorCode>
+                                <Description>port_in order 5d1086cf-f867-4811-a085-42ee966ef3a2 not found.</Description>
+                            </ResponseStatus>
+                        </PortinLosingCarrierResponse>

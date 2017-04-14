@@ -1,0 +1,30 @@
+!fileScope internal
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ExternalTnsOrder>
+    <OrderCreateDate>2016-01-15T11:36:52.727Z</OrderCreateDate>
+    <AccountId>1</AccountId>
+    <CreatedByUser>jbm</CreatedByUser>
+    <OrderId>65e03a35-6b97-48a5-8126-f47bad02df2a</OrderId>
+    <ProcessingStatus>PARTIAL</ProcessingStatus>
+    <Order>
+        <CustomerOrderID>ICPA123ABC</CustomerOrderID>
+        <SiteId>743</SiteId>
+        <SipPeerId>303716</SipPeerId>
+        <Action>[ IMPORT | REMOVE ]</Action>
+        <TelephoneNumbers>
+            <TelephoneNumber>9199918388</TelephoneNumber>
+            <TelephoneNumber>4158714245</TelephoneNumber>
+            <TelephoneNumber>4352154439</TelephoneNumber>
+            <TelephoneNumber>4352154466</TelephoneNumber>
+        </TelephoneNumbers>
+    </Order>
+    <Errors>
+        <Error>
+            <Code>[int]</Code>
+            <Description>[string]</Description>
+            <TelephoneNumbers>
+                <TelephoneNumber>9199918388</TelephoneNumber>
+            </TelephoneNumbers>
+        </Error>
+    </Errors>
+</ExternalTnsOrder>

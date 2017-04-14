@@ -1,0 +1,69 @@
+!fileScope internal
+
+description: |
+    The "orderId" resource refers to a specific element of the orders collection.  Examining that resource provides detailed information on the specific identified order.
+
+get:
+    description: |
+        Retrieve information about a specific Lidb Order identified as the resource.
+
+    responses:
+        200:
+            description: |
+                The descriptive payload for the Lidb Orders query provides a broad range of information about the Lidb Order identified in the URL.  Included amongst the information is:
+                <ul>
+                <li>ErrorList - the errors discovered with codes and explanations</li>
+                <li>various dates</li>
+                <li>ProcessingStatus(RECEIVED, PROCESSING, COMPLETE, PARTIAL, FAILED) - the overall status of the order</li>
+                <li>LidbTnGroups - list of LidbTnGroup elements that contains list of TNs with SubscriberInformation, UseType(RESIDENTIAL or BUSINESS) and Visibility (PUBLIC or PRIVATE)</li>
+                </ul>
+
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LidbOrder>
+                            <CustomerOrderId>testCustomerOrderId</CustomerOrderId>
+                            <orderId>255bda29-fc57-44e8-a6c2-59b45388c6d0</orderId>
+                            <OrderCreateDate>2014-05-28T14:46:21.724Z</OrderCreateDate>
+                            <ProcessingStatus>RECEIVED</ProcessingStatus>
+                            <CreatedByUser>jbm</CreatedByUser>
+                            <LastModifiedDate>2014-02-20T19:33:17.600Z</LastModifiedDate>
+                            <OrderCompleteDate>2014-02-20T19:33:17.600Z</OrderCompleteDate>
+                            <ErrorList/>
+                            <LidbTnGroups>
+                                <LidbTnGroup>
+                                    <TelephoneNumbers>
+                                        <TelephoneNumber>4082213311</TelephoneNumber>
+                                    </TelephoneNumbers>
+                                    <FullNumber>8042105618</FullNumber>
+                                    <SubscriberInformation>Fred</SubscriberInformation>
+                                    <UseType>BUSINESS</UseType>
+                                    <Visibility>PRIVATE</Visibility>
+                                </LidbTnGroup>
+                                <LidbTnGroup>
+                                    <TelephoneNumbers>
+                                        <TelephoneNumber>4082212850</TelephoneNumber>
+                                        <TelephoneNumber>4082213310</TelephoneNumber>
+                                    </TelephoneNumbers>
+                                    <FullNumber>8042105760</FullNumber>
+                                    <SubscriberInformation>Fred</SubscriberInformation>
+                                    <UseType>RESIDENTIAL</UseType>
+                                    <Visibility>PUBLIC</Visibility>
+                                </LidbTnGroup>
+                            </LidbTnGroups>
+                        </LidbOrder>
+        404:
+            description: NOT FOUND - the order id does not exist in the system
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LidbOrderReportResponse>
+                            <ResponseStatus>
+                                <Description>The resource does not exist</Description>
+                            </ResponseStatus>
+                        </LidbOrderReportResponse>
+
+!fileScope internal
+/history: !include history/history.raml

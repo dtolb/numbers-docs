@@ -1,0 +1,63 @@
+!fileScope external
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<DldaOrderResponse>
+    <ResponseStatus>
+        <ErrorCode>16104</ErrorCode>
+        <Description>No numbers for processing</Description>
+    </ResponseStatus>
+    <DldaOrder>
+        <CustomerOrderId>REST Site</CustomerOrderId>
+        <OrderCreateDate>2014-07-17T10:06:55.204Z</OrderCreateDate>
+        <AccountId>14</AccountId>
+        <CreatedByUser>team_ua</CreatedByUser>
+        <LastModifiedDate>2014-07-17T10:06:55.204Z</LastModifiedDate>
+        <ErrorList>
+            <Error>
+                <Code>5070</Code>
+                <Description>Telephone number is invalid.</Description>
+                <TelephoneNumber></TelephoneNumber>
+            </Error>
+        </ErrorList>
+        <ProcessingStatus>FAILED</ProcessingStatus>
+        <DldaTnGroups>
+            <DldaTnGroup>
+                <TelephoneNumbers>
+                    <TelephoneNumber></TelephoneNumber>
+                </TelephoneNumbers>
+                <AccountType>RESIDENCE</AccountType>
+                <ListingType>LISTED</ListingType>
+                <ListingName>
+                    <FirstName>John</FirstName>
+                    <FirstName2></FirstName2>
+                    <LastName>Smith</LastName>
+                    <Designation></Designation>
+                    <TitleOfLineage></TitleOfLineage>
+                    <TitleOfAddress></TitleOfAddress>
+                    <TitleOfAddress2></TitleOfAddress2>
+                    <TitleOfLineageName2></TitleOfLineageName2>
+                    <TitleOfAddressName2></TitleOfAddressName2>
+                    <TitleOfAddress2Name2></TitleOfAddress2Name2>
+                    <PlaceListingAs></PlaceListingAs>
+                </ListingName>
+                <ListAddress>true</ListAddress>
+                <Address>
+                    <HousePrefix></HousePrefix>
+                    <HouseNumber>915</HouseNumber>
+                    <HouseSuffix></HouseSuffix>
+                    <PreDirectional></PreDirectional>
+                    <StreetName>Elm</StreetName>
+                    <StreetSuffix>Ave</StreetSuffix>
+                    <PostDirectional></PostDirectional>
+                    <AddressLine2></AddressLine2>
+                    <City>Carpinteria</City>
+                    <StateCode>CA</StateCode>
+                    <Zip>93013</Zip>
+                    <PlusFour></PlusFour>
+                    <County></County>
+                    <Country>United States</Country>
+                    <AddressType>DLDA</AddressType>
+                </Address>
+            </DldaTnGroup>
+        </DldaTnGroups>
+    </DldaOrder>
+</DldaOrderResponse>

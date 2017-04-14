@@ -1,0 +1,202 @@
+!fileScope internal
+
+description: |
+    TNs that have been ported directly with a trading partner may be imported to an account. For importing numbers, use the POST API.
+    This API requires special permissions and a special contractual relationship with Bandwidth.  In general it will <b>not</b> be available for most accounts.
+    Note - this url is case sensitive
+get:
+    description: |
+        A GET will return a list of the Import to Account orders that have previously performed on the account.  The query must always specify pagination parameters (size, page).  The results can also be optionally limited with start date and end date .
+    queryParameters:
+        page:
+            type: string
+            required: true
+            description: The starting value for pagination of the payload/.  Expect in the initial page case this is the ID of the first record.
+            example: 1
+        size:
+            description: The number of records to return in a "page"
+            type: string
+            example: 300
+        startdate:
+            description: The starting date of a date range in the form yy-mm-yy
+            type: string
+            example: 13-12-01
+        enddate:
+            description: The ending date of a date range in the form yy-mm-yy
+            type: string
+            example: 13-12-31
+    responses:   
+        200:
+            description: |
+                The response provides a list of all of the orders in the date range that have been issued against the account.
+
+                Included in the response for each order id (as applicable) are
+                <ul>
+                <li> the number of TNs in the order
+                <li> the user that issued the order
+                <li> the dates that the order was created and last lastModifiedDate
+                <li> the order-ID
+                <li> the status of the order
+                <ul>
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <ResponseSelectWrapper>
+                            <ListOrderIdUserIdDate>
+                                <TotalCount>3</TotalCount>
+                                <Links>
+                                    <first>Link=&lt;http://api.qa.inetwork.com/iris/accounts/12346099/importToAccount?page=1&amp;size=5&gt;;rel="first";</first>
+                                </Links>
+                                <OrderIdUserIdDate>
+                                    <CountOfTNs>0</CountOfTNs>
+                                    <userId>jbm</userId>
+                                    <lastModifiedDate>2013-12-06T15:26:29Z</lastModifiedDate>
+                                    <OrderDate>2013-12-06T15:26:29.443Z</OrderDate>
+                                    <orderId>82a09163-9a76-49bd-9e73-cbc3aaac1c20</orderId>
+                                    <OrderStatus>FAILED</OrderStatus>
+                                </OrderIdUserIdDate>
+                                <OrderIdUserIdDate>
+                                    <CountOfTNs>2</CountOfTNs>
+                                    <userId>jbm</userId>
+                                    <lastModifiedDate>2014-04-01T21:54:19Z</lastModifiedDate>
+                                    <OrderDate>2014-04-01T21:54:18.796Z</OrderDate>
+                                    <orderId>c5986599-3a7c-4eed-a5c4-9121c17d54ab</orderId>
+                                    <OrderStatus>COMPLETE</OrderStatus>
+                                    <TelephoneNumberDetails>
+                                        <States>
+                                            <StateWithCount>
+                                                <State>CA</State>
+                                                <Count>1</Count>
+                                            </StateWithCount>
+                                            <StateWithCount>
+                                        <!-- ... SNIP ... -->
+                                            </TierWithCount>
+                                        </Tiers>
+                                        <Vendors>
+                                            <VendorWithCount>
+                                                <VendorId>49</VendorId>
+                                                <VendorName>Bandwidth CLEC</VendorName>
+                                                <Count>3</Count>
+                                            </VendorWithCount>
+                                        </Vendors>
+                                    </TelephoneNumberDetails>
+                                </OrderIdUserIdDate>
+                            </ListOrderIdUserIdDate>
+                        </ResponseSelectWrapper>
+        404:
+            description: a 404 is returned it no appropriate order resource was found.
+
+post:
+    description: | 
+        Import a large number of previously ported or otherwise acquired numbers into the account
+
+        The various parameters in the importToAccount payload are...
+                <table style="text-align: left; width: 80%;"
+                 border="1" cellpadding="2" cellspacing="2">
+                  <thead>
+                    <tr>
+                      <th>Parameter</th><th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>accountid</td>
+                      <td>The numerical Account ID assigned to the Account.</td>
+                    </tr>
+                    <tr>
+                      <td>SiteId</td>
+                      <td>The ID of the Site that the set of TNs is to be associated with. </td>
+                    </tr>
+                    <tr>
+                      <td>PeerId</td>
+                      <td>The ID of the SIP Peer that the set of TNs is to be associated with. (optional) </td>
+                    </tr>
+                    <tr>
+                      <td>BatchId</td>
+                      <td>A user-chosen id for the batch of phone numbers.  This Batch ID can span multiple number submissions.  Up to 10 alphanumeric characters.  If  the submission is not intended to be grouped into a batch of submissions then the Batch ID must be globally unique.  <b>It is recommended that the batch ids be globally unique, and that imports not be grouped together in batches by use of a common batch id.</b></td>
+                    </tr>
+                    <tr>
+                      <td>BatchSize</td>
+                      <td>The number of TNs in the batch, aggregated across all of the orders in the batch. This total spans API Calls, so if 3 calls are necessary to import 15000 numbers, this value would be 15000.  It is recommended to use a batch size equal to the number of telephone numbers in the API call, and use a different batch name for each API call - essentially limiting a batch to a single API call.</td>
+                    </tr>
+                    <tr>
+                      <td>VendorName</td>
+                      <td>The vendor that owns the number that is being ported in.  If the number is manually ported to a partner’s network then this would reflect that partner</td>
+                    </tr>
+                    <tr>
+                        <td>BillingType</td>
+                        <td>Type of billing rules to be applied. Possible values... NOCHARGE, PORTIN, NEWNUMBER, PROJECTPORT.</td>
+                    </tr>
+                    <tr>
+                      <td>TelehoneNumberList</td>
+                      <td>List of TNs to import - limited to 5000 Telephone Numbers.</td>
+                    </tr>
+                    <tr>
+                      <td>TnAttributes</td>
+                      <td>List of phone number attributes to be assigned. Optional parameter. Possible values: "Protected".</td>
+                    </tr>
+                    <tr>
+                     <td>InitialStatus</td>
+                     <td>TN status that be assigned to imported telephone numbers. Required existence of "Protected" TnAttribute. Possible values: "Available". </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+    body:
+        application/xml:
+            example: |
+                <?xml version="1.0"?>
+                <ImportToAccountNumberOrder>
+                    <ImportToAccountNumberOrderType>
+                        <TelephoneNumberList>
+                            <TelephoneNumber>4158714244</TelephoneNumber>
+                            <TelephoneNumber>6105330709</TelephoneNumber>
+                        </TelephoneNumberList>
+                        <BillingType>NOCHARGE</BillingType>
+                        <InitialStatus>Available</InitialStatus>
+                        <TnAttributes>
+                            <TnAttribute>Protected</TnAttribute>
+                        </TnAttributes>
+                        <VendorName>Level 3</VendorName>
+                        <BatchId>TestId1234</BatchId>
+                        <BatchSize>2</BatchSize>
+                    </ImportToAccountNumberOrderType>
+                    <SiteId>1</SiteId>
+                    <PeerId>12345</PeerId>
+                </ImportToAccountNumberOrder>
+    responses:
+        201:
+            description: |
+                The POST returns a payload that directly reflects the submission, along with a location header value that points the user to the order resource that is created by the POST request.
+                The Location header value is in the form: GET ../accounts/{accountId}/importToAccount/{orderId}
+                    
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <ImportToAccountNumberOrderResponse>
+                            <orderRequest>
+                                <id>c5986599-3a7c-4eed-a5c4-9121c17d54ab</id>
+                                <OrderCreateDate>2014-04-01T21:54:18.796Z</OrderCreateDate>
+                                <ImportToAccountNumberOrderType>
+                                    <BatchId>SJM00001</BatchId>
+                                    <BatchSize>2</BatchSize>
+                                    <BillingType>NOCHARGE</BillingType>
+                                    <InitialStatus>Available</InitialStatus>
+                                    <TnAttributes>
+                                        <TnAttribute>Protected</TnAttribute>
+                                    </TnAttributes>
+                                    <TelephoneNumberList>
+                                        <TelephoneNumber>4158714245</TelephoneNumber>
+                                        <TelephoneNumber>6105330710</TelephoneNumber>
+                                    </TelephoneNumberList>
+                                    <VendorName>Level 3</VendorName>
+                                </ImportToAccountNumberOrderType>
+                                <SiteId>743</SiteId>
+                                <PeerId>12345</PeerId>
+                            </orderRequest>
+                        </ImportToAccountNumberOrderResponse>
+#
+/{orderid}: !include ita-orderid/ita-orderid.raml
+/batches: !include batches/batches.raml

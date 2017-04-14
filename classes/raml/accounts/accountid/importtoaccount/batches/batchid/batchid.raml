@@ -1,0 +1,38 @@
+!fileScope internal   
+description: |
+    A batchid identifies a specific batch of one or more orders that constitute a complete import of a (potentially large number of) Telephone Numbers.  Retrieving the information associated with a specific batch id describes the orders that were included in that batch, and the status and id of those orders.  The individual order details can be retrieved using ...
+    /.../importToAccount/{OrderId}
+
+get:
+    description: |
+        GET on an individual batch id will return the information associated with the specified batch id. 
+
+    responses:
+        200:
+            description: A 200 OK response indicates that there are batch resources associated with the batchid in the URL.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <Batches>
+                            <Batch>
+                                <BatchId>1111111111</BatchId>
+                                <OrderCreateDate>2013-10-10T15:25:16.952Z</OrderCreateDate>
+                                <OrderId>8ce7c80b-d1ce-46f1-a3a1-56a08373b576</OrderId>
+                                <OrderStatus>VALIDATION_FAILED</OrderStatus>
+                                <SubmittedTnCount>4670</SubmittedTnCount>
+                                <SuccessfulTnCount>0</SuccessfulTnCount>
+                                <BatchSize>4670</BatchSize>
+                            </Batch>
+                            <Batch>
+                                <BatchId>1111111111</BatchId>
+                                <OrderCreateDate>2013-10-10T15:19:40.402Z</OrderCreateDate>
+                                <OrderId>8a15ccf2-5e61-4f7a-8aa8-8f9e11c86bad</OrderId>
+                                <OrderStatus>IMPORT_COMPLETE</OrderStatus>
+                                <SubmittedTnCount>5000</SubmittedTnCount>
+                                <SuccessfulTnCount>5000</SuccessfulTnCount>
+                                <BatchSize>5000</BatchSize>
+                            </Batch>
+                        </Batches>
+        204:
+            description: A 204 No Content response indicates that no batch with the indicated batch id exists.

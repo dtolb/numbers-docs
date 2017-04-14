@@ -1,0 +1,65 @@
+!fileScope internal
+description: |
+    The TelephoneNumbersAssignment order resource represents the requests made to the Bandwidth Dashboard API to declare whether telephone numbers associated with the customer's account are assigned to end users or not.  This declaration of assignment is used in preparing NRUF Federal and PUC telephone number utilizatoin filings, and in providing justification for the acquisition and allocation of additional telephone numbers to the overall inventory
+    <br>
+    The API follows the Bandwidth Dashboard “order” model, where an order-id is created to track the interaction and refer back to it as needed.  This record will also be persisted to enable examination of past events.
+    <br>
+    This API allows our customers to designate the assignment status of the numbers on their account by providing a list of telephone numbers, and a designated assignment status.
+    <br>
+    
+    This Global Search API call is used for internal / admin staff to find and view any customer's TelephoneNumbersAssignment orders, to assist our customers in the management of those orders.
+    
+get:
+    description: |
+        Retrieve information about one or more TelephoneNumbersAssignment orders, where the orders are chosen based on the search parameters provided in the API Call.
+    queryParameters:
+        accountId:
+            description: This is the account in which the telephone numbers reside.  Specifying this parameter will restrict the search to numbersAssignment orders within the specified account.
+            type: integer
+            example: 9900012
+            repeat: false
+        status:
+            description: The status of the numbersAssignment Order being searched for.  The PARTIAL status indicates that some of the Telephone Numbers were not successfully processed.
+            type: string
+            example: COMPLETE
+            enum: [RECEIVED, PROCESSING, COMPLETE, PARTIAL, FAILED]
+            repeat: true
+        tn:
+            description: A Telephone Number (TN) that is referenced in the order
+            type: string
+            example: 9199918388
+        customerOrderId:
+            description: The Customer Order ID is an ID assigned by the account owner to provide a reference number for the TelephoneNumbersAssignmentOrder.
+            type: string
+            example: ABCCorp12345
+        createdDateFrom: 
+            description: Checks the order's creation date against this value. Orders that have a creation date after this date will be included. Format is yyyy-mm-dd 
+            type: string
+            example: 2013-10-22
+        createdDateTo:
+            description: Checks the order's creation date against this value. Orders that have a creation date before this date will be included. Format is yyyy-mm-dd 
+            type: string
+            example: 2013-10-25
+        orderIdFragment:
+            description: This search parameter represents the internal Bandwidth Dashboard ID that has been assigned to the TelephoneNumbersAssignmentOrder.  This parameter is the first few characters of the internal ID - the entire ID does not need to be specified.
+            type: string
+            example: ed1c0bed-e2
+        action:
+            description: whether or not the results should be restricted to ASSIGNED or UNASSIGNED assignment actions."
+            type: string
+            example: ASSIGNED
+            enum: [ASSIGNED, UNASSIGNED]
+            repeat: false
+    responses:    
+        200:
+            description: |
+                200 OK indicates that the one or more TelephoneNumbersAssignment orders have been found, and a response payload has been generated.
+
+            body: 
+                application/xml:
+                    example: !include 200_response_example.xml
+        400:
+            description: Bad Request.  If any errors are found in the processing of the query string a 400 will be returned.  Note that parameters that are not recognized are not considered errors, and are just ignored.
+            
+!fileScope internal
+/{orderId}: !include orderid/orderid.raml

@@ -1,0 +1,19 @@
+!fileScope all
+#%RAML 0.8
+---
+title: Port Out Tool (POT) REST API Documentation
+# Use null host here to trigger automatic replacement in javascript
+baseUri: http://null
+version: v1
+
+securedBy: [basic]
+
+securitySchemes:
+   - basic:
+        type: Basic Authentication
+
+/portout-webservice/portouts: !include portout-webservice/portouts.raml 
+/{iris.portout.callbacks}/accounts/{accountid}/portouts: !include portout-webservice/iris_callbacks/portouts.raml
+/{iris.statusupdate.callbacks}/accounts/{accountid}/portins/{orderid}/statusupdate: !include portout-webservice/iris_callbacks/statusupdate.raml
+
+                      

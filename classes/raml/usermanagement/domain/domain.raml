@@ -1,0 +1,38 @@
+!fileScope internal
+
+description: This resource retrieves information about domain.
+
+get:
+    description: Retrieves the information about domain with some name.
+    responses:
+        200:
+            description: The information has been successfully retrieved and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <DomainResponse>
+                            <Domain>
+                                <DomainName>Iris</DomainName>
+                                <DomainDescription>Bandwidth Dashboard API and Portal Users</DomainDescription>
+                                <DomainSettings />
+                            </Domain>
+                        </DomainResponse>
+        404:
+            description: Domain name not found.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <DomainResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12068</ErrorCode>
+                                <Description>Domain 'iris' does not exist</Description>
+                            </ResponseStatus>
+                        </DomainResponse>
+
+/permissions: !include permission/permission.raml
+/users: !include users/users.raml
+/roles: !include role/role.raml
+/accounts: !include accounts/accounts.raml
+/validation: !include validation/validation.raml

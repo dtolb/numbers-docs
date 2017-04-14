@@ -1,0 +1,79 @@
+!fileScope internal
+
+description: This resource retrieves information about permission.
+
+get:
+    description: Retrieves the information about permission by unique permission name.
+    responses:
+        200:
+            description: The information has been successfully retrieved and displayed in the payload.
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LdapPermissionResponse>
+                            <Permission>
+                                <PermissionId>report-create-instance</PermissionId>
+                                <PermissionDescription>Lets user to create report instances</PermissionDescription>
+                                <Internal>false</Internal>
+                            </Permission>
+                        </LdapPermissionResponse>
+        404:
+            description: The permission does not exist.
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LdapPermissionResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12069</ErrorCode>
+                                <Description>Permission 'report-create-instance123' does not exist</Description>
+                            </ResponseStatus>
+                        </LdapPermissionResponse>
+!scope internal
+put:
+    description: Updates the information for permission by unique permission name or creates permission, if it doesn't exist.
+    body:
+        application/xml:
+            example:
+                <Permission>
+                    <Internal>false</Internal>
+                    <PermissionDescription>Lets user to create report instances</PermissionDescription>
+                </Permission>
+    responses:
+        200:
+             description: The permission has been successfully updated or created and displayed in the payload.
+             body:
+                 application/xml:
+                     example:
+                         <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                         <LdapPermissionResponse>
+                             <Permission>
+                                 <PermissionId>report-create-instance</PermissionId>
+                                 <PermissionDescription>Lets user to create report instances</PermissionDescription>
+                                 <Internal>false</Internal>
+                             </Permission>
+                         </LdapPermissionResponse>
+
+!scope internal
+delete:
+    description: Removes specified permission.
+    responses:
+        200:
+            description: The permission has been successfully removed.
+        404:
+            description:
+                The permission does not exist.
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LdapPermissionResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12069</ErrorCode>
+                                <Description>Permission 'test-permission2' does not exist</Description>
+                            </ResponseStatus>
+                        </LdapPermissionResponse>
+
+
+

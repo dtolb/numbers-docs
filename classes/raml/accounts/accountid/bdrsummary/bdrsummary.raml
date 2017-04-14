@@ -1,0 +1,67 @@
+!fileScope internal
+
+description: |
+    <b>This functionality has not been completed for release</b><br>
+    The account-level BDR Summary API provides resellers the ability to collect, from Iris, a complete set of usage information aggregated at the account level for the purpose of facilitating the reseller's customer billing efforts.
+    This API call is restricted to UC accounts only, and will return an error payload if the account does not support the UC product
+get:
+    description:
+        Retrieve account-level BDR summary.
+    queryParameters:
+        startDate:
+            description: Start of date range (inclusive) for the data requested.  Must fall before endDate with a date range of no more than 32 days.
+            type: string
+            example: 2013-11-01
+            required: true
+        endDate:
+            description: End of date range (inclusive) for the data requested.  Must be after startDate with a date range of no more than 32 days.
+            type: string
+            example: 2013-12-01
+            required: true
+    responses:
+        200:
+            description: |
+                An HTTP 200 (OK) is returned when the call to retrieve the BDR Summary was successful.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <BdrSummaryResponse>
+                            <BdrSummary>
+                                <DateRange>
+                                    <StartDate>2013-01-01</StartDate>
+                                    <EndDate>2013-02-01</EndDate>
+                                </DateRange>
+                                <AllowedUsage>0</AllowedUsage>
+                                <ExcessMinutes>0</ExcessMinutes>
+                                <Seats>182</Seats>
+                                <TollFreeNumbers>1</TollFreeNumbers>
+                                <Calls>
+                                    <Domestic>0</Domestic>
+                                    <E911>0</E911>
+                                    <International>0</International>
+                                    <N11>0</N11>
+                                    <TollFree>0</TollFree>
+                                </Calls>
+                                <Minutes>
+                                    <Domestic>0</Domestic>
+                                    <E911>0</E911>
+                                    <International>0</International>
+                                    <N11>0</N11>
+                                    <TollFree>0</TollFree>
+                                </Minutes>
+                            </BdrSummary>
+                        </BdrSummaryResponse>
+        400:
+            description: |
+                An HTTP 400 (BAD REQUEST) is returned if request is invalid, e.g. if the account is not a UC Trunking account.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <BdrSummaryResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12017</ErrorCode>
+                                <Description>Account '1' does not have product 'UcTrunking'</Description>
+                            </ResponseStatus>
+                        </BdrSummaryResponse>

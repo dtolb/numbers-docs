@@ -1,0 +1,29 @@
+!fileScope internal
+
+description: |
+    Retrieves the total number of seats for a sippeer ID. <strong>Note: </strong> This option is only available for accounts that have UC Trunking.
+
+get:
+    description: Retrieves the total number of seats.
+    responses:
+        200:
+            description: The total number of seats has been successfully retrieved.
+            body:
+                application/xml:
+                    example: |
+                        <AccountTotalSeatsResponse>
+                            <UcTrunkingSeats>
+                                <TotalCount>2</TotalCount>
+                            </UcTrunkingSeats>
+                        </AccountTotalSeatsResponse>
+        400:
+            description: The account ID given does not have UC Trunking associated with it.
+            body:
+                application/xml:
+                    example: |
+                        <AccountTotalSeatsResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12017</ErrorCode>
+                                <Description>Account '12346099' does not have product 'UcTrunking'</Description>
+                            </ResponseStatus>
+                        </AccountTotalSeatsResponse>

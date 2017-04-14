@@ -1,0 +1,96 @@
+!fileScope internal 
+
+description: |
+    The suggestions resource returns a limited number of covered LATA, NPA, NPA-NXX, NPA-NXX-X, city, ZIP code, rate center and state abbreviation entries that start with the sequence of symbols, specified in query parameter. 
+    Search is case-insensitive and ignores the leading whitespace characters.
+
+get:
+    description:
+        Returns the limited number of matching LATA, NPA, NPA-NXX, NPA-NXX-X, city, ZIP code, rate center and state abbreviation entries
+    headers:
+        Accept:
+            type: string
+            enum: [application/json, application/xml]
+            required: false
+    queryParameters:
+        q: 
+            displayName: q
+            type: string
+            description: The starting characters of entries to search
+            example: LA
+            required: true
+    responses:
+        200:
+            description: The matching entries were found
+            body:
+                application/json:
+                    example: | 
+                        {
+                            "cities": [
+                                {
+                                    "City": "RALEIGH",
+                                    "State": "IL"
+                                },
+						        {
+						            "City": "RALEIGH",
+						            "State": "MS"
+						        },
+						        {
+						            "City": "RALEIGH",
+						            "State": "NC"
+						        },
+						        {
+						            "City": "RALPH",
+						            "State": "AL"
+						        },
+						        {
+						            "City": "RALSTON",
+						            "State": "PA"
+						        },
+						        {
+						            "City": "RALSTON",
+						            "State": "WY"
+						        }
+                            ],
+						    "RateCenters": [
+						        {
+						            "Abbreviation": "RALEIGH",
+						            "State": "MS",
+						            "Name": "RALEIGH"
+						        },
+						        {
+						            "Abbreviation": "RALEIGH",
+						            "State": "NC",
+						            "Name": "RALEIGH"
+						        }
+						    ]
+		                }
+		        application/xml:
+                    example: |
+						<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+						<Suggestions>
+						    <Latas>
+						        <Value>248</Value>
+						    </Latas>
+						    <ZipCodes>
+						        <Value>24801</Value>
+						        <Value>24818</Value>
+						        <Value>24822</Value>
+						        <Value>24827</Value>
+						        <Value>24834</Value>
+						        <Value>24849</Value>
+						        <Value>24854</Value>
+						        <Value>24857</Value>
+						        <Value>24859</Value>
+						        <Value>24860</Value>
+						    </ZipCodes>
+						    <AreaCodes>
+						        <Value>248</Value>
+						    </AreaCodes>
+						</Suggestions>
+        204:
+            description: | 
+                No entries found for the query 
+        400:
+            description: | 
+                Query parameter is not specified or blank string

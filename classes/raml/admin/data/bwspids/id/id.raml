@@ -1,0 +1,114 @@
+!fileScope internal
+
+description: This resource allow manage bwspids.
+
+get:
+    description: Get Bwspid
+    responses:
+        200:
+            description: |
+                Return Bwspid
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <AdminDataResponse>
+                            <BwspidSystemValue>
+                                <Id>2</Id>
+                                <RouteType>onNet</RouteType>
+                                <Priority>1</Priority>
+                                <Spid>E830</Spid>
+                                <Type>NNID</Type>
+                                <Alias>BW ESPID E830 Route</Alias>
+                            </BwspidSystemValue>
+                        </AdminDataResponse>
+        404:
+            description: |
+                Bwspid not found
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <AdminDataResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12098</ErrorCode>
+                                <Description>Bwspid value Id '1111' does not exist</Description>
+                            </ResponseStatus>
+                        </AdminDataResponse>
+
+put:
+    description: Allows to update Bwspid.
+    body:
+        application/xml:
+            example: |
+                <BwspidSystemValue>
+                    <Id>2</Id>
+                     <RouteType>[ onNet | offNetUs | offNetCa | externalCustomerOwned | externalThirdParty ]</RouteType>
+                    <Priority>1</Priority>
+                    <Spid>E830</Spid>
+                    <Type>NNID</Type>
+                    <Alias>BW ESPID E830 Route</Alias>
+                </BwspidSystemValue>
+    responses:
+        200:
+            description: |
+                Bwspid updated
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <AdminDataResponse>
+                            <BwspidSystemValue>
+                                <Id>2</Id>
+                                <RouteType>onNet</RouteType>
+                                <Priority>1</Priority>
+                                <Spid>E830</Spid>
+                                <Type>NNID</Type>
+                                <Alias>BW ESPID E830 Route</Alias>
+                            </BwspidSystemValue>
+                        </AdminDataResponse>
+        400:
+            description: |
+                Validation error
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <AdminDataResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12754</ErrorCode>
+                                <Description>Bwspid ID in the link and in the body is not the same.</Description>
+                            </ResponseStatus>
+                        </AdminDataResponse>
+        404:
+            description: |
+                Bwspid not found
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <AdminDataResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12098</ErrorCode>
+                                <Description>Bwspid value Id '1111' does not exist</Description>
+                            </ResponseStatus>
+                        </AdminDataResponse>
+delete:
+    description: Detele Bwspid.
+    responses:
+        200:
+            description: |
+                Bwspid deleted
+        404:
+            description: |
+                Bwspid not found
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <AdminDataResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12098</ErrorCode>
+                                <Description>Bwspid value Id '1111' does not exist</Description>
+                            </ResponseStatus>
+                        </AdminDataResponse>

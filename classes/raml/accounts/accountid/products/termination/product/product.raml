@@ -1,0 +1,107 @@
+!fileScope internal
+post:
+    description: assign product to customer
+    body:
+      application/xml:
+          example:
+              <TerminationProductAssignment>
+                <productName>Product name</productName>
+                <attributes/>
+              </TerminationProductAssignment>
+    responses:
+        201:
+            description: product was successfully assigned
+        404:
+            description: specified in request account was not found
+/{productId}:
+    get:
+        description: get assignment by product id
+        queryParameters:
+          toAssign:
+            description: if toAssign = true response is a formated json response of the product assignment JSON. So that an upstream system can take this json, fill in the values, and submit it to a product assignment.
+        responses:
+          200:
+            body:
+              application/xml:
+                example:
+                  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                  <TerminationCustomerProductAssignmentResponse>
+                    <TerminationProductWrapper>
+                        <TerminationProduct>
+                            <id>2</id>
+                            <name>Some name</name>
+                            <TerminationAttributes>
+                                <TerminationAttribute>
+                                    <id>9</id>
+                                    <type>TRACE</type>
+                                    <value>true</value>
+                                    <effectiveDate>2014-10-23T13:45:34</effectiveDate>
+                                    <inEffectiveDate>2014-10-23T13:45:34</inEffectiveDate>
+                                </TerminationAttribute>
+                            </TerminationAttributes>
+                        </TerminationProduct>
+                    </TerminationProductWrapper>
+                  </TerminationCustomerProductAssignmentResponse>
+          404:
+            description: product assignment was not found
+    delete:
+        description: delete product assignment
+        responses:
+            200:
+                body:
+                  application/xml:
+                    example:
+                      <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                      <TerminationCustomerProductAssignmentResponse>
+                          <TerminationProductWrapper>
+                            <TerminationProduct>
+                                <id>3</id>
+                                <name>Default Dto</name>
+                                <TerminationAttributes>
+                                    <TerminationAttribute>
+                                      <id>12</id>
+                                      <type>TRACE</type>
+                                      <value>true</value>
+                                      <effectiveDate>2014-10-23T13:51:03</effectiveDate>
+                                      <inEffectiveDate>2014-10-23T13:51:03</inEffectiveDate>
+                                     </TerminationAttribute>
+                                </TerminationAttributes>
+                            </TerminationProduct>
+                          </TerminationProductWrapper>
+                      </TerminationCustomerProductAssignmentResponse>
+            400:
+                description: some required value was not found
+            404:
+                description: account or attribute was not found
+    /toAssign:
+        get:
+            description: get product and assignment mask for this product
+            responses:
+              200:
+                body:
+                  application/xml:
+                    example:
+                      <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                      <TerminationProductResponse>
+                        <TerminationProductWrapper>
+                            <TerminationProduct>
+                                <id>4</id>
+                                <name>Product name</name>
+                                <TerminationAttributes>
+                                    <TerminationAttribute>
+                                        <id>15</id>
+                                        <type>TRACE</type>
+                                        <value>true</value>
+                                        <effectiveDate>2014-10-23T13:57:43</effectiveDate>
+                                        <inEffectiveDate>2014-10-23T13:57:43</inEffectiveDate>
+                                    </TerminationAttribute>
+                                </TerminationAttributes>
+                            </TerminationProduct>
+                            <TerminationProductAssignment>
+                                <productName>Product name</productName>
+                                <attributes/>
+                            </TerminationProductAssignment>
+                        </TerminationProductWrapper>
+                      </TerminationProductResponse>
+              404:
+                description: assignment was not found

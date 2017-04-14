@@ -1,0 +1,31 @@
+!fileScope internal
+
+description: This resource interacts with all the accounts associated with the given User ID. 
+
+get:
+    description: Retrieves the accounts associated with the user ID.
+    responses:
+        200:
+            description: The accounts have been successfully found and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <UserResponse>
+                            <User>
+                                <Username>mowoc</Username>
+                                <Accounts>
+                                    <Account>
+                                        <AccountId>12346499</AccountId>
+                                        <CompanyName>mowoc llc</CompanyName>
+                                    </Account>
+                                    <Account>
+                                        <AccountId>12346099</AccountId>
+                                        <CompanyName>Steveco</CompanyName>
+                                    </Account>
+                                    <Account>
+                                        <AccountId>12346513</AccountId>
+                                        <CompanyName>mowocAgent</CompanyName>
+                                    </Account>
+                                </Accounts>
+                            </User>
+                        </UserResponse>

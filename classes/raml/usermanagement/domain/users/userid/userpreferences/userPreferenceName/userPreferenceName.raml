@@ -1,0 +1,106 @@
+!fileScope internal
+
+description: This resource retrieves information about preference for single user.
+
+get:
+    description: Retrieves user preference by name if it exists.
+    responses:
+        200:
+            description: The information has been successfully retrieved and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserPreference>
+                            <PreferenceName>tnFormat</PreferenceName>
+                            <PreferenceValue>E.164</PreferenceValue>
+                        </UserPreference>
+        404:
+             description: The preference does not exist.
+             body:
+                 application/xml:
+                     example: |
+                         <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                         <LdapUserPreferenceResponse>
+                             <ResponseStatus>
+                                 <ErrorCode>12089</ErrorCode>
+                                 <Description>User 'user' does not have preference 'preferredPortal'</Description>
+                             </ResponseStatus>
+                             <User>
+                                 <UserId>user</UserId>
+                                 <UserPreferences>
+                                     <UserPreference>
+                                         <PreferenceName>preferredPortal</PreferenceName>
+                                     </UserPreference>
+                                 </UserPreferences>
+                             </User>
+                         </LdapUserPreferenceResponse>
+put:
+    description: Updates user-preference relation.
+    body:
+        application/xml:
+            example: |
+                <UserPreference>
+                    <PreferenceValue>OLD</PreferenceValue>
+                </UserPreference>
+    responses:
+        200:
+            description: The information has been successfully updated and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <LdapUserPreferenceResponse>
+                            <User>
+                                <UserId>user</UserId>
+                                <UserPreferences>
+                                    <UserPreference>
+                                        <PreferenceName>preferredPortal1</PreferenceName>
+                                        <PreferenceValue>OLD</PreferenceValue>
+                                    </UserPreference>
+                                </UserPreferences>
+                            </User>
+                        </LdapUserPreferenceResponse>
+        422:
+            description: Provided data in payload is incorrect.
+            body:
+                application/xml:
+                    example: |
+                        <LdapUserPreferenceResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12092</ErrorCode>
+                                <Description>User Preference 'preferredPortal1' does not exist</Description>
+                            </ResponseStatus>
+                            <User>
+                                <UserId>user</UserId>
+                                <UserPreferences>
+                                    <UserPreference>
+                                        <PreferenceName>preferredPortal1</PreferenceName>
+                                        <PreferenceValue>OLD</PreferenceValue>
+                                    </UserPreference>
+                                </UserPreferences>
+                            </User>
+                        </LdapUserPreferenceResponse>
+delete:
+    description: Removes user-preference relation.
+    responses:
+        200:
+            description: The information has been successfully deleted.
+        404:
+            description: User preference does not exist.
+            body:
+                application/xml:
+                    example: |
+                        <LdapUserPreferenceResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12089</ErrorCode>
+                                <Description>User 'user' does not have preference 'preferredPortal'</Description>
+                            </ResponseStatus>
+                            <User>
+                                <UserId>user</UserId>
+                                <UserPreferences>
+                                    <UserPreference>
+                                        <PreferenceName>preferredPortal</PreferenceName>
+                                    </UserPreference>
+                                </UserPreferences>
+                            </User>
+                        </LdapUserPreferenceResponse>

@@ -1,0 +1,151 @@
+!fileScope internal
+
+description: | 
+    The Termination settings resource is used to define the attributes of the Termination product that will apply to the account specified in the URL.
+
+get:
+    description: |
+        These are the settings associated with the provisioning of Termination settings. The current values represented below detail the legacy Termination settings appropriate for customers currently on IRIS.  In the future IRIS customers will use the Roger Termination Product manager, and define the set of Roger parameters using an extension of this interface.  A parameter 'RogerUsedForTerminationSettings' is used to control this behavior...
+            <ul>
+            <li>If RogerUsedForTerminationSettings is false, then the LegacyTerminationSettings will be used, RogerTerminationSettings will be empty</li>
+            <li>If RogerUsedForTerminationSettings is transition, then both LegacyTerminationSettings and RogerTerminationSettings elements are used</li>
+            <li>If RogerUsedForTerminationSettings is true, then the RogerTerminationSettings element will be used.  LegacyTerminationSettings will be empty.</li>
+            </ul>
+
+    responses:    
+        200:
+            description: An optional description of the response.
+            body: 
+                application/xml:
+                    example: |
+                        <TerminationSettingResponse>
+                            <TerminationSettings>
+                                <RogerUsedForTerminationSettings>false</RogerUsedForTerminationSettings>
+                                <LegacyTerminationSettings>
+                                    <CustomerTrafficAllowed>ALL</CustomerTrafficAllowed>
+                                    <CpsQueue>300</CpsQueue>
+                                    <ConcurrentOutboundCalls>15</ConcurrentOutboundCalls>
+                                    <ConcurrentBidirectionalCalls>0</ConcurrentBidirectionalCalls>
+                                    <BillingType>DNIS</BillingType>
+                                    <RateType>npanxx</RateType>
+                                    <DiscountPercentage>29</DiscountPercentage>
+                                    <GuaranteedTermination>false</GuaranteedTermination>
+                                </LegacyTerminationSettings>
+                                <RogerTerminationSettings/>
+                            </TerminationSettings>
+                        </TerminationSettingResponse>
+        404:
+            description: |
+                If the settings are not present for the Termination product a 404 NOT FOUND is returned with an explanatory payload.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <OriginationSettingResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12030</ErrorCode>
+                                <Description>Termination product has not been configured</Description>
+                            </ResponseStatus>
+                        </OriginationSettingResponse>
+
+post:
+    description: | 
+
+        This resource can be PUT or POSTed to in order to establish the appropriate settings.
+
+        Some of the important values that are established as part of this termination are...
+        <table>
+        <tr><th>parameter</th><th>description</th></tr>
+        <tr><td>RogerUsedForTerminationSettings</td><td>Boolean - a flag to indicate whether termination services are controlled by Roger or not</td></tr>
+        <tr><td>LegacyTerminationSettings</td><td>a group encapsulating legacy termination settings</td></tr>
+        <tr><td>ConcurrentOutboundCalls</td><td>integer</td></tr>
+        <tr><td>ConcurrentBidirectionalCalls</td><td>integer</td></tr>
+        <tr><td>CpsQueue</td><td>an integer value - typically 300</td></tr>
+        <tr><td>CustomerTrafficAllowed</td><td>ALL, LITE, NONE and DOMESTIC</td></tr>
+        <tr><td>RateType</td><td>npanxx, flat, fullcr or billnumlcr</td></tr>
+        <tr><td>DiscountPercentage</td><td>an integer between 0 and 100</td></tr>
+        <tr><td>GuaranteedTermination</td><td>true or false</td></tr>
+        <tr><td>RogerTerminationSettings</td><td>a group encapsulating the new (undeveloped) ROGER termination settings</td></tr>
+        </table>
+    body:
+        application/xml:
+            example: |
+                <?xml version="1.0"?>
+                <TerminationSettings>
+                    <RogerUsedForTerminationSettings>true</RogerUsedForTerminationSettings>
+                    <LegacyTerminationSettings>
+                        <CustomerTrafficAllowed>ALL</CustomerTrafficAllowed>
+                        <CpsQueue>300</CpsQueue>
+                        <ConcurrentOutboundCalls>15</ConcurrentOutboundCalls>
+                        <ConcurrentBidirectionalCalls>0</ConcurrentBidirectionalCalls>
+                        <BillingType>DNIS</BillingType>
+                        <RateType>npanxx</RateType>
+                        <DiscountPercentage>29</DiscountPercentage>
+                        <GuaranteedTermination>false</GuaranteedTermination>
+                    </LegacyTerminationSettings>
+                    <RogerTerminationSettings/>  <!-- these will be defined later -->
+                </TerminationSettings>
+    responses:
+        200:
+            description: a 200 OK is returned on successful updating of the Termination Settings.  There is no payload returned with a 200 OK.
+        400:
+            description: a 400 BAD REQUEST will be returned with a descriptive payload if the XML describing the termination settings resource is incorrect.  The error contains an error code and description.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <TerminationSettingResponse>
+                            <ResponseStatus>
+                                <ErrorCode>nnnnn</ErrorCode>
+                                <Description>Legacy Termination settings description incompatible with use of Roger for termination</Description>
+                            </ResponseStatus>
+                        </TerminationSettingResponse>
+ 
+put:
+    description: | 
+
+        This resource can be PUT or POSTed to in order to establish the appropriate settings.
+
+        Some of the important values that are established as part of this termination are described in the section on POST.
+
+    body:
+        application/xml:
+            example: |
+                <?xml version="1.0"?>
+                <TerminationSettings>
+                    <RogerUsedForTerminationSettings>true</RogerUsedForTerminationSettings>
+                    <LegacyTerminationSettings>
+                        <CustomerTrafficAllowed>ALL</CustomerTrafficAllowed>
+                        <CpsQueue>300</CpsQueue>
+                        <ConcurrentOutboundCalls>15</ConcurrentOutboundCalls>
+                        <ConcurrentBidirectionalCalls>0</ConcurrentBidirectionalCalls>
+                        <BillingType>DNIS</BillingType>
+                        <RateType>npanxx</RateType>
+                        <DiscountPercentage>29</DiscountPercentage>
+                        <GuaranteedTermination>false</GuaranteedTermination>
+                    </LegacyTerminationSettings>
+                    <RogerTerminationSettings/>  <!-- these will be defined later -->
+                </TerminationSettings>
+    responses:
+        200:
+            description: a 200 OK is returned on successful updating of the Termination Settings.  There is no payload returned with a 200 OK.
+        400:
+            description: a 400 BAD REQUEST will be returned with a descriptive payload if the XML describing the termination settings resource is incorrect.  The error contains an error code and description.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <TerminationSettingResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12586</ErrorCode>
+                                <Description>CustomerTrafficAllowed is not valid. Valid values: ALL, LITE, DOMESTIC, NONE</Description>
+                            </ResponseStatus>
+                        </TerminationSettingResponse>
+/migrate:
+    post:
+        description: migrate legacy termination settings to new termination settings
+        responses:
+            201:
+                description: migration was successfully
+            400:
+                description: migration can not be executed because RogerUsedForTerminationSettings is not transition

@@ -1,0 +1,37 @@
+!fileScope internal
+
+description: |
+    This resource retrieves information about permissions.
+get:
+    responses: 
+        200:
+            description: |
+                Return all existed permissions
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LdapPermissionsResponse>
+                            <PermissionList>
+                                <Permission>
+                                    <PermissionId>report-list-instances</PermissionId>
+                                    <Internal>false</Internal>
+                                </Permission>
+                                <Permission>
+                                    <PermissionId>report-create-definition</PermissionId>
+                                    <Internal>false</Internal>
+                                </Permission>
+                                <Permission>
+                                    <PermissionId>report-delete-definition</PermissionId>
+                                    <PermissionDescription>Report-retrieve-file description-DEL</PermissionDescription>
+                                    <Internal>true</Internal>
+                                </Permission>
+                                <Permission>
+                                    <PermissionId>report-create-instance</PermissionId>
+                                    <PermissionDescription>Lets user to create report instances</PermissionDescription>
+                                    <Internal>true</Internal>
+                                </Permission>
+                            </PermissionList>
+                        </LdapPermissionsResponse>
+
+/{permissionId}: !include permissionid/permissionId.raml

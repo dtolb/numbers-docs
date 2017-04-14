@@ -1,0 +1,110 @@
+!fileScope all
+
+!scope internal
+post:
+    description: Adds a user to an existing account. Note that the POST method simply assigns the specified account to an <strong>existing</strong> user. The POST does not create a user from scratch.
+    body:
+        application/xml:
+            example: |
+                <Users>
+                    <User>
+                        <Username>testcustomer</Username>
+                        <Password>newpassword</Password>
+                        <FirstName>Jane</FirstName>
+                        <LastName>Doe</LastName>
+                        <EmailAddress>janedoe@bandwidth.com</EmailAddress>
+                        <TelephoneNumber>9199999999</TelephoneNumber>
+                        <Roles>
+                            <Role>
+                                <RoleName>role_api_search</RoleName>
+                                <Permissions>
+                                    <Permission>
+                                        <PermissionName>view</PermissionName>
+                                    </Permission>
+                                </Permissions>
+                            </Role>
+                            <Role>
+                                <RoleName>role_api_ordering</RoleName>
+                                <Permissions>
+                                    <Permission>
+                                        <PermissionName>view</PermissionName>
+                                    </Permission>
+                                    <Permission>
+                                        <PermissionName>update</PermissionName>
+                                    </Permission>
+                                </Permissions>
+                            </Role>
+                        </Roles>
+                    </User>
+                </Users>
+    responses:
+        201:
+            description: The user has been successfully created.
+        404:
+            description: The user does not exist.
+            body:
+                application/xml:
+                    example: |
+                        <UsersResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12000</ErrorCode>
+                                <Description>User 'testnotcustomer' does not exist</Description>
+                            </ResponseStatus>
+                        </UsersResponse>
+        409:
+            description: The user already exists in the account.
+            body:
+                application/xml:
+                    example: |
+                        <UsersResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12005</ErrorCode>
+                                <Description>User 'testcustomer' is already assigned to account '12346099'</Description>
+                            </ResponseStatus>
+                        </UsersResponse>
+
+!scope all
+get:
+    description: Retrieves a list of users as specified by the account ID.
+    body:
+        application/xml:
+            example: |
+                <?xml version="1.0"?>
+                <UsersResponse>
+                    <Users>
+                        <User>
+                            <Username>testcustomer</Username>
+                            <FirstName>Jane</FirstName>
+                            <LastName>Doe</LastName>
+                            <EmailAddress>janedoe@bandwidth.com</EmailAddress>
+                            <TelephoneNumber>9199999999</TelephoneNumber>
+                            <Roles>
+                                <Role>
+                                    <RoleName>ROLE_API_ORDERING</RoleName>
+                                    <Permissions>
+                                        <Permission>
+                                            <PermissionName>VIEW</PermissionName>
+                                        </Permission>
+                                        <Permission>
+                                            <PermissionName>UPDATE</PermissionName>
+                                        </Permission>
+                                    </Permissions>
+                                </Role>
+                                            <! --- SNIP --- >
+                                <Role>
+                                    <RoleName>ROLE_API_SEARCH</RoleName>
+                                    <Permissions>
+                                        <Permission>
+                                            <PermissionName>VIEW</PermissionName>
+                                        </Permission>
+                                    </Permissions>
+                                </Role>
+                            </Roles>
+                        </User>
+                        <User>
+                                            <! --- SNIP --- >
+                        </User>
+                    </Users>
+                </UsersResponse>
+
+/{userid}: !include userid/userid.raml

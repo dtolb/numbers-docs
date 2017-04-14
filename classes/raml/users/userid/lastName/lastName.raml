@@ -1,0 +1,18 @@
+!fileScope internal
+
+description: A GET on this resource retrieves the last name of the specified User ID.
+
+get:
+    description: Retrieves the last name of the specified User ID.
+    responses:
+        200:
+            description: The last name has have been successfully found and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <UserResponse>
+                            <User>
+                                <Username>mowoc</Username>
+                                <LastName>Owoc</LastName>
+                            </User>
+                        </UserResponse>

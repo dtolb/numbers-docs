@@ -1,0 +1,24 @@
+!fileScope external
+
+description: This resource interacts with the total number of port-ins associated with an account.
+
+!scope external
+get:
+    description: Retrieves the total count of port-ins.
+    queryParameters:
+        status:
+            description: The current status of the port-in.
+            type: string
+            example: complete
+        vendorId:
+            description: The vendor ID of the port-in.
+            type: string
+    responses:
+        200:
+            description: The total has been successfully calculated and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <Quantity>
+                            <Count>1</Count>
+                        </Quantity>

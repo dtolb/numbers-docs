@@ -1,0 +1,23 @@
+!fileScope internal
+
+description: The {permission ID} resource interacts with the specific permission associated with the user ID; this resource can retrieve the information as well as delete the permission.
+
+get:
+    description: Retrieves the information associated with the permission ID.
+    responses:
+        200:
+            description: The information has been successfully received and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <PermissionResponse>
+                            <Permission>
+                                <PermissionName>VIEW</PermissionName>
+                            </Permission>
+                        </PermissionResponse>
+
+delete:
+    description: Deletes the permission.
+    responses:
+        200:
+            description: The permission has been successfully deleted.

@@ -1,0 +1,33 @@
+!fileScope external
+!scope external
+
+description: A GET on this method retrieves the information associated with the order ID.
+
+get:
+    description: Retrieves the information associated with the order specified.
+    queryParameters:
+        tnDetailEnabled:
+            description: If set to true, displays the order's telephone number information in greater detail
+            default: false
+    responses:
+        200:
+            description: The order's information has been successfully retrieved.
+            body:
+                application/xml:
+                    example:
+                    	<! --- THIS IS A DISCONNECT ORDER EXAMPLE --->
+                        <DisconnectTelephoneNumberOrderResponse>
+                            <DisconnectedTelephoneNumberList>
+                                <TelephoneNumber>9199998830</TelephoneNumber>
+                            </DisconnectedTelephoneNumberList>
+                            <orderRequest>
+                                <id>4ffe9262-1965-4479-a1d5-b8584440667d</id>
+                                <OrderCreateDate>2013-12-04T21:59:32.243Z</OrderCreateDate>
+                                <DisconnectTelephoneNumberOrderType>
+                                    <TelephoneNumberList>
+                                        <TelephoneNumber>9199998830</TelephoneNumber>
+                                    </TelephoneNumberList>
+                                </DisconnectTelephoneNumberOrderType>
+                            </orderRequest>
+                            <OrderStatus>COMPLETE</OrderStatus>
+                        </DisconnectTelephoneNumberOrderResponse>

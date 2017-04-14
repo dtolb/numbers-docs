@@ -1,0 +1,47 @@
+!fileScope internal
+
+description: This resource allowes to reprovision up to 5000 tns from Iris to Core2 database.
+
+post:
+    description: Re-provision a set of telephone numbers.
+    body:
+        application/xml:
+            example: |
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <ReprovisionTns>
+                    <TelephoneNumberList>
+                            <TelephoneNumber>2012001665</TelephoneNumber>
+                            <TelephoneNumber>2012009183</TelephoneNumber>
+                            <TelephoneNumber>3473528385</TelephoneNumber>
+                            <TelephoneNumber>4158714245</TelephoneNumber>
+                    </TelephoneNumberList>
+                </ReprovisionTns>
+    responses:
+        200:
+            description: Reprovision was fired, results collected in response.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <ReprovisionTnsResponse>
+                            <CompletedQuantity>2</CompletedQuantity>
+                            <CreatedByUser>systemUser</CreatedByUser>
+                            <ErrorList>
+                                <Error>
+                                    <Code>5070</Code>
+                                    <Description>Telephone number is invalid.</Description>
+                                    <TelephoneNumber>4158714245</TelephoneNumber>
+                                </Error>
+                                <Error>
+                                    <Code>5074</Code>
+                                    <Description>Telephone number is not available.</Description>
+                                    <TelephoneNumber>3473528385</TelephoneNumber>
+                                </Error>
+                            </ErrorList>
+                            <CompletedNumbers>
+                                <TelephoneNumberList>
+                                    <TelephoneNumber>2012001665</TelephoneNumber>
+                                    <TelephoneNumber>2012009183</TelephoneNumber>
+                                </TelephoneNumberList>
+                            </CompletedNumbers>
+                        </ReprovisionTnsResponse>

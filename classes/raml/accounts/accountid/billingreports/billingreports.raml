@@ -1,0 +1,68 @@
+!fileScope all
+
+description: |
+    This API allows the retrieval of a zip file containing billing report for a specified date range and type.
+    This billing report is delivered as a zip compressed comma separated values (CSV) file.<br>
+    The general flow of the API calls required to retrieve these records is
+    <ol>
+    <li>POST a request to the /billingreports resource, describing the report date range and type for which the billing report is wished. This will initiate the construction of the zip file.</li>
+    <li>Examine the response from the POST. If the payload is understandable and valid then a 201 response will be returned, indicating that the response file is currently being constructed.</li>
+    <li>Retrieve the Location Header from the response to the POST. This Location response-header field will contain the complete URI-reference to newly created resource. Each report has it's own resource ID.</li>
+    <li>Interrogate the resource ID to check the status of the report. If a 200 OK is returned then the resource ID is considered valid and corresponding status will describe the readiness of zip file.</li>
+    <li>Fetching the file can be done by issuing a GET request to the resource path in the Location Header mentioned above.</li>
+    </ol>
+post:
+    description:
+        The payload for the POST declares the date range and type for the desired reports.
+
+        The valid Types are...
+        <ul>
+        <li>BDR - Billing Detail Records - per call information</li>
+        <li>MDR - Message Detail Records - per messagin information</li>
+        <li>INVOICE - A copy of the invoice file or files for the specified date range</li>
+        <li>STATEMENT&#95;BDR - BDR records that are aligned with the invoice</li>
+        <li>DID&#95;SNAPSHOT - a list of telephone numbers aligned as closely as we can with the billing window</li>
+        </ul>
+    body:
+        application/xml:
+            example: |
+                <BillingReport>
+                    <Type>BDR</Type>
+                    <DateRange>
+                       <StartDate>2013-05-21</StartDate>
+                       <EndDate>2013-05-29</EndDate>
+                    </DateRange>
+                </BillingReport>
+    responses:
+        201:
+            description: |
+                A 201 response means that the response file is currently being constructed. Constructing the file takes time, so this does not indicate that the information is available.<br>
+                The response also includes header information in the Location Header that can be used for retrieving the state of the report.<br>
+                An informative payload is also included in success and failure cases.
+            headers:
+                Location:
+                    description: contains the resource ID of the report
+                    example: https://dashboard.bandwidth.com/api/accounts/9900012/billingreports/a12b456c8-abcd-1a3b-a1b2-0a2b4c6d8e0f2
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <BillingReportCreationResponse>
+                            <ReportStatus>RECEIVED</ReportStatus>
+                            <Description>The report archive is currently being constructed.</Description>
+                        </BillingReportCreationResponse>
+        404:
+            description: |
+                A 400 response indicates that there was an error in processing the payload, perhaps something like incorrectly formatted or chosen dates. 
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <BillingReportCreationResponse>
+                            <ResponseStatus>
+                                <ErrorCode>15501</ErrorCode>
+                                <Description>Invalid date range. Start date 2014-05-21 must be before end date 2013-05-29</Description>
+                            </ResponseStatus>
+                        </BillingReportCreationResponse>
+
+/{reportid}: !include id/id.raml

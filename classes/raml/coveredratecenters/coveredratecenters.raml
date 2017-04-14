@@ -1,0 +1,278 @@
+!fileScope external 
+
+description: |
+    The coveredRateCenters resource returns all of the Covered Rate Centers. 
+    Each rate center resource contains state, abbreviation, name, LATA, list of tiers, number of available TNs and optional zip codes, cities, vendors, NPA-NXX-Xs information. 
+
+get:
+    description:
+        The Covered Rate Centers API Call return information about the Bandwidth CLEC Network, including coverage data, indicating both the extent of on-net and off-net coverage, as well as number availability.
+        The various query parameters are summarized in the following table ... 
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tbody>
+            <tr>
+              <td valign="top" width="114">
+              <p><strong>Query Parameter</strong>
+              </p>
+              </td>
+              <td valign="top">
+              <p><strong>Description</strong>
+              </p>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top" width="114">
+              <p>page
+              </p>
+              </td>
+              <td valign="top">
+              <p>The starting value for a paginated response. The default is ‘1’ indicating the first page of results.
+              </p>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top" width="114">
+              <p>size
+              </p>
+              </td>
+              <td valign="top">
+              <p>The number of rate centers to include in a paginated result payload.
+              </p>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top" width="114">
+              <p>state
+              </p>
+              </td>
+              <td valign="top">
+              <p>A 2 character State code
+              </p>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top" width="114">
+              <p>abbreviation
+              </p>
+              </td>
+              <td valign="top">
+              <p>A rate center abbreviation
+              </p>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top" width="114">
+              <p>name
+              </p>
+              </td>
+              <td valign="top">
+              <p>A rate center name
+              </p>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top" width="114">
+              <p>zip
+              </p>
+              </td>
+              <td valign="top">
+              <p>A 5 digit zip code
+              </p>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top" width="114">
+              <p>city
+              </p>
+              </td>
+              <td valign="top">
+              <p>A City name
+              </p>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top" width="114">
+              <p>lata
+              </p>
+              </td>
+              <td valign="top">
+              <p>A 3 or 5 digit LATA
+              </p>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top" width="114">
+              <p>tier
+              </p>
+              </td>
+              <td valign="top">
+              <p>A bandwidth coverage tier; a value from 0 to 5.
+              </p>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top" width="114">
+              <p>npa
+              </p>
+              </td>
+              <td valign="top">
+              <p>A 3 digit NPA or Area Code
+              </p>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top" width="114">
+              <p>npaNxx
+              </p>
+              </td>
+              <td valign="top">
+              <p>6 digits NPA and NXX values
+              </p>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top" width="114">
+              <p>npaNxxX
+              </p>
+              </td>
+              <td valign="top">
+              <p>7 digits of NPA, NXX and thousands block values.
+              </p>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top" width="114">
+              <p>embed
+              </p>
+              </td>
+              <td valign="top">
+              <p>One of the values [ZipCodes, Cities, NpaNxxX, AvailableNumberCount, LocalRateCenters].
+              <br>
+                This repeatable query parameter will force a list (or multiple lists)
+                of the indicated data to be provided in the response. For
+                example if the payload should contain a list of the Cities covered by
+                the Rate Centers then embed=cities would be included as a query
+                parameter.<br>
+                No filter parameters are supported if <q>LocalRateCenters</q> is specified. In this case only <q>size</q>, <q>page</q> and any other <q>embed</q> parameters are supported.
+              </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+    queryParameters:
+        page: 
+            displayName: page
+            type: number
+            description: | 
+                the unique identifier of first rate center on the page. 
+                Value for the first page: <i>1</i>
+            example: 1
+            required: true
+        size: 
+            displayName: size
+            type: number
+            description: a number of rate centers on the page 
+            example: 50
+            required: true
+        embed:
+        	displayName: embed
+        	type: string
+        	enum: [ZipCodes, Cities, Vendors, NpaNxxX, AvailableNumberCount, LocalRateCenters]
+        	description: | 
+                a set of fields that needs to be included in response. 
+                A lists of zip codes, cities, vendors, NpaNxxXs and count of available TNs are not included for each rate center by default.
+                A list of vendors is available only for admin users. LocalRateCenters can't be combined with any filter parameter.
+            repeat: true
+        state:
+            displayName: state
+            type: string
+            description: 2 character state code.
+            example: OK
+            required: false
+        abbreviation:
+            displayName: abbreviation
+            type: string
+            description: a rate center's abbreviation
+            example: BARTLESVL
+            required: false
+        name:
+            displayName: name
+            type: string
+            description: a name of rate center
+            example: BARTLESVILLE
+            required: false  
+        zip:
+            displayName: zip
+            type: string
+            description: a zip code of the area covered by rate center
+            example: 74029
+            required: false
+        city:
+            displayName: city
+            type: string
+            description: a name of city covered by rate center
+            example: DEWEY
+            required: false
+        lata:
+            displayName: lata
+            type: number
+            description: a rate center's LATA
+            example: 538
+            required: false
+        tier:
+            displayName: tier
+            type: number
+            description: the tier associated with covered rate center
+            example: 0
+            required: false
+        npa:
+            displayName: npa
+            type: number
+            description: the Area Code covered by rate center
+            example: 918
+            required: false
+        npaNxx:
+            displayName: npaNxx
+            type: number
+            description: the NPA-NXX covered by rate center
+            example: 918886
+            required: false
+        npaNxxX:
+            displayName: npaNxxX
+            type: number
+            description: the NPA-NXX-X covered by rate center
+            example: 9188862
+            required: false
+    responses:
+        200:
+            description: | 
+                This response returns the list of Covered Rate Centers. 
+                <i><b>TotalCount</b></i> element's value represents the total number of rate centers for specified query parameters starting from the current page and included in response only if more rate centers available.  
+            body: 
+                application/xml:
+                    example: !include 200_response_example.xml
+        303:
+            description: | 
+                No <i><b>page</b></i> or <i><b>size</b></i> query parameters specified. Link to first page of results provided in <i><b>Location</b></i> header
+            headers:
+                Location:
+                    description: |
+                        The link to first page of results
+                    type: string
+                    required: true
+                    example: https://api.inetwork.com:443/v1.0/coveredRateCenters?size=500&page=1
+        400:
+            description: | 
+                Invalid query parameter value
+            body:
+                application/xml:
+                    example: |
+                        <CoveredRateCenters>
+                            <ResponseStatus>
+                                <ErrorCode>4002</ErrorCode>
+                                <Description>Please verify that your NPA, NPA-NXX, or NPA-NXX-X search input parameters are correct.</Description>
+                            </ResponseStatus>
+                        </CoveredRateCenters>
+                        
+!fileScope all
+/{rateCenterId}: !include ratecenterid/ratecenterid.raml

@@ -1,0 +1,16 @@
+!fileScope external
+
+description: The TNs resource accesses the Telephone Numbers associated with the given order ID of the given site ID of the given account.
+
+!scope external
+get:
+    description: returns a list of phone numbers associated with the ID of a given account.
+    responses:
+        200:
+            body:
+                application/xml:
+                    example: |
+                        <TelephoneNumbers>
+                            <Count>1</Count>
+                            <TelephoneNumber>8042105666</TelephoneNumber>
+                        </TelephoneNumbers>

@@ -1,0 +1,151 @@
+!fileScope internal
+
+description: | 
+    The UC Trunking settings resource is used to define the attributes of the UC Trunking product that will apply to the account specified in the URL.
+
+get:
+    description: |
+        These are the settings associated with the provisioning of UC Trunking settings.
+
+    responses:
+        200:
+            body:
+                application/xml:
+                    example: |
+                        <UcTrunkingSettingsResponse>
+                            <UcTrunkingSettings>
+                                <!-- Either AGENT (for Agency+ accounts) or RESELLER (for wholesale) -->
+                                <PartnerType>AGENT</PartnerType>
+                                <MaxUcTrunks>40</MaxUcTrunks>
+                                <BillingType>DNIS</BillingType>
+                                <CustomerTrafficAllowed>ALL</CustomerTrafficAllowed>
+                                <UsageCategory>UC500</UsageCategory>
+                                <TrunkAllocationRules>
+                                    <TrunkAllocationRule>
+                                        <LowerBound>1</LowerBound>
+                                        <Ratio>1</Ratio>
+                                    </TrunkAllocationRule>
+                                    <TrunkAllocationRule>
+                                        <LowerBound>10</LowerBound>
+                                        <Ratio>2</Ratio>
+                                    </TrunkAllocationRule>
+                                    <TrunkAllocationRule>
+                                        <LowerBound>15</LowerBound>
+                                        <Ratio>5</Ratio>
+                                    </TrunkAllocationRule>
+                                </TrunkAllocationRules>
+                                <AllowedUcTypes>
+                                    <UcType>Seats</UcType>
+                                </AllowedUcTypes>
+                            </UcTrunkingSettings>
+                        </UcTrunkingSettingsResponse>
+        404:
+            description: |
+                If the settings are not present for the UC Trunking product a 404 NOT FOUND is returned with an explanatory payload.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UcTrunkingSettingsResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12017</ErrorCode>
+                                <Description>Account '14' does not have product 'UcTrunking'</Description>
+                            </ResponseStatus>
+                        </UcTrunkingSettingsResponse>
+
+post:
+    description: |
+        This resource can be PUT or POSTed to in order to establish the appropriate settings.
+    body:
+        application/xml:
+            example: |
+                <UcTrunkingSettings>
+                    <!-- Either AGENT (for Agency+ accounts) or RESELLER (for wholesale).  Cannot be changed once set. -->
+                    <PartnerType>AGENT</PartnerType>
+                    <MaxUcTrunks>40</MaxUcTrunks>
+                    <BillingType>DNIS</BillingType>
+                    <CustomerTrafficAllowed>ALL</CustomerTrafficAllowed>
+                    <UsageCategory>UC500</UsageCategory>
+                    <TrunkAllocationRules>
+                        <TrunkAllocationRule>
+                            <LowerBound>1</LowerBound>
+                            <Ratio>1</Ratio>
+                        </TrunkAllocationRule>
+                        <TrunkAllocationRule>
+                            <LowerBound>10</LowerBound>
+                            <Ratio>2</Ratio>
+                        </TrunkAllocationRule>
+                        <TrunkAllocationRule>
+                            <LowerBound>15</LowerBound>
+                            <Ratio>5</Ratio>
+                        </TrunkAllocationRule>
+                    </TrunkAllocationRules>
+                    <AllowedUcTypes>
+                        <UcType>Seats</UcType>
+                    </AllowedUcTypes>
+                </UcTrunkingSettings>
+    responses:
+        200:
+            description: a 200 OK is returned on successful updating of the UC Trunking Settings.  There is no payload returned with a 200 OK.
+        400:
+            description: a 400 BAD REQUEST will be returned with a descriptive payload if the XML describing the UC Trunking settings resource is incorrect.  The error contains an error code and description.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UCTrunkingSettingResponse>
+                            <ResponseStatus>
+                                <ErrorCode></ErrorCode>
+                                <Description></Description>
+                            </ResponseStatus>
+                        </UCTrunkingSettingResponse>
+ 
+put:
+    description: | 
+
+        This resource can be PUT or POSTed to in order to establish the appropriate settings.
+
+        Some of the important values that are established as part of this UC Trunking are described in the section on POST.
+
+    body:
+        application/xml:
+            example: |
+                <?xml version="1.0"?>
+                <UcTrunkingSettings>
+                    <MaxUcTrunks>40</MaxUcTrunks>
+                    <BillingType>DNIS</BillingType>
+                    <CustomerTrafficAllowed>ALL</CustomerTrafficAllowed>
+                    <UsageCategory>UC500</UsageCategory>
+                    <TrunkAllocationRules>
+                        <TrunkAllocationRule>
+                            <LowerBound>1</LowerBound>
+                            <Ratio>1</Ratio>
+                        </TrunkAllocationRule>
+                        <TrunkAllocationRule>
+                            <LowerBound>10</LowerBound>
+                            <Ratio>2</Ratio>
+                        </TrunkAllocationRule>
+                        <TrunkAllocationRule>
+                            <LowerBound>15</LowerBound>
+                            <Ratio>5</Ratio>
+                        </TrunkAllocationRule>
+                    </TrunkAllocationRules>
+                    <AllowedUcTypes>
+                        <UcType>Seats</UcType>
+                    </AllowedUcTypes>
+                </UcTrunkingSettings>
+    responses:
+        200:
+            description: a 200 OK is returned on successful updating of the UC Trunking Settings.  There is no payload returned with a 200 OK.
+        400:
+            description: a 400 BAD REQUEST will be returned with a descriptive payload if the XML describing the UC Trunking settings resource is incorrect.  The error contains an error code and description.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UCTrunkingSettingResponse>
+                            <ResponseStatus>
+                                <ErrorCode></ErrorCode>
+                                <Description></Description>
+                            </ResponseStatus>
+                        </UCTrunkingSettingResponse>

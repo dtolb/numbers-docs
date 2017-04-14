@@ -1,0 +1,30 @@
+!fileScope internal
+
+description: |
+    This resource is used to retrieve sbc trunk groups on account.
+
+!scope internal
+get:
+    description: Retrieves an account's trunk groups.
+    queryParameters:
+        status:
+            description: The status of the trunk groups being searched for.
+            type: string
+            example: SAVED
+            enum: [SAVED, UPDATE_NOT_DEPLOYED, IN_PROGRESS, DEPLOYED_SUCCESS, DEPLOYED_FAILED, UPDATE_FAILED, UNDEPLOY_FAILED]
+            required: false
+
+    responses:
+        200:
+            description: An account's trunk groups have been successfully retrieved.
+            body:
+                application/xml:
+                    example: |
+                        <TrunkGroupsResponse>
+                        	<TrunkGroups>
+                        		<TrunkGroup>
+                        			<Id>NOC_111DMD46OYPX41J2_TG</Id>
+                        			<Status>SAVED</Status>
+                        		</TrunkGroup>
+                        	</TrunkGroups>
+                        </TrunkGroupsResponse>

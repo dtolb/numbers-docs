@@ -1,0 +1,204 @@
+!fileScope all
+
+!scope all
+
+description: |
+  The port out validation API is used for portout management purposes and gives the losing side customer the possibility to validate the portout process.
+
+  <h4>Summary</h4>
+  <p>Validation of a Port-out request will begin with a submission from Bandwidth to our customer including information used to validate the correctness of the port-out request. The included information<span>&nbsp;</span><em>may</em><span>&nbsp;</span>include:</p>
+  <ul>
+    <li>a list of telephone numbers to be ported out</li>
+    <li>a subscriber name for information purposes</li>
+    <li>a zip code associated with the subscriber, presumably relating to a billing or service address</li>
+    <li>an account code, presumably related to an account used to reflect&nbsp; the commercial or billing relationship with the subscriber</li>
+    <li>a PIN established by the end user that helps to identify that end user / subscriber</li>
+  </ul>
+  <p>One of two responses are valid:</p>
+  <ol>
+    <li>a positive validation of the port-out request. In this case no additional information is required</li>
+    <li>a negative response indicating that the port-out request is considered to be invalid, based on the information received.
+      <ul>
+        <li>the response<span>&nbsp;</span><em><b>must</b></em><span>&nbsp;</span>contain error response codes that will support updating of the request with valid data.<br> </li>
+        <ul>
+          <li>this information will be passed back to the requesting party to allow them to attempt to improve the request.</li>
+        </ul>
+        <li>In this case the response<span>&nbsp;</span><em><b>should</b></em><span>&nbsp;</span>contain data that would have allowed to port-out to be considered valid,
+          <ul>
+            <li>this data is intended for dispute resolution, and for review by Bandwidth to see if the port appears to be valid based on the available data.</li>
+            <li>all fields are considered optional.</li>
+            <li>failure to return any data<span>&nbsp;</span><em>may</em>
+            <span>&nbsp;</span>be considered to be equivalent to approving the port-out request.</li>
+            <li>subsequent submission of the data provided in the response should cause acceptance of the port-out request.</li>
+            <li>this information will not be passed directly on to the requesting party</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ol>
+  <p>The above exchange of information is intended to support best faith resolution of port-requests within the constraints imposed by the FCC. The objective is consistent achievement of the middle ground between slamming and unjustified blocking of valid requests. &nbsp;Information returned to Bandwidth is to aid in dispute resolution, and is considered to be covered by CPNI limitations and thereby not intended for distribution to any third parties. Note that failure of the winning carrier to match the values exchanged by the API may not prevent porting-out of the number. FCC guidelines must still be followed in dispute resolution.</p>
+  <p>This exchange of information is synchronous in nature, and will not permit extensive delays in response, and will not create a series of linked transactions for resolving a dispute, or in attempting the port-out with different information. Updated submissions will be treated as new requests.  Responses to the API call are expected within 30 seconds.</p>
+  <div>
+  The error codes and error explanation payloads below are the ones that we expect to see in response to the port-out validation callback.  This uniform set of responses allows a consistent and clear dialog with the prospective winning carrier about the nature of the validation failure.<br/>
+  <table style="text-align: left; width: 60%;" border="1" cellpadding="2" cellspacing="2">
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>Meaning</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr>
+              <td>7510</td>
+              <td>Required Account Code missing</td>
+          </tr>
+          <tr>
+              <td>7511</td>
+              <td>Invalid Account Code</td>
+          </tr>
+          <tr>
+              <td>7512</td>
+              <td>Required PIN missing</td>
+          </tr>
+          <tr>
+              <td>7513</td>
+              <td>PIN Invalid</td>
+          </tr>
+          <tr>
+              <td>7514</td>
+              <td>Required ZIP Code missing</td>
+          </tr>
+          <tr>
+              <td>7515</td>
+              <td>Invalid ZIP Code</td>
+          </tr>
+          <tr>
+              <td>7516</td>
+              <td>Telephone Number not recognized or invalid for this account <TN></td>
+          </tr>
+          <tr>
+              <td>7517</td>
+              <td>Too many Telephone numbers in this request</td>
+          </tr>
+          <tr>
+              <td>7518</td>
+              <td>Telephone Number Not Active <TN></td>
+          </tr>
+          <tr>
+              <td>7519</td>
+              <td>Customer info does not match <Explanation></td>
+          </tr>
+          <tr>
+              <td>7598</td>
+              <td>Invalid Request - <explanatory text></td>
+          </tr>
+          <tr>
+              <td>7599</td>
+              <td>Fatal Error in Processing</td>
+          </tr>
+      </tbody>
+     </table>
+  </div>
+
+
+  <h4>Configuration</h4>
+  <p>The configuration of the call-back API used for port-out validation is done by Bandwidth development staff. &nbsp;Configuration of this service is performed on the submission of a Ticket, and on completion of the required contract extensions.</p>
+  <ul>
+    <li>the configured URL provided by the customer that will be invoked by Bandwidth in order to validate a port-out request.</li>
+    <li>the suecurity of the exchange can be protected within an https exchange, and can be authenticated with userid / password credentials, or with certificates. The setup of the callback will be covered in the ticketing process.</li>
+  </ul>
+  <br>
+  <h4>Responsibilities</h4>
+  Accounts using the Poprt-out verification API will likely be required to extend the contractual relationship with Bandwidth to ensure clarity around the responsibilities of our customers in the use of the API, and the rights of Bandwidth to withhold this capability if we believe that the capability is being used in contravention of FCC best practices, guidelines and recommendations. Please review these requirements with your Bandwidth representative.<br>
+
+post:
+  description: |
+    The initial request for validation is a post to the pre-configured URL defined by the customer.
+    This request contains optional elements for:
+    <ul>
+      <li>PIN (optional) ( 10 digits )</li> 
+      <li>Account Number (optional) ( 25 digits )</li> 
+      <li>zipcode (optional) ( 15 characters )</li>  
+      <li>a list of one or more telephone numbers (at least one telephone number must be provided) ( 10 digits )</li> 
+      <li>Subscriber name for information purposes. (optional)( 93 characters )</li>
+      <li>PON for information and correlation purposes. (optional)( 25 characters )</li>
+    </ul>
+
+  body:
+    application/xml:
+      example: |
+        <?xml version="1.0"?>
+        <PortOutValidationRequest>
+            <PON>some_pon</PON>
+            <Pin>1111</Pin>
+            <AccountNumber>777</AccountNumber>
+            <ZipCode>62025</ZipCode>
+            <SubscriberName>Subscriber Name</SubscriberName>
+            <TelephoneNumbers>
+                <TelephoneNumber>2223331000</TelephoneNumber>
+                <TelephoneNumber>2223331001</TelephoneNumber>
+            </TelephoneNumbers>
+        </PortOutValidationRequest>
+
+  responses:
+    200:
+        description: |
+          <h3>Validation Passed</h3>
+          If the port-out is considered valid the returned payload contains an indication that the numbers in the request are portable &lt;Portable&gt;true&lt;/Portable&gt; (<b>required</b>), and may play back the PON.<br/>
+          <div style="border: solid 1px black; padding: 0px">
+          Response code - 200 OK - validation of the port out request
+            <pre>
+            &lt;PortOutValidationResponse&gt;
+                &lt;Portable&gt;true&lt;/Portable&gt;
+                &lt;PON&gt;some_pon&lt;/PON&gt;
+            &lt;/PortOutValidationResponse&gt;
+            </pre>
+          </div>
+          <h3>Validation Failed</h3>
+          In the case where the number should not be ported, a response payload is returned that may indicate the values that would allow a port-out request to be validated.<br/>
+          <ul>
+          <li>The &lt;Portable&gt; value <b>must</b> indicate "false"</li>
+          <li>A recognizable error code values <b>must</b> be returned, unrecognized error codes will be ignored and not treated as error codes.  The list of acceptable error codes is provided above.</li>
+          <li>The response payload should contain at least one of the optional fields that could be used to validate the port-out request.</li>
+          <li>If the returned field/fields was/were not provided in the original request then that indicates that the field was missing from the request and should be provided</li>
+          <li>If the returned field/fields was/were different than provided then that indicates an error in the requesting information</li>
+          <li>The list of Telephone Numbers should contain the telephone numbers considered valid.</li>
+          <li>For the port-out to be considered valid all telephone numbers in the request should be returned - If one telephone number is invalid then the request fails.</li>
+          </ul><br/>
+            <div style="border: solid 1px black; padding: 0px 5px">
+            Response code - 200 OK - a valid request, but the port-out request has failed validation
+            <pre>
+            &lt;PortOutValidationResponse&gt;
+                &lt;Portable&gt;false&lt;/Portable&gt;
+                &lt;PON&gt;some_pon&lt;/PON&gt;
+                &lt;Errors&gt;
+                    &lt;Error&gt;
+                        &lt;Code&gt;75xx&lt;/Code&gt;
+                        &lt;Description&gt;Customer api error description&lt;/Description&gt;
+                    &lt;/Error&gt;
+                    &lt;Error&gt;
+                        &lt;Code&gt;75xx&lt;/Code&gt;
+                        &lt;Description&gt;Customer api error description&lt;/Description&gt;
+                    &lt;/Error&gt;
+                &lt;/Errors&gt;
+                &lt;AcceptableValues&gt;
+                    &lt;Pin&gt;2222&lt;/Pin&gt;
+                    &lt;AccountNumber&gt;555&lt;/AccountNumber&gt;
+                    &lt;ZipCode&gt;02154&lt;/ZipCode&gt;
+                    &lt;TelephoneNumbers&gt;
+                        &lt;TelephoneNumber&gt;2223331000&lt;/TelephoneNumber&gt;
+                    &lt;/TelephoneNumbers&gt;
+                &lt;/AcceptableValues&gt;
+            &lt;/PortOutValidationResponse&gt;
+            </pre>
+            </div>
+
+          Failure to return a valid response will be considered an <b>approval of the port-out</b> request.<br/>
+          Failure to return any response will be considered an <b>approval of the port-out</b> request.<br/>
+    400:
+      description: |
+        Numbers <b>will be ported out</b> if a 4xx series response is received by Bandwidth
+    500:
+      description: |
+        An error in the customer's server - indicating that the request cannot be serviced by the customer.
+        Numbers <b>will be ported out</b> if a 5xx series response is received by Bandwidth

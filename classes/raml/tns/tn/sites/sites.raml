@@ -1,0 +1,22 @@
+!fileScope external
+
+description: The get method retrieves the sites associated with that telephone number.
+
+get:
+    description: Retrieves the sites associated with that telephone number.
+    responses:
+        200:
+            description: The sites have been successfully retrieved and displayed.
+            body:
+                application/xml:
+                    example:
+                        <TelephoneNumberResponse>
+                            <TelephoneNumber>2012035013</TelephoneNumber>
+                            <Status>Inservice</Status>
+                            <LastModifiedDate>2014-03-25 12:55:11.0</LastModifiedDate>
+                            <OrderCreateDate>2014-03-25T12:55:11.810Z</OrderCreateDate>
+                            <OrderId>cf79d3c3-21b7-4db7-9867-273a1867f934</OrderId>
+                            <OrderType>NEW_NUMBER_ORDER</OrderType>
+                            <SiteId>2409</SiteId>
+                            <AccountId>8000273</AccountId>
+                        </TelephoneNumberResponse>

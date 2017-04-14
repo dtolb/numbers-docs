@@ -1,0 +1,411 @@
+!fileScope internal
+
+description: This resource retrieves information about user.
+get:
+    description: Retrieves the information about user.
+    responses:
+        200:
+            description: The information has been successfully retrieved and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LdapUserResponse>
+                            <User>
+                                <UserId>user</UserId>
+                                <Email>user@gmail.com</Email>
+                                <EmailValidated>true</EmailValidated>
+                                <UserSettings>
+                                    <Scope>Account</Scope>
+                                    <Active>true</Active>
+                                    <AllowedApiOrigin>API</AllowedApiOrigin>
+                                </UserSettings>
+                                <UserProfile>
+                                    <FirstName>J</FirstName>
+                                    <LastName>M</LastName>
+                                </UserProfile>
+                                <RoleList>
+                                    <Role>
+                                        <RoleId>Test</RoleId>
+                                        <RoleSimpleName>Simple Name</RoleSimpleName>
+                                        <RoleDescription>Desc</RoleDescription>
+                                    </Role>
+                                </RoleList>
+                                <AccountList>
+                                    <Account>
+                                        <AccountId>123</AccountId>
+                                        <AccountName>Neustar</AccountName>
+                                    </Account>
+                                </AccountList>
+                            </User>
+                        </LdapUserResponse>
+        404:
+            description: User not found.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LdapUserResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12000</ErrorCode>
+                                <Description>User 'testing' does not exist</Description>
+                            </ResponseStatus>
+                            <User>
+                                <UserId>testing</UserId>
+                            </User>
+                        </LdapUserResponse>
+        400:
+            description: User ID is not correct.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LdapUserResponse>
+                            <ResponseStatus>
+                                <ErrorCode>1012</ErrorCode>
+                                <Description>userId is too short. Min length 4 characters</Description>
+                            </ResponseStatus>
+                            <User>
+                                <UserId>tst</UserId>
+                            </User>
+                        </LdapUserResponse>
+post:
+    description: Allows to create a new user.
+    body:
+        application/xml:
+            example: |
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <User>
+                    <UserId>test</UserId>
+                    <Email>test@gmail.com</Email>
+                    <Password>123456</Password>
+                        <UserProfile>
+                            <FirstName>J</FirstName>
+                            <LastName>M</LastName>
+                            <StreetAddress>
+                                <HouseNumber>123</HouseNumber>
+                                <StreetName>Street</StreetName>
+                                <City>Raleigh</City>
+                                <State>NC</State>
+                                <PostalCode>12345</PostalCode>
+                            </StreetAddress>
+                            <TelephoneNumbers>
+                                <HomePhone>2027445566</HomePhone>
+                                <CellPhone>2027445577</CellPhone>
+                                <WorkPhone>2027445588</WorkPhone>
+                                <OtherPhone>2027445599</OtherPhone>
+                            </TelephoneNumbers>
+                            <CompanyName>MyCompany</CompanyName>
+                        </UserProfile>
+                </User>
+    responses:
+        201:
+            description: User successfully created.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LdapUserResponse>
+                            <User>
+                                <UserId>test</UserId>
+                                <Email>test@gmail.com</Email>
+                                <EmailValidated>true</EmailValidated>
+                                <UserSettings>
+                                    <Active>false</Active>
+                                    <AllowedApiOrigin>GUI</AllowedApiOrigin>
+                                </UserSettings>
+                                <UserProfile>
+                                    <FirstName>J</FirstName>
+                                    <LastName>M</LastName>
+                                    <StreetAddress>
+                                        <HouseNumber>123</HouseNumber>
+                                        <StreetName>Street</StreetName>
+                                        <City>Raleigh</City>
+                                        <State>NC</State>
+                                        <PostalCode>12345</PostalCode>
+                                    </StreetAddress>
+                                    <TelephoneNumbers>
+                                        <HomePhone>2027445566</HomePhone>
+                                        <CellPhone>2027445577</CellPhone>
+                                        <WorkPhone>2027445588</WorkPhone>
+                                        <OtherPhone>2027445599</OtherPhone>
+                                    </TelephoneNumbers>
+                                    <CompanyName>MyCompany</CompanyName>
+                                </UserProfile>
+                            </User>
+                        </LdapUserResponse>
+        400:
+            description: Some information is not correct.
+            body:
+                application/xml:
+                    example: |
+                        <LdapUserResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12688</ErrorCode>
+                                <Description>User ID in request body must match with user ID in URL</Description>
+                            </ResponseStatus>
+                            <User>
+                                <UserId>test</UserId>
+                                <Email>test@gmail.com</Email>
+                                <Password>123456</Password>
+                                <UserProfile>
+                                    <FirstName>J</FirstName>
+                                    <LastName>M</LastName>
+                                    <StreetAddress>
+                                        <HouseNumber>123</HouseNumber>
+                                        <StreetName>Street</StreetName>
+                                        <City>Raleigh</City>
+                                        <State>NC</State>
+                                        <PostalCode>12345</PostalCode>
+                                    </StreetAddress>
+                                    <TelephoneNumbers>
+                                        <HomePhone>2027445566</HomePhone>
+                                        <CellPhone>2027445577</CellPhone>
+                                        <WorkPhone>2027445588</WorkPhone>
+                                        <OtherPhone>2027445599</OtherPhone>
+                                    </TelephoneNumbers>
+                                    <CompanyName>MyCompany</CompanyName>
+                                </UserProfile>
+                            </User>
+                        </LdapUserResponse>
+put:
+    description: Allows the user update.
+    body:
+        application/xml:
+            example: |
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <User>
+                    <UserId>test</UserId>
+                    <Email>test@gmail.com</Email>
+                    <Password>123456</Password>
+                        <UserProfile>
+                            <FirstName>J</FirstName>
+                            <LastName>M</LastName>
+                            <StreetAddress>
+                                <HouseNumber>123</HouseNumber>
+                                <StreetName>Street</StreetName>
+                                <City>Raleigh</City>
+                                <State>NC</State>
+                                <PostalCode>12345</PostalCode>
+                            </StreetAddress>
+                            <TelephoneNumbers>
+                                <HomePhone>2027445566</HomePhone>
+                                <CellPhone>2027445577</CellPhone>
+                                <WorkPhone>2027445588</WorkPhone>
+                                <OtherPhone>2027445599</OtherPhone>
+                            </TelephoneNumbers>
+                            <CompanyName>MyCompany</CompanyName>
+                        </UserProfile>
+                </User>
+    responses:
+        200:
+            description: User updated.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LdapUserResponse>
+                            <User>
+                                <UserId>test3</UserId>
+                                <Email>test3@gmail.com</Email>
+                                <EmailValidated>true</EmailValidated>
+                                <UserSettings>
+                                    <Active>false</Active>
+                                    <AllowedApiOrigin>API</AllowedApiOrigin>
+                                </UserSettings>
+                                <UserProfile>
+                                    <FirstName>J</FirstName>
+                                    <LastName>M</LastName>
+                                    <StreetAddress>
+                                        <HouseNumber>123</HouseNumber>
+                                        <StreetName>Street</StreetName>
+                                        <City>Raleigh</City>
+                                        <State>NC</State>
+                                        <PostalCode>12345</PostalCode>
+                                    </StreetAddress>
+                                    <TelephoneNumbers>
+                                        <HomePhone>2027445566</HomePhone>
+                                        <CellPhone>2027445577</CellPhone>
+                                        <WorkPhone>2027445588</WorkPhone>
+                                        <OtherPhone>2027445599</OtherPhone>
+                                    </TelephoneNumbers>
+                                    <CompanyName>MyCompany</CompanyName>
+                                </UserProfile>
+                            </User>
+                        </LdapUserResponse>
+        404:
+            description: User not found.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LdapUserResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12000</ErrorCode>
+                                <Description>User 'testing' does not exist</Description>
+                            </ResponseStatus>
+                            <User>
+                                <UserId>testing</UserId>
+                                <Email>testing@gmail.com</Email>
+                                <Password>123456</Password>
+                                <UserProfile>
+                                    <FirstName>J</FirstName>
+                                    <LastName>M</LastName>
+                                    <StreetAddress>
+                                        <HouseNumber>123</HouseNumber>
+                                        <StreetName>Street</StreetName>
+                                        <City>Raleigh</City>
+                                        <State>NC</State>
+                                        <PostalCode>12345</PostalCode>
+                                    </StreetAddress>
+                                    <TelephoneNumbers>
+                                        <HomePhone>2027445566</HomePhone>
+                                        <CellPhone>2027445577</CellPhone>
+                                        <WorkPhone>2027445588</WorkPhone>
+                                        <OtherPhone>2027445599</OtherPhone>
+                                    </TelephoneNumbers>
+                                    <CompanyName>MyCompany</CompanyName>
+                                </UserProfile>
+                            </User>
+                        </LdapUserResponse>
+        400:
+            description: Some information is not correct.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LdapUserResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12071</ErrorCode>
+                                <Description>A user with email 'test@gmail.com' already exists</Description>
+                            </ResponseStatus>
+                            <User>
+                                <UserId>test</UserId>
+                                <Email>test@gmail.com</Email>
+                                <Password>123456</Password>
+                                <UserProfile>
+                                    <FirstName>J</FirstName>
+                                    <LastName>M</LastName>
+                                    <StreetAddress>
+                                        <HouseNumber>123</HouseNumber>
+                                        <StreetName>Street</StreetName>
+                                        <City>Raleigh</City>
+                                        <State>NC</State>
+                                        <PostalCode>12345</PostalCode>
+                                    </StreetAddress>
+                                    <TelephoneNumbers>
+                                        <HomePhone>2027445566</HomePhone>
+                                        <CellPhone>2027445577</CellPhone>
+                                        <WorkPhone>2027445588</WorkPhone>
+                                        <OtherPhone>2027445599</OtherPhone>
+                                    </TelephoneNumbers>
+                                    <CompanyName>MyCompany</CompanyName>
+                                </UserProfile>
+                            </User>
+                        </LdapUserResponse>
+        403:
+            description: User has access for users in accounts that they control.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LdapUserResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12697</ErrorCode>
+                                <Description>This user can only manage users in accounts that they control</Description>
+                            </ResponseStatus>
+                            <User>
+                                <UserId>test1Uid</UserId>
+                                <Email>yyy@gmail.com</Email>
+                                <EmailValidated>true</EmailValidated>
+                                <UserSettings>
+                                    <Scope>Account</Scope>
+                                    <Active>true</Active>
+                                    <AllowedApiOrigin>API</AllowedApiOrigin>
+                                </UserSettings>
+                                <UserProfile>
+                                    <FirstName>test2FN</FirstName>
+                                    <LastName>test2LN</LastName>
+                                    <TelephoneNumbers>
+                                        <HomePhone>2022345678</HomePhone>
+                                    </TelephoneNumbers>
+                                </UserProfile>
+                                <RoleList>
+                                    <Role>
+                                        <RoleId>default</RoleId>
+                                        <RoleSimpleName>default role</RoleSimpleName>
+                                        <RoleDescription>default</RoleDescription>
+                                    </Role>
+                                </RoleList>
+                            </User>
+                        </LdapUserResponse>
+
+delete:
+    description: Removing migrated user and all related information from LDAP.
+    responses:
+        200:
+            description: User has been successfully removed.
+        404:
+            description: User was not found.
+
+/password:
+  description: Allows to change the user's password.
+  put:
+      description: Update user's password. Only logged user can change your password.
+      body:
+          application/xml:
+              example: |
+                  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                  <Password>123456</Password>
+      responses:
+          200:
+              description: Password updated.
+              body:
+                  application/xml:
+                      example: |
+                          <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                          <LdapUserPasswordResponse>
+                               <User>
+                                   <UserId>testCreateUserQ</UserId>
+                                   <Password>testCreateUserQ</Password>
+                               </User>
+                           </LdapUserPasswordResponse>
+          400:
+              description: Password is not correct.
+              body:
+                  application/xml:
+                      example: |
+                          <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                          <LdapUserPasswordResponse>
+                              <ResponseStatus>
+                                  <ErrorCode>1012</ErrorCode>
+                                  <Description>Password is too short. Min length 6 characters</Description>
+                              </ResponseStatus>
+                              <User>
+                                  <UserId>testCreateUserQ</UserId>
+                                  <Password>test</Password>
+                              </User>
+                          </LdapUserPasswordResponse>
+          403:
+              description: Access Denied
+              body:
+                  application/xml:
+                      example: |
+                          <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                          <LdapUserPasswordResponse>
+                              <ResponseStatus>
+                                  <ErrorCode>12618</ErrorCode>
+                                  <Description>Provided username 'testCreateUserQ1' doesn't match login username 'systemUser'</Description>
+                              </ResponseStatus>
+                              <User>
+                                  <UserId>testCreateUserQ1</UserId>
+                                  <Password>testCreateUserQ</Password>
+                              </User>
+                          </LdapUserPasswordResponse>
+
+/settings: !include settings/settings.raml
+/profile: !include profile/profile.raml
+/accounts: !include accounts/accounts.raml
+/roles: !include roles/roles.raml
+/preferences: !include userpreferences/userpreferences.raml
+/logs: !include log/logs.raml

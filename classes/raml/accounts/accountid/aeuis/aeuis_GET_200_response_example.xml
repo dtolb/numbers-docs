@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AlternateEndUserIdentifiersResponse>
+    <TotalCount>2</TotalCount>
+    <Links>
+        <first>Link=&lt;http://localhost:8080/iris/accounts/14/aeuis?page=1&amp;size=500&gt;;rel="first";</first>
+    </Links>
+    <AlternateEndUserIdentifiers>
+        <AlternateEndUserIdentifier>
+            <Identifier>DavidAcid</Identifier>
+            <CallbackNumber>8042105760</CallbackNumber>
+        </AlternateEndUserIdentifier>
+        <AlternateEndUserIdentifier>
+            <Identifier>JohnAcid</Identifier>
+            <CallbackNumber>8042105618</CallbackNumber>
+        </AlternateEndUserIdentifier>
+    </AlternateEndUserIdentifiers>
+</AlternateEndUserIdentifiersResponse>

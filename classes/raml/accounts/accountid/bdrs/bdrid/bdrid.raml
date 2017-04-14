@@ -1,0 +1,57 @@
+!fileScope all
+
+description: |
+    The bdrid resource will query the status of the bdr file that is being generated.  There are essentially two responses...<br>
+    <ul>
+    <li>not yet ready</li>
+    <li>ready, in which case the request is redirected to the URL to actually download the file.</li>
+    </ul>
+get:
+    description:
+        A GET on the BDR ID will return a "still processing" indication if the file creation has not completed, or will redirect to the file to be downloaded.
+    responses:
+        200:
+            description: |
+                A 200 OK means that the request is valid, but that the file is not yet ready. The payload indicates the status.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <BdrCreationResponse>
+                             <Info>The requested BDR archive is still being constructed, please check back later</Info>
+                        </BdrCreationResponse>
+        303:
+            description: |
+                A 303 response indicates that the file is ready.  The 303 should redirect the request to the URL in the Location header, which will, in most cases, initiate the file download. 
+            headers:
+                Location:
+                    description: contains a URL to the file identified by the BDR ID
+                    example: https://dashboard.bandwidth.com/api/accounts/9900012/bdrs/a12b456c8-abcd-1a3b-a1b2-0a2b4c6d8e0f2/file
+        400:
+            description: |
+                A 400 indicates that the BDR id is malformed. 
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <BdrRetrievalResponse>
+                            <ResponseStatus>
+                                <ErrorCode>1008</ErrorCode>
+                                <Description>'44a90e00-a7b6asdfsdafasdfdasf-6659-9112-e7f5dfa48231' is not a valid UUID</Description>
+                            </ResponseStatus>
+                        </BdrRetrievalResponse>
+        404:
+            description: |
+                A 404 indicates that the BDR id cannot be found. 
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <BdrRetrievalResponse>
+                            <ResponseStatus>
+                                <ErrorCode>15001</ErrorCode>
+                                <Description>BDR archive was not found</Description>
+                            </ResponseStatus>
+                        </BdrRetrievalResponse>
+
+/file: !include file/file.raml

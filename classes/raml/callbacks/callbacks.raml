@@ -1,0 +1,47 @@
+!fileScope all
+
+description: |
+    The callbacks group of API calls does not reflect API Call signatures of the Bandwidth Dashboard API. <br>The API documentation captured in this group is intended to capture payload and response expectation of callback endpoints provided by our customers.<br><br>
+
+    The API endpoints (like https://customer.com/the\_resource\_that\_bandwidth\_calls\_to\_notify\_my\_app\_of\_something) will be provided by our customers (you), and we will invoke those endpoints with the described payloads, and respond appropriately to the described responses. <br>
+
+    The URLs are provided by you; we call them with the payloads, and process the responses. <br>
+
+    <table style="text-align: left; width: 100%; background-color: rgb(255, 255, 200);" border="1" cellpadding="5" cellspacing="0">
+        <tbody>
+            <tr>
+                <td>
+                    Don't plan on placing a call to "/callbacks /portOutValidationCallbackApi" or
+                    "/callbacks /notificationCallbackApi", these are simply here to provide
+                    some structure to the documentation. &nbsp; We will place a call to
+                    the URL that you provide us, and we will expect a response to that API
+                    call as described below.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+
+    The Callback APIs documented in this group of API signatures includes...
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>Port-Out Validation</td>
+            <td>This Callback API will be used with select pre-qualified customers to confirm the validity of a port-out request when it is submitted by the winning carrier.  The API call will define the end user owner of the Telephone Number in terms of FCC-approved information to aid in assessing the validity of the request</td>
+        </tr>
+        <tr>
+            <td>Order state change notification Callback API</td>
+            <td>This Callback API will be used to notify customers of events and changes that occur with various feature and service orders that are being processed by the Bandwidth Dashboard on their behalf.  In general this notification callback will be called whenever an order that is in-scope changes state or has a note added to it.</td>
+        </tr>
+    </table>
+    <br> <br>
+    If the customer's endpoint is unavailable, the Bandwidth Dashboard callback service will retry the customer's endpoint 8 times over a period of 40 minutes.
+    <br><br>
+
+    The API payloads are described below...
+
+/portOutValidationCallbackApi: !include customer-validation-api/customer-validation-api.raml
+/notificationCallbackApi: !include notification-callback-api/notification-callback-api.raml

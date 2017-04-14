@@ -1,0 +1,7 @@
+!fileScope all
+<ErrorResponse>
+    <irisStatus>
+        <Code>404</Code>
+        <Description>Results were not found.</Description>
+    </irisStatus>
+</ErrorResponse>

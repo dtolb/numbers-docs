@@ -1,0 +1,53 @@
+!fileScope internal
+
+description: This resource retrieves information about user detail event.
+get:
+    description: Retrieves the details of a change, with prior and new values as appropriate.
+    responses:
+        200:
+            description: The information has been successfully retrieved and displayed in the payload.
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserActivityEventDetailsResponse>
+                            <UserActivityEventDetails>
+                                <UserEvent/>
+                                <BeforeChanges>
+                                    <UserId>testUser1</UserId>
+                                    <RoleList/>
+                                </BeforeChanges>
+                                <AfterChanges>
+                                    <UserId>testUser1</UserId>
+                                    <RoleList>
+                                        <Role>
+                                            <RoleId>default</RoleId>
+                                        </Role>
+                                        <Role>
+                                            <RoleId>LsrManagement</RoleId>
+                                        </Role>
+                                    </RoleList>
+                                </AfterChanges>
+                            </UserActivityEventDetails>
+                        </UserActivityEventDetailsResponse>
+        404:
+            description: Event is not associated with impacted user or does not exist.
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserActivityEventDetailsResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12095</ErrorCode>
+                                <Description>User event with id '315' is not associated with user 'testUser1'</Description>
+                            </ResponseStatus>
+                            <UserActivityEventDetails>
+                                <UserEvent>
+                                    <EventId>315</EventId>
+                                </UserEvent>
+                            </UserActivityEventDetails>
+                        </UserActivityEventDetailsResponse>
+        204:
+            description: A 204 No Content response indicates that no changes of user have been exist in event.  There is no body associated with this response.
+
+

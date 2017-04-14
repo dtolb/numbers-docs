@@ -1,0 +1,124 @@
+!fileScope external
+description: |
+    This API returns data about the specific DLDAs Order specified as the resource
+
+!scope external
+get:
+    description: |
+        Retrieve information about a DLDA Order with specified ID.
+    responses:
+        200:
+            description: |
+                The descriptive payload for the Lidb Orders query provides a broad range of information about the DLDA Order identified in the URL.  Included amongst the information is:
+                <ul>
+                <li>ErrorList - the errors discovered with codes and explanations</li>
+                <li>various dates</li>
+                <li>ProcessingStatus(RECEIVED, PROCESSING, COMPLETE, PARTIAL, FAILED, CANCELLED) - the overall status of the order</li>
+                <li>DldaTnGroups - list of DldaTnGroup elements that contains list of TNs with Directory Listing and Directory Assistance information, AccountType(RESIDENCE or BUSINESS), ListingType(LISTED, NON_LISTED or NON_PUBLISHED)</li>
+                </ul>
+            body:
+                application/xml:
+                    example: !include GET_200_response_example.xml
+        404:
+            description: NOT FOUND - the order id does not exist in the system
+            body:
+                application/xml:
+                    example: !include GET_404_response_example.xml
+
+!scope external
+put:
+    description: |
+        Update DLDA order to associate the street address with the telephone number.
+
+        The key data elements in the submission are -
+             <table style="text-align: left; width: 80%;"
+             border="1" cellpadding="2" cellspacing="2">
+              <tbody>
+                <tr>
+                  <td>TelephoneNumbers</td>
+                  <td>A list of telephone numbers you need to bind information from payload.</td>
+                </tr>
+                <tr>
+                  <td>AccountType</td>
+                  <td>Can be RESIDENTIAL or BUSINESS.  The element is required.</td>
+                </tr>
+                <tr>
+                  <td>ListingType</td>
+                  <td>Can be LISTED, NON_LISTED or NON_PUBLISHED. The element is required</td>
+                </tr>
+                <tr>
+                  <td>ListingName</td>
+                  <td>Inner fields: FirstName, FirstName2, LastName, Designation, TitleOfLineage, TitleOfAddress, TitleOfAddress2, TitleOfLineageName2, TitleOfAddressName2, TitleOfAddress2Name2, PlaceListingAs.</td>
+                </tr>
+                <tr>
+                  <td>ListAddress</td>
+                  <td>Can be true or false. The element is required.</td>
+                </tr>
+                <tr>
+                  <td>Address</td>
+                  <td>This field is required. Inner fields: HousePrefix, HouseNumber, HouseSuffix, PreDirectional, StreetName, StreetSuffix, PostDirectional, AddressLine2, City, StateCode, Zip, PlusFour, AddressType</td>
+                </tr>
+              </tbody>
+            </table>
+
+    body:
+        application/xml:
+            example: |
+                <DldaOrder>
+                    <CustomerOrderId>[String]</CustomerOrderId>
+                    <DldaTnGroups>
+                        <DldaTnGroup>
+                            <TelephoneNumbers>
+                                <TelephoneNumber>5202217754</TelephoneNumber>
+                            </TelephoneNumbers>
+                            <AccountType>RESIDENCE</AccountType>
+                            <ListingType>LISTED</ListingType>
+                            <ListingName>
+                                <FirstName>John</FirstName>
+                                <FirstName2/>
+                                <LastName>Smith</LastName>
+                                <Designation/>
+                                <TitleOfLineage/>
+                                <TitleOfAddress/>
+                                <TitleOfAddress2/>
+                                <TitleOfLineageName2/>
+                                <TitleOfAddressName2/>
+                                <TitleOfAddress2Name2/>
+                                <PlaceListingAs/>
+                            </ListingName>
+                            <ListAddress>true</ListAddress>
+                            <Address>
+                                <HousePrefix/>
+                                <HouseNumber>915</HouseNumber>
+                                <HouseSuffix/>
+                                <PreDirectional/>
+                                <StreetName>Elm</StreetName>
+                                <StreetSuffix>Ave</StreetSuffix>
+                                <PostDirectional/>
+                                <AddressLine2/>
+                                <City>Carpinteria</City>
+                                <StateCode>CA</StateCode>
+                                <Zip>93013</Zip>
+                                <PlusFour/>
+                                <County/>
+                                <AddressType>DLDA</AddressType>
+                            </Address>
+                        </DldaTnGroup>
+                    </DldaTnGroups>
+                </DldaOrder>
+    responses:
+        200:
+            description: |
+                OK <br> A 200 response indicates that an order has been updated.
+            body:
+                application/xml:
+                    example: !include PUT_200_response_example.xml
+
+        400:
+            description: |
+                Bad Request <br> A 400 response Indicates that the order could not be modified. The payload is echoed with the Errors identified.
+            body:
+                application/xml:
+                    example: !include PUT_400_response_example.xml
+
+/history: !include history/history.raml

@@ -1,0 +1,167 @@
+!fileScope internal
+description: |
+    The Dedicated Private Network (DPN) settings resource is used to define the attributes of the Dedicated Private Network Topology product to manage the connection between the CLEC and the DPN components.
+
+get:
+    description: |
+        There are three primary settings that are provided as part of the Dedicated Private Network Topology product:
+            <ul>
+                <li>the SBC settings for the SBC at the edge of the CLEC network that will be used to communicate with the DPN</li>
+                <li> a set of IP addresses used for Origin traffic</li>
+                <li> a set of IP addresses used for Term traffic</li>
+            </ul>
+
+    responses:    
+        200:
+            description: An optional description of the response.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <DPNSettingsResponse>
+                            <DPNSettings>
+                                <CLECSBCSettings>
+                                    <TrunkGroupName>TrunkGroupNewName</TrunkGroupName>
+                                    <SBC0Label>JFK1-CUSBC-01.jfk1</SBC0Label>
+                                    <SBC1Label>ATL1-CUSBC-01.atl1</SBC1Label>
+                                </CLECSBCSettings>
+                                <VoiceHostGroups>
+                                    <VoiceHostGroup>
+                                        <Host>
+                                            <HostName>10.10.10.48</HostName>
+                                            <Port>45454</Port>
+                                        </Host>
+                                        <Host>
+                                            <HostName>10.10.10.10</HostName>
+                                            <Port>0</Port>
+                                        </Host>
+                                    </VoiceHostGroup>
+                                </VoiceHostGroups>
+                                <TerminationHosts>
+                                    <TerminationHost>
+                                        <HostName>2.1.1.92</HostName>
+                                        <Port>0</Port>
+                                    </TerminationHost>
+                                    <TerminationHost>
+                                        <HostName>2.1.1.96/28</HostName>
+                                        <Port>6788</Port>
+                                    </TerminationHost>
+                                </TerminationHosts>
+                            </DPNSettings>
+                        </DPNSettingsResponse>
+        404:
+            description: |
+                If the settings are not present for the DPN product a 404 NOT FOUND is returned.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <DPNSettingsResponse>
+                            <ResponseStatus>
+                                <Description>The resource does not exist</Description>
+                            </ResponseStatus>
+                        </DPNSettingsResponse>
+
+post:
+    description: | 
+
+        This DPN settings resource can be PUT or POSTed to in order to establish the appropriate settings.
+
+    body:
+        application/xml:
+            example: |
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <DPNSettings>
+                    <VoiceHostGroups>
+                        <VoiceHostGroup>
+                            <Host>
+                                <HostName>10.10.10.1</HostName>
+                            </Host>
+                            <Host>
+                                <HostName>10.10.10.2</HostName>
+                            </Host>
+                        </VoiceHostGroup>
+                    </VoiceHostGroups>
+                    <TerminationHosts>
+                        <TerminationHost>
+                            <HostName>2.1.1.9</HostName>
+                            <Port>0</Port>
+                        </TerminationHost>
+                        <TerminationHost>
+                            <HostName>2.1.1.44/30</HostName>
+                            <Port>6788</Port>
+                        </TerminationHost>
+                    </TerminationHosts>
+                      <CLECSBCSettings>
+                    	<TrunkGroupName>TrunkGroup</TrunkGroupName>
+                        <SBC0Label>JFK1-CUSBC-01.jfk1</SBC0Label>
+                        <SBC1Label>ATL1-CUSBC-01.atl1</SBC1Label>
+                    </CLECSBCSettings>
+                </DPNSettings>
+    responses:
+        200:
+            description: a 200 OK is returned on successful updating of the DPN Settings.  There is no payload returned with a 200 OK.
+        400:
+            description: a 400 BAD REQUEST will be returned with a descriptive payload if the XML describing the DPN settings resource is incorrect or the account is not configured for DPN.  The error contains an error code and description.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <DPNSettingsResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12040</ErrorCode>
+                                <Description>The supplied SBC configuration was not valid</Description>
+                            </ResponseStatus>
+                        </DPNSettingsResponse>
+
+put:
+    description: |
+
+        This DPN settings resource can be PUT or POSTed to in order to establish the appropriate settings.
+
+    body:
+        application/xml:
+            example: |
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <DPNSettings>
+                    <VoiceHostGroups>
+                        <VoiceHostGroup>
+                            <Host>
+                                <HostName>10.10.10.1</HostName>
+                            </Host>
+                            <Host>
+                                <HostName>10.10.10.2</HostName>
+                            </Host>
+                        </VoiceHostGroup>
+                    </VoiceHostGroups>
+                    <TerminationHosts>
+                        <TerminationHost>
+                            <HostName>2.1.1.9</HostName>
+                            <Port>0</Port>
+                        </TerminationHost>
+                        <TerminationHost>
+                            <HostName>2.1.1.44/30</HostName>
+                            <Port>6788</Port>
+                        </TerminationHost>
+                    </TerminationHosts>
+                      <CLECSBCSettings>
+                    	<TrunkGroupName>TrunkGroup</TrunkGroupName>
+                        <SBC0Label>JFK1-CUSBC-01.jfk1</SBC0Label>
+                        <SBC1Label>ATL1-CUSBC-01.atl1</SBC1Label>
+                    </CLECSBCSettings>
+                </DPNSettings>
+    responses:
+        200:
+            description: a 200 OK is returned on successful updating of the DPN Settings.  There is no payload returned with a 200 OK.
+        400:
+            description: a 400 BAD REQUEST will be returned with a descriptive payload if the XML describing the edge DPN settings resource is incorrect or the account is not configured for DPN.  The error contains an error code and description.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <DPNSettingsResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12040</ErrorCode>
+                                <Description>The supplied SBC configuration was not valid</Description>
+                            </ResponseStatus>
+                        </DPNSettingsResponse>

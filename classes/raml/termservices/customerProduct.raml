@@ -1,0 +1,125 @@
+!fileScope internal
+get:
+    description: return a list of all available products
+    responses:
+        200:
+            description: managed to get all accounts
+            body:
+                application/json:
+                    example: |
+                        [
+                            {
+                                "id":86,
+                                "name":"Product name",
+                                "key":null,
+                                "description":null,
+                                "attributes":{}
+                            }
+                        ]
+post:
+    description: create product
+    body:
+        application/json:
+            example: |
+                {
+                    "id":null,
+                    "name":"Product name",
+                    "key":"11b971ca-11a8-48d9-ab4f-61405bc86df0",
+                    "description":null,
+                    "attributes":null
+                }
+    responses:
+        201:
+            description: product was successfully created
+        400:
+            description: required fields are absent, or product contains some attributes
+/{productId}:
+    get:
+        description: return a specific product
+        queryParameters:
+            toAssign:
+                description: if toAssign = true response is a formated json response of the product assignment JSON. So that an upstream system can take this json, fill in the values, and submit it to a product assignment.
+        responses:
+            200:
+                body:
+                    application/json:
+                        example: |
+                            {
+                              "attributeId" : 5,
+                              "productName" : "Product name",
+                              "attributes" : { }
+                            }
+            404:
+                description: product with specified was not found
+    delete:
+        description: delete product
+        responses:
+            200:
+                description: product was deleted
+            404:
+                description: product with specified was not found
+    /attribute:
+        get:
+            description: return all available attributes for current product
+            responses:
+                200:
+                    description: managed to get all attributes
+                    body:
+                        application/json:
+                            example: |
+                                [
+                                    {
+                                        "id":207,
+                                        "name":"TRACE",
+                                        "value":"true",
+                                        "effectiveDate":"2014-09-18T11:14:03",
+                                        "ineffectiveDate":"2014-09-18T11:14:03",
+                                        "externalId":10
+                                    }
+                                ]
+        post:
+            description: assign attribute to product
+            body:
+                application/json:
+                    example: |
+                        {
+                          "id" : null,
+                          "name" : "TRACE",
+                          "value" : "true",
+                          "effectiveDate" : "2014-09-18T11:19:47",
+                          "ineffectiveDate" : "2014-09-18T11:19:48",
+                          "externalId" : 10
+                        }
+            responses:
+                201:
+                    description: attribute was successfully assigned
+                400:
+                    description: required values are absent, or some restricted values exists (eg id)
+                404:
+                    description: product was not found
+        /attributeId:
+            get:
+                description: return specific attribute
+                responses:
+                    200:
+                        description: managed to found attribute
+                        body:
+                            application/json:
+                                example: |
+                                    {
+                                        "id":209,
+                                        "name":"TRACE",
+                                        "value":"5",
+                                        "effectiveDate":"2014-09-18T12:28:21",
+                                        "ineffectiveDate":"2014-09-18T12:28:21",
+                                        "externalId":10
+                                    }
+                    404:
+                        description: product or attribute was not found
+            delete:
+                description: delete product attribute
+                responses:
+                    200:
+                        description: product attribute was deleted
+                    404:
+                        description: product or attribute was not found

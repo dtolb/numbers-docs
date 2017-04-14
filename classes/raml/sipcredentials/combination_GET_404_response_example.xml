@@ -1,0 +1,8 @@
+!fileScope internal
+        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<SipCredentialsResponse>
+    <ResponseStatus>
+        <ErrorCode>23011</ErrorCode>
+        <Description>Sip credentials were not found.</Description>
+    </ResponseStatus>
+</SipCredentialsResponse>

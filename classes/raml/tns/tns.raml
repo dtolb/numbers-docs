@@ -1,0 +1,177 @@
+!fileScope all
+
+description: Telephone Numbers (TNs) are similarly central to Bandwidth Dashboard provisioning.  TNs can be queried on a system-wide basis, returning information based on a wide range of search parameters.<br> The results will be restricted to the account(s) that the requesting user has access to.
+
+!scope all
+get:
+    description: | 
+        Retrieve information about one or more Telephone Numbers (TNs), where the TNs are chosen based on the search parameters provided in the API Call. 
+    queryParameters:
+        page:
+            description: An ID of the first element in a page.  This value will indicate the first value, not the count, of the initial entry in the page being requested.  Note in the example that the page is the TN that begins the page. The initial page is tagged with the ID '1'
+            type: string
+            example: 9199918388
+            default: 1
+            required: true
+        size:
+            description: The number of items to include in a page
+            type: integer
+            example: 250
+            default: 500
+            required: true
+        accountId:
+            description: The internal account id assigned to the customer that "owns" the TN
+            type: integer
+            example: 5000125
+        !scope internal
+        status:
+            description: | 
+                A status value to filter the TNs returned in the payload.  Values that can be accepted include:
+                <ul>
+                    <li>Available</li>
+                    <li>InService</li>
+                    <li>Aging</li>
+                    <li>Backordered</li>
+                    <li>Obsolete (future)</li>
+                </ul>
+            type: string
+            enum: [Available,InService,Aging,Backordered,Obsolete]
+            example: Available
+        fullNumber:
+            description: A 10 Digit TN
+            type: string
+            example: 9199918388
+        tier:
+            description: A service tier indicating the the vendor class that the TN is associated with.  Tier indicates whether the TN is on-net, domestic offnet, Canadian, etc.
+            type: integer
+            example: 5       
+        lata:
+            description: The LATA (Local Access Transport Area) that the TN is served from, typically 3 digits (5 in FLA)
+            type: integer
+            example: 423
+        rateCenter:
+            description: The Rate Center designation that the number is served from.  If not combined with a State search the results will span states.
+            type: string
+            example: RALEIGH
+        npa:
+            description: The first 3 digits of a 10 Digit NA Telephone Number, the Area Code.
+            type: string
+            example: 919
+        npaNxx:
+            description: The first 6 digits of a 10 Digit NA Telephone Number.
+            type: string
+            example: 919991
+        npaNxxX:
+            description: The first 7 digits of a 10 Digit NA Telephone Number.
+            type: string
+            example: 9199918
+        state:
+            description: A 2 character State or Province designation - TX for Texas for example
+            type: string
+            example: TX
+        city:
+            description: The geographic city most likely to serve the Telephone Number.  City and other geographic data is determined statistically, and is not as reliable as Rate Center information for pinpointing the service location of a TN
+            example: CARY
+        host:
+            description: An IP address or subnet (CIDR format) associated with the TN. Filter for subnet applies by exact match.
+            type: string
+            example: 47.16.211.63 or 69.22.181.68/30
+    responses:    
+        200:
+            description: |
+                The descriptive payload for the TNs query provides information about the TN(s) that were found in the Query. Information about the City, State, LATA, Rate Center, Tier, Vendor, Status, Owning Account and Last Modified Date is provided for each TN in the payload.
+
+                Links to assist in pagination are also provided.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0"?>
+                        <TelephoneNumbersResponse>
+                            <TelephoneNumberCount>5</TelephoneNumberCount>
+                            <Links>
+                                <first>Link=&lt;https://dashboard.bandwidth.com:443/v1.0/tns?account=9500012&amp;page=1&amp;size=500&gt;;rel="first";</first>
+                                <next>Link=&lt;https://dashboard.bandwidth.com:443/v1.0/tns?account=9500012&amp;page=2012082912&amp;size=500&gt;;rel="next";</next>
+                            </Links>
+                            <TelephoneNumbers>
+                                <TelephoneNumber>
+                                    <City>CARY</City>
+                                    <Lata>426</Lata>
+                                    <State>NC</State>
+                                    <FullNumber>9192381138</FullNumber>
+                                    <Tier>0</Tier>
+                                    <VendorId>49</VendorId>
+                                    <VendorName>Bandwidth CLEC</VendorName>
+                                    <RateCenter>CARY</RateCenter>
+                                    <Status>Inservice</Status>
+                                    <AccountId>9900008</AccountId>
+                                    <LastModified>2013-12-05T05:58:27.000Z</LastModified>
+                                </TelephoneNumber>
+                                <TelephoneNumber>
+                                    <City>CARY</City>
+                                    <Lata>426</Lata>
+                                    <State>NC</State>
+                                    <FullNumber>9192381139</FullNumber>
+                                    <Tier>0</Tier>
+                                    <VendorId>49</VendorId>
+                                    <VendorName>Bandwidth CLEC</VendorName>
+                                    <RateCenter>CARY</RateCenter>
+                                    <Status>Inservice</Status>
+                                    <AccountId>9900000</AccountId>
+                                    <LastModified>2013-12-05T05:58:27.000Z</LastModified>
+                                </TelephoneNumber>
+                                <TelephoneNumber>
+                                    <City>CARY</City>
+                                    <Lata>426</Lata>
+                                    <State>NC</State>
+                                    <FullNumber>9192381141</FullNumber>
+                                    <Tier>0</Tier>
+                                    <VendorId>49</VendorId>
+                                    <VendorName>Bandwidth CLEC</VendorName>
+                                    <RateCenter>CARY</RateCenter>
+                                    <Status>Inservice</Status>
+                                    <AccountId>9900000</AccountId>
+                                    <LastModified>2013-12-05T05:58:27.000Z</LastModified>
+                                </TelephoneNumber>
+                                <TelephoneNumber>
+                                    <City>CARY</City>
+                                    <Lata>426</Lata>
+                                    <State>NC</State>
+                                    <FullNumber>9192381142</FullNumber>
+                                    <Tier>0</Tier>
+                                    <VendorId>49</VendorId>
+                                    <VendorName>Bandwidth CLEC</VendorName>
+                                    <RateCenter>CARY</RateCenter>
+                                    <Status>Inservice</Status>
+                                    <AccountId>9900000</AccountId>
+                                    <LastModified>2013-12-05T05:58:27.000Z</LastModified>
+                                </TelephoneNumber>
+                                <TelephoneNumber>
+                                    <City>CARY</City>
+                                    <Lata>426</Lata>
+                                    <State>NC</State>
+                                    <FullNumber>9192381144</FullNumber>
+                                    <Tier>0</Tier>
+                                    <VendorId>49</VendorId>
+                                    <VendorName>Bandwidth CLEC</VendorName>
+                                    <RateCenter>CARY</RateCenter>
+                                    <Status>Aging</Status>
+                                    <AccountId>753</AccountId>
+                                    <LastModified>2013-12-05T05:58:27.000Z</LastModified>
+                                </TelephoneNumber>
+                            </TelephoneNumbers>
+                        </TelephoneNumbersResponse>
+        400:
+            description: |
+                Bad Request - any syntax error in the parameters will cause a 400 error with a payload similar to the payload in the example, with an error code and text description.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <TelephoneNumbersResponse>
+                            <ResponseStatus>
+                                <ErrorCode>15511</ErrorCode>
+                                <Description>The NPA_NXX '9192384' is invalid</Description>
+                            </ResponseStatus>
+                        </TelephoneNumbersResponse> 
+
+/{tn}: !include tn/tn.raml

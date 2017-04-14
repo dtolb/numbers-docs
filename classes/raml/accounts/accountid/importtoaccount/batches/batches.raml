@@ -1,0 +1,68 @@
+!fileScope internal
+
+description: |
+    The batches resource enumerates all of the batches that have been used for importing numbers into an account.
+    If there is the need to import a large number of Telephone Numbers into an account, the import is submitted as a <b>batch</b>, which is a collection of submissions that are held together by a batch id.  This batch of orders can subsequently be retrieved by retrieving all of the orders that share a batch id.
+
+get: 
+    description: |
+        GET on the batches resource will respond with a list of batches that have been processed in importing numbers into the account. 
+
+    responses: 
+        200: 
+            description: A 200 OK response indicates that there are batch resources associated with the account.
+            body: 
+                application/xml: 
+                    example: |
+                        <Batches>
+                            <Batch>
+                                <BatchId>phnpwrblk4</BatchId>
+                                <OrderCreateDate>2014-05-02T15-27-25.090Z</OrderCreateDate>
+                                <OrderId>4928ab9d-6bf6-4035-ac01-38a061d0f5d9</OrderId>
+                                <OrderStatus>IMPORT_COMPLETE</OrderStatus>
+                                <SubmittedTnCount>5000</SubmittedTnCount>
+                                <SuccessfulTnCount>5000</SuccessfulTnCount>
+                                <BatchSize>5000</BatchSize>
+                            </Batch>
+                            <Batch>
+                                <BatchId>1111111111</BatchId>
+                                <OrderCreateDate>2013-10-10T15-25-16.952Z</OrderCreateDate>
+                                <OrderId>8ce7c80b-d1ce-46f1-a3a1-56a08373b576</OrderId>
+                                <OrderStatus>VALIDATION_FAILED</OrderStatus>
+                                <SubmittedTnCount>4670</SubmittedTnCount>
+                                <SuccessfulTnCount>0</SuccessfulTnCount>
+                                <BatchSize>4670</BatchSize>
+                            </Batch>
+                            <Batch>
+                                <BatchId>8177974679</BatchId>
+                                <OrderCreateDate>2014-04-10T16-54-04.001Z</OrderCreateDate>
+                                <OrderId>26afaae3-2a8b-4405-96aa-1c38fe1fb74b</OrderId>
+                                <OrderStatus>IMPORT_COMPLETE</OrderStatus>
+                                <SubmittedTnCount>2358</SubmittedTnCount>
+                                <SuccessfulTnCount>2358</SuccessfulTnCount>
+                                <BatchSize>2358</BatchSize>
+                            </Batch>
+                            . . . SNIP . . .
+                            <Batch>
+                                <BatchId>1111111111</BatchId>
+                                <OrderCreateDate>2013-10-10T15-19-40.402Z</OrderCreateDate>
+                                <OrderId>8a15ccf2-5e61-4f7a-8aa8-8f9e11c86bad</OrderId>
+                                <OrderStatus>IMPORT_COMPLETE</OrderStatus>
+                                <SubmittedTnCount>5000</SubmittedTnCount>
+                                <SuccessfulTnCount>5000</SuccessfulTnCount>
+                                <BatchSize>5000</BatchSize>
+                            </Batch>
+                            <Batch>
+                                <BatchId>qualspk222</BatchId>
+                                <OrderCreateDate>2013-12-02T20-42-57.704Z</OrderCreateDate>
+                                <OrderId>b5d14b5d-a51b-4d92-b4ec-67dbc1d88ad8</OrderId>
+                                <OrderStatus>IMPORT_COMPLETE</OrderStatus>
+                                <SubmittedTnCount>222</SubmittedTnCount>
+                                <SuccessfulTnCount>222</SuccessfulTnCount>
+                                <BatchSize>222</BatchSize>
+                            </Batch>
+                        </Batches>
+        204: 
+            description: A 204 No Content response indicates that no batches have been established, which means that Import to Account has not been used to load numbers to this account.  There is no body associated with this response
+
+/{batchid}: !include batchid/batchid.raml

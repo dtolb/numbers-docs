@@ -1,0 +1,82 @@
+!fileScope internal
+
+description: The Aging Numbers reporting capability allows the BDP API Admin user to get paginated lists of TNs in the Aging status.
+
+get:
+    description: |
+        Find the list all aging numbers that match the filter search criteria 
+    queryParameters:
+        page:
+            description: the page to fetch in a paginated collection
+            type: integer
+            required: true
+            default: 1
+        size:
+            description: the number of TNs to retrieve
+            type: integer
+            required: true
+            default: 300
+        areacode:
+            description: An Area Code search filter - all returned TNs will be in the entered Area Code
+            type: integer
+            example: 919
+            minimum: 200
+            maximum: 999
+        npanxx:
+            description: An NPA NXX search filter - all returned TNs will be in the entered NPA NXX dial plan
+            type: integer
+            example: 919859
+            minimum: 200000
+            maximum: 999999
+        lata:
+            description: A Rate Center search filter - all returned TNs will be in the entered Rate Center.  Typically this is a 3 or 5 digit value
+            type: integer
+            example: 435
+            minimum: 001
+            maximum: 99999
+        state:
+            description: A State search filter - all returned TNs will be in the entered State.  This is a 2-character State or Province abbreviation
+            type: string
+            example: TX
+        ratecenter:
+            description: A Rate Center search filter - all returned TNs will be in the entered Rate Center.  This Rate Center must be combined with a State in the query.  If State is not included in the query then the queryu will fail.
+            type: string
+            example: TX
+
+    responses: 
+        200:
+            description: Success in retrieving some numbers that satisfy the query
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0"?>
+                        <TNs>
+                            <TotalCount>59</TotalCount>
+                            <Links>
+                                <first> ( a link descriptor ) </first>
+                            </Links>
+                            <TelephoneNumbers>
+                                <Count>59</Count>
+                                <TelephoneNumber>8043024183</TelephoneNumber>
+                                <TelephoneNumber>8042121778</TelephoneNumber>
+                                <TelephoneNumber>8042146066</TelephoneNumber>
+                                <TelephoneNumber>8043814903</TelephoneNumber>
+                                <TelephoneNumber>8043814905</TelephoneNumber>
+                                <TelephoneNumber>8043814864</TelephoneNumber>
+                                <TelephoneNumber>8043326094</TelephoneNumber>
+                                <TelephoneNumber>8042121771</TelephoneNumber>
+                                <TelephoneNumber>8043024182</TelephoneNumber>
+                                <!-- SNIP -->        
+                                <TelephoneNumber>8043814900</TelephoneNumber>
+                                <TelephoneNumber>8047672642</TelephoneNumber>
+                                <TelephoneNumber>8043024368</TelephoneNumber>
+                                <TelephoneNumber>8042147950</TelephoneNumber>
+                                <TelephoneNumber>8043169931</TelephoneNumber>
+                                <TelephoneNumber>8043325302</TelephoneNumber>
+                            </TelephoneNumbers>
+                        </TNs>
+
+        204:
+            description: No Content - there are no numbers found using the search parameters
+        404:
+            description: Not Found - The search parameters are invalid and prevent finding any content      

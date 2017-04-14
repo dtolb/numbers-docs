@@ -1,0 +1,145 @@
+!fileScope internal
+get:
+    description: return all available gateways for account
+    responses:
+        200:
+            description: managed to get all gateways for account
+            body:
+                application/json:
+                    example: |
+                        [
+                            {
+                              "id" : 55,
+                              "accountId" : 229,
+                              "lcrId" : 777,
+                              "core2Id" : 3,
+                              "core2ProfileId" : null,
+                              "host" : "127.0.0.1",
+                              "port" : 666
+                            }
+                        ]
+post:
+    description: create gateway
+    body:
+        application/json:
+            example: |
+                {
+                  "id" : null,
+                  "accountId" : 7,
+                  "lcrId" : 4,
+                  "core2Id" : 3,
+                  "core2ProfileId" : null,
+                  "host" : "127.0.0.1",
+                  "port" : 666
+                }
+    responses:
+        201:
+            description: gateway was successfully assigned
+        400:
+            description: required values are absent
+/{gatewayId}:
+    get:
+        description: return a specific gateway
+        responses:
+            200:
+                body:
+                    application/json:
+                        example: |
+                            {
+                              "id" : 55,
+                              "accountId" : 229,
+                              "lcrId" : 777,
+                              "core2Id" : 3,
+                              "core2ProfileId" : null,
+                              "host" : "127.0.0.1",
+                              "port" : 666
+                            }
+            404:
+                description: gateway was not found
+    delete:
+        description: delete gateway
+        responses:
+            200:
+                description: gateway was deleted
+            404:
+                description: gateway was not found
+    /attribute:
+        get:
+            description: return all available gateway attributes
+            responses:
+                200:
+                    description: managed to get all gateway attributes
+                    body:
+                        application/json:
+                            example: |
+                                [
+                                    {
+                                      "id" : 219,
+                                      "name" : "TRACE",
+                                      "value" : "true",
+                                      "effectiveDate" : "2014-09-19T08:29:31",
+                                      "ineffectiveDate" : "2014-09-19T08:29:31",
+                                      "externalId" : 777
+                                    }
+                                ]
+        post:
+            description: add attribute to gateway
+            body:
+                application/json:
+                    example: |
+                        {
+                          "id" : null,
+                          "name" : "TRACE",
+                          "value" : "true",
+                          "effectiveDate" : "2014-09-19T08:32:15",
+                          "ineffectiveDate" : "2014-09-19T08:32:15",
+                          "externalId" : null
+                        }
+            responses:
+                201:
+                    description: attribute was successfully added
+                400:
+                    description: required values are absent or restricted values (like id) is present
+        /{attributeId}:
+            get:
+                description: return a specific gateway attribute
+                responses:
+                    200:
+                        body:
+                            application/json:
+                                example: |
+                                    {
+                                      "id" : 221,
+                                      "name" : "TRACE",
+                                      "value" : "true",
+                                      "effectiveDate" : "2014-09-19T08:36:52",
+                                      "ineffectiveDate" : "2014-09-19T08:36:52",
+                                      "externalId" : 777
+                                    }
+                    404:
+                        description: gateway attribute was not found
+            put:
+                description: update gateway attribute
+                body:
+                    application/json:
+                        example: |
+                            {
+                              "id" : 222,
+                              "name" : "TRACE",
+                              "value" : "false",
+                              "effectiveDate" : "2014-09-19T08:38:51",
+                              "ineffectiveDate" : "2014-09-19T08:38:51",
+                              "externalId" : 777
+                            }
+                responses:
+                    201:
+                        description: attribute was successfully added
+                    400:
+                        description: required values are absent
+            delete:
+                description: delete gateway attribute
+                responses:
+                    200:
+                        description: gateway attribute was deleted
+                    404:
+                        description: gateway attribute was not found

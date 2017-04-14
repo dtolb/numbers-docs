@@ -1,0 +1,159 @@
+!fileScope internal
+
+description: This resource retrieves information about accounts associated with user.
+get:
+    description: Retrieves the information about accounts associated with user.
+    responses:
+        200:
+            description: The information has been successfully retrieved and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserAccountsResponse>
+                            <User>
+                                <AccountList>
+                                    <Account>
+                                        <AccountId>123</AccountId>
+                                        <AccountName>Neustar</AccountName>
+                                    </Account>
+                                    <Account>
+                                        <AccountId>2</AccountId>
+                                        <AccountName>Google</AccountName>
+                                    </Account>
+                                </AccountList>
+                            </User>
+                        </UserAccountsResponse>
+        404:
+            description: User not found.
+            body:
+                application/xml:
+                    example: |
+                        <UserAccountsResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12000</ErrorCode>
+                                <Description>User 'testing' does not exist</Description>
+                            </ResponseStatus>
+                            <User/>
+                        </UserAccountsResponse>
+        403:
+            description: User has system-wide scope.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserAccountsResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12079</ErrorCode>
+                                <Description>Accounts cannot be associated with user that have system-wide scope</Description>
+                            </ResponseStatus>
+                            <User/>
+                        </UserAccountsResponse>
+put:
+    description: Allows the user replace associated accounts.
+    body:
+        application/xml:
+            example: |
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <AccountList>
+                    <Account>
+                        <AccountId>123</AccountId>
+                    </Account>
+                    <Account>
+                        <AccountId>1</AccountId>
+                    </Account>
+                </AccountList>
+    responses:
+        200:
+            description: Replaced user accounts association.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserAccountsResponse>
+                            <User>
+                                <UserId>testCreatingUser1</UserId>
+                                <AccountList>
+                                    <Account>
+                                        <AccountId>123</AccountId>
+                                        <AccountName>Neustar</AccountName>
+                                    </Account>
+                                    <Account>
+                                        <AccountId>1</AccountId>
+                                        <AccountName>test1</AccountName>
+                                    </Account>
+                                </AccountList>
+                            </User>
+                        </UserAccountsResponse>
+        404:
+            description: User not found.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserAccountsResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12000</ErrorCode>
+                                <Description>User 'testing' does not exist</Description>
+                            </ResponseStatus>
+                            <User>
+                                <UserId>testCreatingUser1</UserId>
+                                <AccountList>
+                                    <Account>
+                                        <AccountId>123</AccountId>
+                                    </Account>
+                                    <Account>
+                                        <AccountId>2</AccountId>
+                                    </Account>
+                                </AccountList>
+                            </User>
+                        </UserAccountsResponse>
+        422:
+            description: Some information is not correct.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserAccountsResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12020</ErrorCode>
+                                <Description>Account '1' does not exist</Description>
+                            </ResponseStatus>
+                            <User>
+                                <UserId>testCreatingUser1</UserId>
+                                <AccountList>
+                                    <Account>
+                                        <AccountId>123</AccountId>
+                                    </Account>
+                                    <Account>
+                                        <AccountId>1</AccountId>
+                                    </Account>
+                                </AccountList>
+                            </User>
+                        </UserAccountsResponse>
+        403:
+            description: Account scope user can add just own accounts.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserAccountsResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12689</ErrorCode>
+                                <Description>Account(s) assigned to this user must be managed by the assigning user</Description>
+                            </ResponseStatus>
+                            <User>
+                                <UserId>testCreatingUser1</UserId>
+                                <AccountList>
+                                    <Account>
+                                        <AccountId>123</AccountId>
+                                    </Account>
+                                    <Account>
+                                        <AccountId>2</AccountId>
+                                    </Account>
+                                </AccountList>
+                            </User>
+                        </UserAccountsResponse>
+
+
+/accountid: !include accountid/accountId.raml

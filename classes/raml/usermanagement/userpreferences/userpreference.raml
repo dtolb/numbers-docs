@@ -1,0 +1,33 @@
+!fileScope internal
+
+description: This resource retrieves information about available user preferences in system.
+
+get:
+    description: Retrieves all user preferences available in system.
+    responses:
+        200:
+            description: The information has been successfully retrieved and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserPreferencesResponse>
+                            <UserPreferences>
+                                <UserPreference>
+                                    <PreferenceName>tnFormat</PreferenceName>
+                                    <OptionalValues>
+                                        <OptionalValue>E.164</OptionalValue>
+                                        <OptionalValue>10D</OptionalValue>
+                                        <OptionalValue>11D</OptionalValue>
+                                    </OptionalValues>
+                                </UserPreference>
+                                <UserPreference>
+                                    <PreferenceName>preferredPortal</PreferenceName>
+                                    <OptionalValues>
+                                        <OptionalValue>NEW</OptionalValue>
+                                        <OptionalValue>OLD</OptionalValue>
+                                    </OptionalValues>
+                                </UserPreference>
+                            </UserPreferences>
+                        </UserPreferencesResponse>
+

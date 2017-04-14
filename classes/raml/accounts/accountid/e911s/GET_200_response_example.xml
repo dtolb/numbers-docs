@@ -1,0 +1,81 @@
+!fileScope external
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<E911Orders>
+    <TotalCount>2</TotalCount>
+    <E911OrderSummary>
+        <accountId>1</accountId>
+        <CountOfTNs>1</CountOfTNs>
+        <userId>admin</userId>
+        <lastModifiedDate>2015-08-03T14:41:01.769Z</lastModifiedDate>
+        <OrderDate>2015-08-03T14:41:00.815Z</OrderDate>
+        <OrderType>e911</OrderType>
+        <OrderStatus>COMPLETE</OrderStatus>
+        <OrderId>6dae2a67-b8f5-4bf2-9bf7-5216277b9be3</OrderId>
+    </E911OrderSummary>
+    <E911OrderSummary>
+        <accountId>1</accountId>
+        <CountOfTNs>1</CountOfTNs>
+        <userId>admin</userId>
+        <lastModifiedDate>2015-08-03T14:40:19.008Z</lastModifiedDate>
+        <OrderDate>2015-08-03T14:40:17.864Z</OrderDate>
+        <OrderType>e911</OrderType>
+        <OrderStatus>ADJUSTED_COMPLETE</OrderStatus>
+        <OrderId>6a97b54f-459e-4683-a79c-0de52acf7c6b</OrderId>
+    </E911OrderSummary>
+</E911Orders>
+<!-- OR if orderDetails = true... -->
+<E911Orders>
+    <TotalCount>2</TotalCount>
+    <E911Order>
+        <OrderCreateDate>2015-08-03T14:41:00.815Z</OrderCreateDate>
+        <AccountId>1</AccountId>
+        <CreatedByUser>admin</CreatedByUser>
+        <OrderId>6dae2a67-b8f5-4bf2-9bf7-5216277b9be3</OrderId>
+        <LastModifiedDate>2015-08-03T14:41:01.769Z</LastModifiedDate>
+        <Address>
+            <HouseNumber>800</HouseNumber>
+            <HouseSuffix></HouseSuffix>
+            <PreDirectional></PreDirectional>
+            <StreetName>PENNSYLVANIA AVE</StreetName>
+            <StreetSuffix>NW</StreetSuffix>
+            <AddressLine2></AddressLine2>
+            <City>WASHINGTON</City>
+            <StateCode>DC</StateCode>
+            <Zip>20004</Zip>
+            <PlusFour></PlusFour>
+            <Country>United States</Country>
+        </Address>
+        <CallerName>0931180f-4</CallerName>
+        <ErrorList/>
+        <ProcessingStatus>COMPLETE</ProcessingStatus>
+        <TelephoneNumbers>
+            <TelephoneNumber>9142971000</TelephoneNumber>
+        </TelephoneNumbers>
+    </E911Order>
+    <E911Order>
+        <OrderCreateDate>2015-08-03T14:40:17.864Z</OrderCreateDate>
+        <AccountId>1</AccountId>
+        <CreatedByUser>admin</CreatedByUser>
+        <OrderId>6a97b54f-459e-4683-a79c-0de52acf7c6b</OrderId>
+        <LastModifiedDate>2015-08-03T14:40:19.008Z</LastModifiedDate>
+        <Address>
+            <HouseNumber>1600</HouseNumber>
+            <HouseSuffix></HouseSuffix>
+            <PreDirectional></PreDirectional>
+            <StreetName>PENNSYLVANIA AVE</StreetName>
+            <StreetSuffix>NW</StreetSuffix>
+            <AddressLine2></AddressLine2>
+            <City>WASHINGTON</City>
+            <StateCode>DC</StateCode>
+            <Zip>20500</Zip>
+            <PlusFour>0003</PlusFour>
+            <Country>United States</Country>
+        </Address>
+        <CallerName>0931180f-4</CallerName>
+        <ErrorList/>
+        <ProcessingStatus>ADJUSTED_COMPLETE</ProcessingStatus>
+        <TelephoneNumbers>
+            <TelephoneNumber>9142971000</TelephoneNumber>
+        </TelephoneNumbers>
+    </E911Order>
+</E911Orders>

@@ -1,0 +1,26 @@
+!fileScope internal
+
+description: This resource interacts with the specific order ID of a port-out. A GET on this resource will retrieve the information about the particular port-out.
+
+get:
+    description: Retrieves the information associated with the specified port-out ID number.
+    responses:
+        200:
+            description: The information has been successfully retrieved and displayed out to the payload.
+            body:
+                application/xml:
+                    example: |
+                        <LnpOrderResponse>
+                            <RequestedFocDate>2014-08-11T00:00:00Z</RequestedFocDate>
+                            <ActualFocDate>2014-08-11T00:00:00Z</ActualFocDate>
+                            <ListOfPhoneNumbers>
+                                <PhoneNumber>2014087001</PhoneNumber>
+                            </ListOfPhoneNumbers>
+                            <AccountId>20</AccountId>
+                            <SiteId>0</SiteId>
+                            <OrderCreateDate>2014-08-05T19:55:04.954Z</OrderCreateDate>
+                            <LastModifiedDate>2014-08-06T12:57:51.510Z</LastModifiedDate>
+                            <userId>System</userId>
+                            <PortOutStatus>CANCELLED</PortOutStatus>
+                            <SPID>2857</SPID>
+                        </LnpOrderResponse>

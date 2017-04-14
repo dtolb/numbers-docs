@@ -1,0 +1,124 @@
+get:
+  description: |
+    Get all rate deck assignments
+  responses:
+    200:
+      body:
+        application/xml:
+          example: |
+            <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <TerminationRateDeckAssignmentsResponse>
+                <TerminationRateDeckAssignments>
+                    <TerminationRateDeckAssignment>
+                        <id>1</id>
+                        <termServiceRateDeckId>2</termServiceRateDeckId>
+                        <increaseDate>2014-11-13T14:17:05</increaseDate>
+                        <decreaseDate>2014-11-13T14:17:05</decreaseDate>
+                    </TerminationRateDeckAssignment>
+                </TerminationRateDeckAssignments>
+            </TerminationRateDeckAssignmentsResponse>
+post:
+    description: assign rate deck
+    body:
+        application/xml:
+            example:
+                <?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+                <TerminationRateDeckAssignment>
+                    <termServiceRateDeckId>17</termServiceRateDeckId>
+                    <termServiceAccountId>89</termServiceAccountId>
+                    <externalProfileId>150</externalProfileId>
+                    <externalAssignmentId>12</externalAssignmentId>
+                    <billingAccountId>2</billingAccountId>
+                    <increaseDate>2014-11-14T15:27:11</increaseDate>
+                    <decreaseDate>2014-11-14T15:27:11</decreaseDate>
+                </TerminationRateDeckAssignment>
+    responses:
+        201:
+            description: Rate deck was successfuly assigned <br>
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <TerminationRateDeckAssignmentResponse>
+                            <TerminationRateDeckAssignment>
+                                <id>2</id>
+                                <termServiceRateDeckId>17</termServiceRateDeckId>
+                                <increaseDate>2014-11-14T13:27:11</increaseDate>
+                                <decreaseDate>2014-11-14T13:27:11</decreaseDate>
+                            </TerminationRateDeckAssignment>
+                        </TerminationRateDeckAssignmentResponse>
+            headers:
+                Location:
+                    description: contains rate deck assigment id after last "/" <br>
+/account/{accountId}:
+    get:
+      description: |
+        Get all rate deck assignments
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <TerminationRateDeckAssignmentsResponse>
+                    <TerminationRateDeckAssignments>
+                        <TerminationRateDeckAssignment>
+                            <id>3</id>
+                            <termServiceRateDeckId>18</termServiceRateDeckId>
+                            <increaseDate>2014-11-14T13:51:29</increaseDate>
+                            <decreaseDate>2014-11-14T13:51:29</decreaseDate>
+                        </TerminationRateDeckAssignment>
+                    </TerminationRateDeckAssignments>
+                </TerminationRateDeckAssignmentsResponse>
+/{assignmentId}:
+    get:
+      description: |
+        Get all rate deck assignments
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <TerminationRateDeckAssignmentUtilityResponse>
+                    <TerminationRateDeckAssignment>
+                        <id>5</id>
+                        <termServiceRateDeckId>20</termServiceRateDeckId>
+                        <termServiceAccountId>92</termServiceAccountId>
+                        <externalProfileId>153</externalProfileId>
+                        <externalAssignmentId>5</externalAssignmentId>
+                        <increaseDate>2014-11-14T14:16:54</increaseDate>
+                        <decreaseDate>2014-11-14T14:16:54</decreaseDate>
+                    </TerminationRateDeckAssignment>
+                </TerminationRateDeckAssignmentUtilityResponse>
+/{assignmentId}/account/{accountId}:
+    get:
+      description: |
+        Get termination product by id.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <TerminationRateDeckAssignmentResponse>
+                    <TerminationRateDeckAssignment>
+                        <id>2</id>
+                        <termServiceRateDeckId>17</termServiceRateDeckId>
+                        <increaseDate>2014-11-14T13:27:11</increaseDate>
+                        <decreaseDate>2014-11-14T13:27:11</decreaseDate>
+                    </TerminationRateDeckAssignment>
+                </TerminationRateDeckAssignmentResponse>
+    delete:
+      description: |
+        Unassign rate deck by assignment id.
+      responses:
+        200:
+          description: |
+            product was successfully removed.
+        404:
+          description: |
+            Could not find assignment by id.
+        500:
+          description: |
+            System error.

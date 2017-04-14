@@ -1,0 +1,143 @@
+get:
+    description: Get list of named Carrier Masks from Roger
+    responses:
+      200:
+        body:
+          application/xml:
+            example:
+              <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+              <TerminationCarrierMasksResponse>
+                <TerminationCarrierMasks>
+                    <TerminationCarrierMask>
+                        <id>5</id>
+                        <carrierMaskName>testName1</carrierMaskName>
+                        <carrierMaskType>NPANXX</carrierMaskType>
+                        <NpaNxxCarrierMasks>
+                            <NpaNxxCarrierMask>
+                                <carrierMask>00000</carrierMask>
+                                <npaNxx>222222</npaNxx>
+                            </NpaNxxCarrierMask>
+                        </NpaNxxCarrierMasks>
+                        <userType>TERMINATION_SERVICES</userType>
+                    </TerminationCarrierMask>
+                    <TerminationCarrierMask>
+                        <id>6</id>
+                        <carrierMaskName>testName2</carrierMaskName>
+                        <carrierMaskType>NPANXX</carrierMaskType>
+                        <NpaNxxCarrierMasks>
+                            <NpaNxxCarrierMask>
+                                <carrierMask>00000</carrierMask>
+                                <npaNxx>222223</npaNxx>
+                            </NpaNxxCarrierMask>
+                        </NpaNxxCarrierMasks>
+                        <userType>TERMINATION_SERVICES</userType>
+                    </TerminationCarrierMask>
+                </TerminationCarrierMasks>
+              </TerminationCarrierMasksResponse>
+      500:
+        body:
+          application/xml:
+            example:
+              <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+              <TerminationCarrierMaskResponse>
+                <ResponseStatus>
+                  <ErrorCode>18000</ErrorCode>
+                  <Description>Internal Roger error</Description>
+                </ResponseStatus>
+              </TerminationCarrierMaskResponse>
+post:
+  description: Create a carrier mask
+  body:
+      application/xml:
+          example:
+              <?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+              <TerminationCarrierMask>
+                <carrierMaskName>testName</carrierMaskName>
+                <carrierMaskType>NPANXX</carrierMaskType>
+                <npaNxxCarrierMasks>
+                    <npaNxxCarrierMask>
+                        <carrierMask>00000</carrierMask>
+                        <npaNxx>222222</npaNxx>
+                    </npaNxxCarrierMask>
+                </npaNxxCarrierMasks>
+                <userType>TERMINATION_SERVICES</userType>
+              </TerminationCarrierMask>
+  responses:
+      201:
+          description:
+              The carrier mask has been created as described in the payload <br>
+          body:
+              application/xml:
+                  example:
+                      <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                      <TerminationCarrierMaskResponse>
+                        <TerminationCarrierMask>
+                            <id>7</id>
+                            <carrierMaskName>testName</carrierMaskName>
+                            <carrierMaskType>NPANXX</carrierMaskType>
+                            <npaNxxCarrierMasks>
+                                <npaNxxCarrierMask>
+                                    <carrierMask>00000</carrierMask>
+                                    <npaNxx>222222</npaNxx>
+                                </npaNxxCarrierMask>
+                            </npaNxxCarrierMasks>
+                            <userType>TERMINATION_SERVICES</userType>
+                        </TerminationCarrierMask>
+                      </TerminationCarrierMaskResponse>
+          headers:
+            Location:
+              description: contains carrier mask id after last "/" <br>
+      500:
+          description: It may happen in many cases, e.g. such carrier mask name already exists
+          body:
+              application/xml:
+                  example:
+                    <TerminationCarrierMaskResponse>
+                      <ResponseStatus>
+                        <ErrorCode>18000</ErrorCode>
+                        <Description>Internal Roger error</Description>
+                      </ResponseStatus>
+                    </TerminationCarrierMaskResponse>
+put:
+    description: Update carrier mask
+    body:
+        application/xml:
+            example:
+                <TerminationCarrierMask>
+                    <id>8</id>
+                    <carrierMaskName>testName</carrierMaskName>
+                    <carrierMaskType>NPANXX</carrierMaskType>
+                    <npaNxxCarrierMasks>
+                        <npaNxxCarrierMask>
+                            <carrierMask>11111</carrierMask>
+                            <npaNxx>222222</npaNxx>
+                        </npaNxxCarrierMask>
+                    </npaNxxCarrierMasks>
+                    <userType>TERMINATION_SERVICES</userType>
+                </TerminationCarrierMask>
+    responses:
+        200:
+            description:
+                The carrier mask has been updated
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <TerminationCarrierMaskResponse>
+                          <TerminationCarrierMask>
+                              <id>8</id>
+                              <carrierMaskName>testName</carrierMaskName>
+                              <carrierMaskType>NPANXX</carrierMaskType>
+                              <npaNxxCarrierMasks>
+                                  <npaNxxCarrierMask>
+                                      <carrierMask>11111</carrierMask>
+                                      <npaNxx>222222</npaNxx>
+                                  </npaNxxCarrierMask>
+                              </npaNxxCarrierMasks>
+                              <userType>TERMINATION_SERVICES</userType>
+                          </TerminationCarrierMask>
+                        </TerminationCarrierMaskResponse>
+/{id}:
+    delete:
+       description: Delete carrier mask by id
+

@@ -1,0 +1,24 @@
+!fileScope internal
+description: |
+    This resource is used to search for SIP credentials on all accounts by unique combination of user name and domain.
+
+!scope internal
+get:
+    description: |
+        GET is used to retrieve all SIP credentials by combination of user name and domain.
+    responses:
+        200:
+            description: |
+                OK - will return full information about SIP credentials on accounts for specified user name and domain.
+            body:
+                application/xml:
+                    example: !include combination_GET_200_response_example.xml
+
+        404:
+            description: |
+                Not Found - if  there are no any SIP credentials that corresponds to specified combination of user name and domain it will result in a not found.
+            body:
+                application/xml:
+                    example: !include combination_GET_404_response_example.xml
+
+!fileScope internal

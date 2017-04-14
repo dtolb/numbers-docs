@@ -1,0 +1,173 @@
+!fileScope external 
+
+description: |
+    The *+cities+* resource returns all of the Cities in the indicated State that are supported from a coverage perspective, and, if requested, that contain orderable inventory.  The values returned indicate the names of the Cities and, if <b>available</b> is specified, returns the available inventory by City.  Note that the mapping between Rate Center and City is not completely predictable because multiple cities can be served by a single Rate Center and it may take multiple Rate Centers to serve a city.  The Rate Centers results are more predictable because they are defined strictly in telecommunication terms.
+
+get:
+    description:
+        The Rate Centers and Cities API Calls return information about the Bandwidth CLEC Network, including coverage data, indicating both the extent of on-net and off-net coverage, as well as number availability, again from an on-net and off-net perspective.
+        The rules are as follows-
+        <ul><li>If supported=true is specified, then the coverage or availability is reported for the Bandwidth CLEC only.
+        </li><li>If supported is omitted or false, then the coverage or availability is reported for the combination of the Bandwidth CLEC and our partners
+        </li><li>If available=true is specified, then only Rate Centers in which we have available numbers are reported.
+        </li><li>If available is omitted or false, then all Rate Centers within the scope defined by supported will be returned.
+        </li></ul>These rules apply for both the /rateCenters and /cities API calls.
+        <table border="1" cellpadding="0" cellspacing="0">
+          <tbody>
+            <tr>
+              <td valign="top" >
+              </td>
+              <td valign="top" >
+        Supported = true
+              </td>
+              <td valign="top" >
+        Supported is missing
+              </td>
+            </tr>
+            <tr>
+              <td valign="top" >
+        available = true
+              </td>
+              <td valign="top" >
+        Available numbers within the Bandwidth CLEC network
+              </td>
+              <td valign="top" >
+        Available numbers within the Bandwidth CLEC network
+        combined with our partner networks
+              </td>
+            </tr>
+            <tr>
+              <td valign="top" >
+        available is missing
+              </td>
+              <td valign="top" >
+        Coverage in the Bandwidth CLEC
+              </td>
+              <td valign="top" >
+        Coverage of the combined Bandwidth CLEC + Partner
+        networks
+              </td>
+            </tr>
+          </tbody>
+        </table>
+    queryParameters:
+        state:
+            displayName: state
+            type: string
+            description: 2 character state code.
+            example: NC
+            required: true
+        available:
+            displayName: available 
+            type: boolean
+            description: |
+                If available is set as true then the result includes the quantity of the available telephone numbers in that City.
+            example: true
+            required: false
+        supported:
+            displayName: supported 
+            type: boolean
+            description: |
+                If supported is set to true the payload will show those Rate Centers that Bandwidth serves directly.   
+            example: true
+            required: false
+    responses:
+        200:
+            description: | 
+                This response returns the list of cities, along with the Rate Centers that serve those Cities.  If 'available' is specified then the number of TNs available in that city / RC combination is also included.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0"?>
+                        <CityResponse>
+                            <ResultCount>449</ResultCount>
+                            <Cities>
+                                <City>
+                                    <RcAbbreviation>DOUGLAS</RcAbbreviation>
+                                    <Name>ADAMS</Name>
+                                </City>
+                                <City>
+                                    <RcAbbreviation>FILLEY</RcAbbreviation>
+                                    <Name>ADAMS</Name>
+                                </City>
+                                <City>
+                                    <RcAbbreviation>AINSWORTH</RcAbbreviation>
+                                    <Name>AINSWORTH</Name>
+                                </City>
+                                <!-- ... SNIP ... -->
+                                <City>
+                                    <RcAbbreviation>LONG PINE</RcAbbreviation>
+                                    <Name>AINSWORTH</Name>
+                                </City>
+                                <City>
+                                    <RcAbbreviation>ODELL</RcAbbreviation>
+                                    <Name>WYMORE</Name>
+                                </City>
+                                <City>
+                                    <RcAbbreviation>BRADSHAW</RcAbbreviation>
+                                    <Name>YORK</Name>
+                                </City>
+                                <City>
+                                    <RcAbbreviation>YORK</RcAbbreviation>
+                                    <Name>YORK</Name>
+                                </City>
+                                <City>
+                                    <RcAbbreviation>WACO</RcAbbreviation>
+                                    <Name>YORK</Name>
+                                </City>
+                            </Cities>
+                        </CityResponse>
+                        OR.....
+                        <?xml version="1.0"?>
+                        <CityResponse>
+                            <ResultCount>129</ResultCount>
+                            <Cities>
+                                <City>
+                                    <RcAbbreviation>FILLEY</RcAbbreviation>
+                                    <AvailableTelephoneNumberCount>266</AvailableTelephoneNumberCount>
+                                    <Name>ADAMS</Name>
+                                </City>
+                                <City>
+                                    <RcAbbreviation>DOUGLAS</RcAbbreviation>
+                                    <AvailableTelephoneNumberCount>378</AvailableTelephoneNumberCount>
+                                    <Name>ADAMS</Name>
+                                </City>
+                                <City>
+                                    <RcAbbreviation>WAKEFIELD</RcAbbreviation>
+                                    <AvailableTelephoneNumberCount>272</AvailableTelephoneNumberCount>
+                                    <Name>ALLEN</Name>
+                                </City>
+                                <City>
+                                    <RcAbbreviation>ASHLAND</RcAbbreviation>
+                                    <AvailableTelephoneNumberCount>129</AvailableTelephoneNumberCount>
+                                    <Name>ASHLAND</Name>
+                                </City>
+                                <!-- ... SNIP ... -->
+                                </City>
+                                <City>
+                                    <RcAbbreviation>WEST POINT</RcAbbreviation>
+                                    <AvailableTelephoneNumberCount>85</AvailableTelephoneNumberCount>
+                                    <Name>WEST POINT</Name>
+                                </City>
+                                <City>
+                                    <RcAbbreviation>OAKLAND</RcAbbreviation>
+                                    <AvailableTelephoneNumberCount>290</AvailableTelephoneNumberCount>
+                                    <Name>WEST POINT</Name>
+                                </City>
+                                <City>
+                                    <RcAbbreviation>WESTERN</RcAbbreviation>
+                                    <AvailableTelephoneNumberCount>134</AvailableTelephoneNumberCount>
+                                    <Name>WESTERN</Name>
+                                </City>
+                                <City>
+                                    <RcAbbreviation>WAYNE</RcAbbreviation>
+                                    <AvailableTelephoneNumberCount>434</AvailableTelephoneNumberCount>
+                                    <Name>WINSIDE</Name>
+                                </City>
+                                <City>
+                                    <RcAbbreviation>BRADSHAW</RcAbbreviation>
+                                    <AvailableTelephoneNumberCount>274</AvailableTelephoneNumberCount>
+                                    <Name>YORK</Name>
+                                </City>
+                            </Cities>
+                        </CityResponse>

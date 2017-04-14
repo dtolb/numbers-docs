@@ -1,0 +1,96 @@
+!fileScope all
+
+description: |
+    The report instance endpoints of the Iris API allow users to view and manage report instances for a specific
+    account.  Report instances capture invocations of a report, including the specific set of parameters provided and
+    any output generated as a result.
+
+!scope all
+get:
+    description: |
+        Retrieve report instances within the account scope, regardless of the report of which the instance is an instance of, including the up-to-date report generation status.  This is a convenience API call to make it easier to examine all Instances in scope.
+    responses:
+        200:
+            description: A valid list of instances is available.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <ReportInstancesResponse>
+                            <Instances>
+                                <Instance>
+                                    <Id>100090</Id>
+                                    <ReportId>100020</ReportId>
+                                    !scope internal
+                                    <JasperId>aadbb201-1e1c-4f4d-920b-a18ec121da6d</JasperId>
+                                    !scope internal
+                                    <JasperExportId>703aef1d-8ca5-4265-8114-308c2ffa517c</JasperExportId>
+                                    !scope internal
+                                    <JasperSessionId>E8279C44E4E88B361282EC9AD4F7665A</JasperSessionId>
+                                    <ReportName>Sample Report</ReportName>
+                                    <OutputFormat>pdf</OutputFormat>
+                                    <RequestedByUserName>jbm</RequestedByUserName>
+                                    <RequestedAt>2015-05-18 14:03:04</RequestedAt>
+                                    <Parameters>
+                                        <Parameter>
+                                            <Name>AccountId</Name>
+                                            <Value>1</Value>
+                                        </Parameter>
+                                    </Parameters>
+                                    !scope internal
+                                    <JasperReportStatus>Expired</JasperReportStatus>
+                                    <Status>Expired</Status>
+                                </Instance>
+                                <Instance>
+                                    <Id>100098</Id>
+                                    <ReportId>100020</ReportId>
+                                    !scope internal
+                                    <JasperId>4ff4d77c-a2b6-4ab6-8dd7-193bf072b64e</JasperId>
+                                    !scope internal
+                                    <JasperExportId>61c444e3-b8d1-4299-92f8-0371ba45e123</JasperExportId>
+                                    !scope internal
+                                    <JasperSessionId>813885D097A3DF7B0CAC94475CEE0CAA</JasperSessionId>
+                                    <ReportName>Sample Report</ReportName>
+                                    <OutputFormat>html</OutputFormat>
+                                    <RequestedByUserName>jbm</RequestedByUserName>
+                                    <RequestedAt>2015-05-19 09:18:40</RequestedAt>
+                                    <Parameters>
+                                        <Parameter>
+                                            <Name>AccountId</Name>
+                                            <Value>1</Value>
+                                        </Parameter>
+                                        <Parameter>
+                                            <Name>SiteId</Name>
+                                            <Value>1</Value>
+                                        </Parameter>
+                                    </Parameters>
+                                    !scope internal
+                                    <JasperReportStatus>Expired</JasperReportStatus>
+                                    <Status>Expired</Status>
+                                </Instance>
+                                <Instance>
+                                    <Id>100102</Id>
+                                    <ReportId>100020</ReportId>
+                                    !scope internal
+                                    <JasperId>83a5fd11-801d-4ee7-9f0c-0ab83882be86</JasperId>
+                                    !scope internal
+                                    <JasperExportId>d8396a60-200c-4205-9609-ceca3d47dc7a</JasperExportId>
+                                    !scope internal
+                                    <JasperSessionId>21E6866B95AC144828178A2CF251F756</JasperSessionId>
+                                    <ReportName>Sample Report</ReportName>
+                                    <OutputFormat>pdf</OutputFormat>
+                                    <RequestedByUserName>jbm</RequestedByUserName>
+                                    <RequestedAt>2015-05-19 11:05:12</RequestedAt>
+                                    <Parameters>
+                                        <Parameter>
+                                            <Name>AccountId</Name>
+                                            <Value>1</Value>
+                                        </Parameter>
+                                    </Parameters>
+                                    !scope internal
+                                    <JasperReportStatus>Ready</JasperReportStatus>
+                                    <Status>Ready</Status>
+                                    <ExpiresAt>2016-06-15</ExpiresAt>
+                                </Instance>
+                            </Instances>
+                        </ReportInstancesResponse>

@@ -1,0 +1,29 @@
+!fileScope external
+
+description: Retrieves a TN reservation's information and deletes an existing reservation.
+
+get:
+    description: Retrieves a TN reservation's information.
+    responses:
+        200:
+            description: A reservation's information has been successfully retrieved.
+            body:
+                application/xml:
+                    example: |
+                        <ReservationResponse>
+                            <Reservation>
+                                <ReservationId>f342904f-b03a-4499-bac0-e8f43a2664a1</ReservationId>
+                                <AccountId>12346099</AccountId>
+                                <ReservationExpires>1492</ReservationExpires>
+                                <ReservedTn>4354776010</ReservedTn>
+                            </Reservation>
+                        </ReservationResponse>
+
+!scope external
+delete:
+    description: Deletes a TN reservation.
+    responses:
+        200:
+            description: A reservation has been successfully deleted.
+        
+

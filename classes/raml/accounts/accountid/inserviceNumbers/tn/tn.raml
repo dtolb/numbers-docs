@@ -1,0 +1,12 @@
+!fileScope external
+
+description: This resource acts as a verifier for in-service telephone numbers. 
+
+!scope external
+get:
+    description: A GET on the number desired will return a 200 OK if the number is in service on the account, or a 404 not found.
+    responses:
+        200:
+            description: The telephone number is currently in service. NOTE that there is no payload; a 200 status simply means that the phone is indeed an inservice number.
+        404:
+            description: The telephone number is not currently in service.

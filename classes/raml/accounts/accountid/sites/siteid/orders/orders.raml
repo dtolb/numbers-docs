@@ -1,0 +1,94 @@
+!fileScope external
+
+description: The "orders" resource interacts with the orders assigned to a particular site of a particular account. 
+
+get:
+    description: The GET method retrieves all the orders associated with the given site.
+    queryParameters:
+        size:
+            description: Sets the amount of responses per page.
+            example: 30
+            required: true
+            type: integer
+        page:
+            description: The first orders ID to show on the page. "1" is used as a convention for the first page.
+            type: integer
+            example: 1
+            required: true
+    responses:
+        200:
+            body:
+                application/xml:
+                    example: |
+                        <ResponseSelectWrapper>
+                            <ListOrderIdUserIdDate>
+                                <TotalCount>47</TotalCount>
+                                <Links>
+                                    <first>
+                                        Link=<http://api.qa.inetwork.com/iris/accounts/12346099/sites/743/orders?page=1&size=30>;rel="first";
+                                    </first>
+                                    <next>
+                                        Link=<http://api.qa.inetwork.com/iris/accounts/12346099/sites/743/orders?page=fa7bc01a-cb4d-4eae-9621-560020f45105&size=30>;rel="next";
+                                    </next>
+                                </Links>
+                                <OrderIdUserIdDate>
+                                    <CountOfTNs>1</CountOfTNs>
+                                    <userId>jbm</userId>
+                                    <lastModifiedDate>2014-01-06T19:09:44.027Z</lastModifiedDate>
+                                    <OrderType>new_number</OrderType>
+                                    <OrderDate>2014-01-06T19:09:43.695Z</OrderDate>
+                                    <orderId>13c97416-9eee-4da3-aff8-ba85d1297ef2</orderId>
+                                    <OrderStatus>COMPLETE</OrderStatus>
+                                    <TelephoneNumberDetails>
+                                        <States>
+                                            <StateWithCount>
+                                                <State>VA</State>
+                                                <Count>1</Count>
+                                            </StateWithCount>
+                                        </States>
+                                        <RateCenters>
+                                            <RateCenterWithCount>
+                                                <Count>1</Count>
+                                                <RateCenter>GLOUCESTER</RateCenter>
+                                            </RateCenterWithCount>
+                                        </RateCenters>
+                                        <Cities>
+                                            <CityWithCount>
+                                                <City>GLOUCESTER</City>
+                                                <Count>1</Count>
+                                            </CityWithCount>
+                                        </Cities>
+                                        <Tiers>
+                                            <TierWithCount>
+                                                <Tier>0</Tier>
+                                                <Count>1</Count>
+                                            </TierWithCount>
+                                        </Tiers>
+                                        <Vendors>
+                                            <VendorWithCount>
+                                                <VendorId>49</VendorId>
+                                                <VendorName>Bandwidth CLEC</VendorName>
+                                                <Count>1</Count>
+                                            </VendorWithCount>
+                                        </Vendors>
+                                    </TelephoneNumberDetails>
+                                </OrderIdUserIdDate>
+                            </ListOrderIdUserIdDate>
+                        </ResponseSelectWrapper>
+        404:
+            description: |
+                Orders cannot be found for that site. Possible explanations:
+                <ul>
+                    <li>There are no orders associated with that site.</li>
+                    <li>The given parameters are invalid.</li>
+                </ul>
+            body:
+                application/xml:
+                    example:
+                        <Links>
+                            <first>
+                                Link=<http://api.qa.inetwork.com/iris/accounts/12346099/sites/3013/orders?page=1&size=300>;rel="first";
+                            </first>
+                        </Links>
+
+/{orderid}: !include orderid/orderid.raml

@@ -1,0 +1,28 @@
+!fileScope internal
+        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<SipCredentialsResponse>
+    <SipCredentials>
+        <SipCredentialsByAccount>
+            <Account>41</Account>
+            <SipCredential>
+                <UserName>John</UserName>
+                <Domain>bw.com</Domain>
+                <Hash1>1g32gadgs433dd4</Hash1>
+                <Hash1b>1g32gadgs433d24</Hash1b>
+            </SipCredential>
+        </SipCredentialsByAccount>
+        <SipCredentialsByAccount>
+            <Account>14</Account>
+            <SipCredential>
+                <UserName>John</UserName>
+                <Domain>bw.com</Domain>
+                <Hash1>43d2gadgs433dd4</Hash1>
+                <Hash1b>gdd2gadgs433d24</Hash1b>
+            </SipCredential>
+            <SipCredential>
+                <UserName>Steve@bw.com</UserName>
+                <Hash1>42asc3asd2gadgs433dd4</Hash1>
+            </SipCredential>
+        </SipCredentialsByAccount>
+    </SipCredentials>
+</SipCredentialsResponse>

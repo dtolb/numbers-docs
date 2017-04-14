@@ -1,0 +1,55 @@
+!fileScope all
+
+!scope all
+
+description: Retrieve information on a specific instance of a specific report.
+
+get:
+    description: | 
+        A GET on the specific instance will retrieve report instance details, including the current report instance status.  All of the information required to understand the nature and limits of the reported data are contained in the payload, including the general description information as well as the list of parameters and the values assigned to those parameters.
+    responses:
+        200:
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <ReportInstanceResponse>
+                                <Instance>
+                                    <Id>100102</Id>
+                                    <ReportId>100020</ReportId>
+                                    !scope internal
+                                    <JasperId>83a5fd11-801d-4ee7-9f0c-0ab83882be86</JasperId>
+                                    !scope internal
+                                    <JasperExportId>d8396a60-200c-4205-9609-ceca3d47dc7a</JasperExportId>
+                                    !scope internal
+                                    <JasperSessionId>21E6866B95AC144828178A2CF251F756</JasperSessionId>
+                                    <ReportName>Sample Report</ReportName>
+                                    <OutputFormat>pdf</OutputFormat>
+                                    <RequestedByUserName>jbm</RequestedByUserName>
+                                    <RequestedAt>2015-05-19 11:05:12</RequestedAt>
+                                    <Parameters>
+                                        <Parameter>
+                                            <Name>AccountId</Name>
+                                            <Value>1</Value>
+                                        </Parameter>
+                                    </Parameters>
+                                    !scope internal
+                                    <JasperReportStatus>Ready</JasperReportStatus>
+                                    <Status>Ready</Status>
+                                    <ExpiresAt>2016-06-15</ExpiresAt>
+                                </Instance>
+                        </ReportInstanceResponse>
+        404:
+            description: A report template matching the provided ID could not be found.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <ReportInstanceResponse>
+                            <ResponseStatus>
+                                <ErrorCode>19019</ErrorCode>
+                                <Description>No report instance found for report 100020 with Id of '100103'</Description>
+                            </ResponseStatus>
+                        </ReportInstanceResponse>
+
+/file: !include file/file.raml

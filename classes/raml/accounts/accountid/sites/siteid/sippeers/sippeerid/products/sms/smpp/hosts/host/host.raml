@@ -1,0 +1,88 @@
+!fileScope external
+put:
+    description: |
+
+        Update smpp sms host to Sip Peer
+
+    body:
+        application/xml:
+            example: |
+                <?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+                <SmsHost>
+                    <HostName>32.59.97.120</HostName>
+                    <Port>0</Port>
+                    <hostId>6454</hostId>
+                    <priority>0</priority>
+                    <username>Daria</username>
+                    <password>macman</password>
+                    <connectionType>TRANSCEIVER</connectionType>
+                </SmsHost>
+    responses:
+        200:
+            description: smpp sms host updated
+            body:
+                application/xml:
+                    example: |
+                        None
+        400:
+            description: |
+                Bad Request. Possible errors in response:
+                <ul>
+                   <li>12041 "Sms product has not been configured"</li>
+                </ul>
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <SmsSmppHostResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12041</ErrorCode>
+                                <Description>Sms product has not been configured</Description>
+                            </ResponseStatus>
+                        </SmsSmppHostResponse>
+delete:
+    description: Delete smpp Sms host from Sip Peer
+    responses:
+        200:
+            description: smpp sms host deleted
+            body:
+                application/xml:
+                    example: |
+                        None
+        400:
+            description: |
+                Bad Request. Possible errors in response:
+                <ul>
+                   <li>13563 "Sip Peer '544545' account '12346159' and site '483' does not exist"</li>
+                </ul>
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <SmsSmppHostResponse>
+                            <ResponseStatus>
+                                <ErrorCode>13563</ErrorCode>
+                                <Description>Sip Peer '544545' account '12346159' and site '483' does not exist</Description>
+                            </ResponseStatus>
+                        </SmsSmppHostResponse>
+get:
+    description: |
+        Retrieve smpp sms host associated with a Sip Peer
+    responses:
+        200:
+            description: A successful result that contains the response data
+            body:
+                application/xml:
+                    example: |
+                       <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                       <SmsSmppHostResponse>
+                        <SmsHost>
+                            <HostName>37.7.223.30</HostName>
+                            <Port>0</Port>
+                            <hostId>6453</hostId>
+                            <priority>0</priority>
+                            <username>jbm</username>
+                            <password>macman</password>
+                            <connectionType>TRANSCEIVER</connectionType>
+                        </SmsHost>
+                       </SmsSmppHostResponse>

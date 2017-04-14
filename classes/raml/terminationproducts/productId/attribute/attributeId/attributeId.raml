@@ -1,0 +1,21 @@
+get:
+  description: Get all product attribute by id
+  responses:
+    200:
+      body:
+        application/xml:
+          example: |
+            <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <TerminationProductAttributeResponse>
+                <TerminationProduct>
+                    <TerminationAttributes>
+                        <TerminationAttribute>
+                            <id>27</id>
+                            <type>TRACE</type>
+                            <value>true</value>
+                            <effectiveDate>2014-11-13T13:49:09</effectiveDate>
+                            <inEffectiveDate>2014-11-13T13:49:09</inEffectiveDate>
+                        </TerminationAttribute>
+                    </TerminationAttributes>
+                </TerminationProduct>
+            </TerminationProductAttributeResponse>

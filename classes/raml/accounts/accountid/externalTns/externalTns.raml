@@ -1,0 +1,132 @@
+!fileScope all
+description: |
+    The externalTns order resource represents the requests made to the Bandwidth Dashboard API to add or remove customer owned or managed telephone numbers into or from the Bandwidth Dashboard.  This API request will create an order record specific to the request that can be used to understand and track the outcome of the request once complete 
+    <br><br>
+    The information below captures the REST endpoint URL and Payloads that are used to install or remove customer provided external telephone numbers from the Bandwidth Dashboard.
+    <br><br>
+    This API has been developed based on similar existing functionality available in the Bandwidth Dashboard, but has been refined to focus purely on the task of managing numbers that have been provided to Bandwidth by our customers, allowing the Dashboard business logic to be specific and focused with respect to managing these telephone numbers.
+    <br><br>
+    The API follows the Bandwidth Dashboard order model, where an order-id is created to track the interaction and refer back to it as needed.  This record will also be persisted to enable examination of past events.  
+    <br><br>
+    This single API controls both the installation and removal of telephone numbers.  The action is controlled by the use of an element in the payload, allowing a simple model for managing both addition and removal of telephone numbers.  Additionally, if the status of an existing telephone number needs to be reset within the Bandwidth Dashboard, possibly as the result of an ownership change (port) of the telephone number, the API can be called to re-add the number to the Bandwidth Dashboard, which will perform a reset on that number without removing it from service first.
+    <br><br>
+    The externalTns order tracks the orders related to customer-provided numbers into the customer's account. 
+    <br><br>
+    This Import/Delete request reflects a customer-executed import or removal of numbers that they own and/or control.  The telephone numbers in question cannot be Bandwidth CLEC numbers, and are not subject to the normal telephone number life-cycle.<br><br>
+    
+!scope all
+get:
+    description: |
+        Retrieve a list of the externalTns orders that are associated with the account.
+    queryParameters:
+        status:
+            description: The status of the TN Option order being searched for.
+            type: string
+            example: PARTIAL
+            enum: [RECEIVED, PROCESSING, COMPLETE, PARTIAL, FAILED]
+            repeat: true
+        tn:
+            description: A Telephone Number (TN) that is referenced in the order
+            type: string
+            example: 9199918388
+        customerOrderId:
+            description: The Customer Order ID is an ID assigned by the account owner to provide a reference number for the TN Option order.
+            type: string
+            example: ABCCorp12345
+        createdDateFrom:
+            description: Checks the order's creation date against this value. Orders that have a creation date after this date will be included. Format is yyyy-MM-dd
+            type: string
+            example: 2013-10-22
+        createdDateTo:
+            description: Checks the order's creation date against this value. Orders that have a creation date before this date will be included. Format is yyyy-MM-dd
+            type: string
+            example: 2013-10-25
+        orderIdFragment:
+            description: This search parameter represents the internal Bandwidth Dashboard ID that has been assigned to the TN Option Order.  This parameter is the first few characters of the internal ID - the entire ID does not need to be specified.
+            type: string
+            example: ed1c0bed-e2
+        action:
+            description: whether or not the results should be restricted to IMPORT or REMOVE orders."
+            type: string
+            example: REMOVE
+            enum: [IMPORT, REMOVE]
+            repeat: false
+
+    responses:
+        200:
+            description: |
+                The descriptive payload for the externalTns Orders query provides information about the externalTns Orders found by the query, including the data associated with the order, the state of the order, and a list of the successfully uploaded Telephone Numbers, and decriptions of any encountered errors. 
+
+            body:
+                application/xml:
+                    example: !include GET_200_response_example.xml
+        404:
+            description: No externalTns orders can be found that match the query parameters.
+
+
+!scope all
+post:
+    description: |
+        Create a externalTns order to add or remove telephone numbers provided by the customer from the Bandwidth network.
+
+        Note: the attempt to import a telephone number that is already present in the account will *not* create an error, but will reset all of the  attributes of that telephone number in the Dashboard system as if the telephone number was being imported for the first time
+
+        The key data elements in the submission are -
+         <table style="text-align: left; width: 80%;"
+         border="1" cellpadding="2" cellspacing="2">
+          <tbody>
+            <tr>
+              <td>CustomerOrderID</td>
+              <td>An order ID created by the customer for their tracking purposes</td>
+            </tr>
+            <tr>
+              <td>SiteId</td>
+              <td>(Required) The ID of the Site that the Telephone Numbers are to be provisioned to.</td>
+            </tr>
+            <tr>
+              <td>SipPeerId</td>
+              <td>(Optional) The ID of the SIP Peer that the Telephone Numbers are to be provisioned to.</td>
+            </tr>
+            <tr>
+              <td>Action</td>
+              <td>(Required) Indentify the action on external TNs. Allowed values... IMPORT or REMOVE.</td>
+            </tr>
+          </tbody>
+        </table>
+    body:
+        application/xml:
+            example: |
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <ExternalTnsOrder>
+                    <CustomerOrderID>ICPA123ABC</CustomerOrderID>
+                    <SiteId>743</SiteId>
+                    <SipPeerId>303716</SipPeerId>
+                    <Action>[ IMPORT | REMOVE ]</Action>
+                    <TelephoneNumbers>
+                        <TelephoneNumber>9199918388</TelephoneNumber>
+                        <TelephoneNumber>4158714245</TelephoneNumber>
+                        <TelephoneNumber>4352154439</TelephoneNumber>
+                        <TelephoneNumber>4352154466</TelephoneNumber>
+                    </TelephoneNumbers>
+                </ExternalTnsOrder>
+
+    responses:
+        201:
+            description: |
+                Created <br> A 201 response indicates that an order has been created.
+
+            body:
+                application/xml:
+                    example: !include POST_201_response_example.xml
+        400:
+            description: |
+                Bad Request <br> A 400 response Indicates that the order could not be created.
+
+                Error text and an error code will be provided in the ErrorList element.
+
+            body:
+                application/xml:
+                    example: !include POST_400_response_example.xml
+
+!fileScope all
+/{orderid}: !include orderid/orderid.raml

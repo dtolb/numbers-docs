@@ -1,0 +1,18 @@
+!fileScope internal
+
+description: A GET on this resource retrieves the first name of the specified User ID.
+
+get:
+    description: Retrieves the first name of the specified User ID.
+    responses:
+        200:
+            description: The first name has been successfully found and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <UserResponse>
+                            <User>
+                                <Username>mowoc</Username>
+                                <FirstName>Michael</FirstName>
+                            </User>
+                        </UserResponse>

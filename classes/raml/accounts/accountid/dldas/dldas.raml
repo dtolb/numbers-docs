@@ -1,0 +1,143 @@
+!fileScope external
+description: |
+    The DLDAs Resource represents the requests made to the Bandwidth Dashboard API to add or otherwise manage a request to associate the street address with the telephone number.  This API allows the creation and observation of a <b>"Directory Listing and Directory Assistance"</b> work order that causes an update of a address information in a network Database. <br>
+    This API call supports <b>GET</b> to retrieve information about outstanding DLDAs orders.
+
+!scope external
+get:
+    description: |
+        Retrieve a list of the DLDA orders that are associated with the account.
+    queryParameters:
+        tn:
+            description: A Telephone Number (TN) that is referenced in the order
+            type: string
+            example: 9199918388
+        lastModifiedAfter:
+            description: Checks the order's last modified date against this value. Orders that have a modification date after this date will be included. Format is yyyy-MM-dd
+            type: string
+            example: 2013-10-25
+        modifiedDateFrom:
+            description: For Date-based searches, the starting date of a date range that will be used to find DLDA Orders that were modified within the date range.  It is in the form yyyy-MM-dd.
+            type: string
+            example: 2013-10-22
+        modifiedDateTo:
+            description: For Date-based searches, the ending date of a date range that will be used to find DLDA Orders that were modified within the date range.  It is in the form yyyy-MM-dd.
+            type: string
+            example: 2013-10-25
+    responses:
+        200:
+            description: |
+                OK <br> a 200 OK indicates that there are DLDA orders associated with the account.
+
+                The 200 OK response payload provides a list of all DLDA orders that have been issued against that account.
+            body:
+                application/xml:
+                    example: !include GET_200_response_example.xml
+        404:
+            description: |
+                Not Found <br> If any errors are found in the processing of the query string a 404 will be returned.  Note that parameters that are not recognized are not considered errors, and are just ignored.
+
+!scope external
+post:
+    description: |
+        Create DLDA order to associate the street address with the telephone number.
+
+        The key data elements in the submission are -
+         <table style="text-align: left; width: 80%;"
+         border="1" cellpadding="2" cellspacing="2">
+          <tbody>
+            <tr>
+              <td>TelephoneNumbers</td>
+              <td>A list of telephone numbers you need to bind information from payload.</td>
+            </tr>
+            <tr>
+              <td>SubscriberType</td>
+              <td>Can be RESIDENTIAL or BUSINESS.  The element is required.</td>
+            </tr>
+            <tr>
+              <td>ListingType</td>
+              <td>Can be LISTED, NON_LISTED or NON_PUBLISHED. The element is required</td>
+            </tr>
+            <tr>
+              <td>ListingName</td>
+              <td>This field is required. Inner fields: FirstName (this field is required in case RESIDENTIAL SubscriberType is chosen), FirstName2, LastName (this field is required), Designation, TitleOfLineage, TitleOfAddress, TitleOfAddress2, TitleOfLineageName2, TitleOfAddressName2, TitleOfAddress2Name2, and PlaceListingAs are optional<br>Please see the note below on sorting of Business Listings.</td>
+            </tr>
+            <tr>
+              <td>ListAddress</td>
+              <td>Can be true or false. The element is required.</td>
+            </tr>
+            <tr>
+              <td>Address</td>
+              <td>This field is required. Inner fields: HousePrefix, HouseNumber, HouseSuffix, PreDirectional, StreetName, StreetSuffix, PostDirectional, AddressLine2, City, StateCode, Zip, PlusFour and AddressType=DLDA.<br>City, HouseNumber, StreetName, City, State and Zipcode are required fields.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <b>Business Listings...</b> <br>Business Listings sort differently than Residential Listings, and must be submitted accordingly.  Since Business Listings sort starting at the beginning of the name, where Residential Listings sort on Last Name, the parts of the business name that will govern the sorting need to be entered in the LastName field.  For example, Joe's Pizza sorts starting with Joe, so the entire business name would be entered in the LastName field, and the Firstname could be left blank.  If there was a portion of the name that was not important from a sorting perspective (perhaps "the best pizza in town"), that portion could be placed in the FirstName field.<br>
+
+    body:
+        application/xml:
+            example: |
+                <DldaOrder>
+                    <CustomerOrderId>[String]</CustomerOrderId>
+                    <DldaTnGroups>
+                        <DldaTnGroup>
+                            <TelephoneNumbers>
+                                <TelephoneNumber>5202217754</TelephoneNumber>
+                            </TelephoneNumbers>
+                            <SubscriberType>RESIDENTIAL</SubscriberType>
+                            <ListingType>LISTED</ListingType>
+                            <ListingName>
+                                <FirstName>John</FirstName>
+                                <FirstName2/>
+                                <LastName>Smith</LastName>
+                                <Designation/>
+                                <TitleOfLineage/>
+                                <TitleOfAddress/>
+                                <TitleOfAddress2/>
+                                <TitleOfLineageName2/>
+                                <TitleOfAddressName2/>
+                                <TitleOfAddress2Name2/>
+                                <PlaceListingAs/>
+                            </ListingName>
+                            <ListAddress>true</ListAddress>
+                            <Address>
+                                <HousePrefix/>
+                                <HouseNumber>915</HouseNumber>
+                                <HouseSuffix/>
+                                <PreDirectional/>
+                                <StreetName>Elm</StreetName>
+                                <StreetSuffix>Ave</StreetSuffix>
+                                <PostDirectional/>
+                                <AddressLine2/>
+                                <City>Carpinteria</City>
+                                <StateCode>CA</StateCode>
+                                <Zip>93013</Zip>
+                                <PlusFour/>
+                                <County/>
+                                <AddressType>DLDA</AddressType>
+                            </Address>
+                        </DldaTnGroup>
+                    </DldaTnGroups>
+                </DldaOrder>
+    responses:
+        201:
+            description: |
+                Created <br> A 201 response indicates that an order has been created.
+
+                The <b>location</b> header points to /accounts/<account-id>/dldas/<order-id> and can be used to retrive the status of the DLDA order.<br>
+                Errors in processing the request will be articulated in the ErrorList component of the response.
+            body:
+                application/xml:
+                    example: !include POST_201_response_example.xml
+        400:
+            description: |
+                Bad Request <br> A 400 response Indicates that the order could not be created.
+
+                Error text and an error code will be provided in the ErrorList element.
+
+            body:
+                application/xml:
+                    example: !include POST_400_response_example.xml
+!fileScope external
+/{orderid}: !include orderid/orderid.raml

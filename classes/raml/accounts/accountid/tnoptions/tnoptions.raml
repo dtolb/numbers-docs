@@ -1,0 +1,168 @@
+!fileScope all
+description: |
+    The tnoptions Resource represents the requests made to the Bandwidth Dashboard API to add or otherwise manage a request to assign line features to the telephone number.This API allows the creation and observation of a <b>"TN Option"</b> work order that causes an update of a address information in a network Database. <br>
+
+!scope all
+get:
+    description: |
+        Retrieve a list of the TN Option orders that are associated with the account.
+    queryParameters:
+        status:
+            description: The status of the TN Option order being searched for.
+            type: string
+            example: PROCESSING
+            enum: [RECEIVED, PROCESSING, COMPLETE, PARTIAL, FAILED]
+            repeat: true
+        tn:
+            description: A Telephone Number (TN) that is referenced in the order
+            type: string
+            example: 9199918388
+        customerOrderId:
+            description: The Customer Order ID is an ID assigned by the account owner to provide a reference number for the TN Option order.
+            type: string
+            example: ABCCorp12345
+        modifiedDateFrom:
+            description: For Date-based searches, the starting date of a date range that will be used to find TN Option Orders that were modified within the date range.  It is in the form yyyy-MM-dd.
+            type: string
+            example: 2013-10-22
+        modifiedDateTo:
+            description: For Date-based searches, the ending date of a date range that will be used to find TN Option Orders that were modified within the date range.  It is in the form yyyy-MM-dd.
+            type: string
+            example: 2013-10-25
+        createdDateFrom:
+            description: Checks the order's creation date against this value. Orders that have a creation date after this date will be included. Format is yyyy-MM-dd
+            type: string
+            example: 2013-10-22
+        createdDateTo:
+            description: Checks the order's creation date against this value. Orders that have a creation date before this date will be included. Format is yyyy-MM-dd
+            type: string
+            example: 2013-10-25
+        lastModifiedAfter:
+            description: Checks the order's last modified date against this value. Orders that have a modification date after this date will be included. Format is yyyy-MM-dd
+            type: string
+            example: 2013-10-25
+        lastModifiedBy:
+            description: This is the user-name of the user that last modified the TN Option Order.
+            type: string
+            example: smckinnon
+        orderIdFragment:
+            description: This search parameter represents the internal Bandwidth Dashboard ID that has been assigned to the TN Option Order.  This parameter is the first few characters of the internal ID - the entire ID does not need to be specified.
+            type: string
+            example: ed1c0bed-e2
+        orderDetails:
+            description: If set to true, a list of order details will be displayed instead the summary information.
+            type: boolean
+            default: false
+
+    responses:
+        200:
+            description: |
+                The descriptive payload for the TN Option Orders query provides a broad range of information about the TN Option Orders found by the query, including the data associated with the order, the state of the order, and details about the order if it was successful.
+
+            body:
+                application/xml:
+                    example: !include GET_200_response_example.xml
+        404:
+            description: Not Found.  If any errors are found in the processing of the query string a 404 will be returned.  Note that parameters that are not recognized are not considered errors, and are just ignored.
+
+
+!scope all
+post:
+    description: |
+        Create TN Option order to assign line features to the telephone number.
+
+        The key data elements in the submission are -
+         <table style="text-align: left; width: 80%;"
+         border="1" cellpadding="2" cellspacing="2">
+          <tbody>
+            <tr>
+              <td>TnOptionGroups</td>
+              <td>A list of TnOptionGroups.</td>
+            </tr>
+            <tr>
+              <td>TnOptionGroup</td>
+              <td>Contains list of telephone numbers and set of TN options you want to assign to all TNs in the list.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        There are TN Option values:
+        <ul>
+        <li> TelephoneNumber - [ 10digit ] </li>
+        <li> CallingNameDisplay - [ on | off | <i>unchanged</i> | <i>systemdefault</i> ] </li>
+        <li> NumberFormat - [ 10digit | 11digit | e164 | <i>unchanged</i> | <i>systemdefault</i> ] </li>
+        <li> RPIDFormat - [ 10digit | 11digit | e164 | <i>unchanged</i> | <i>systemdefault</i> ] </li>
+        <li> RewriteUser - [ string | <i>unchanged</i> | <i>systemdefault</i>] </li>
+        <li> CallForward - [ 10digit | <i>unchanged</i> | <i>systemdefault</i>] </li>
+        <li> Protected - [ true | false | <i>unchanged</i> | <i>systemdefault</i>] </li>
+        <li> Sms - [ on | off | <i>unchanged</i>] </li>
+        <li> FinalDestinationURI - [ string | <i>unchanged</i> | <i>systemdefault</i>] </li>
+        <ul>
+          <li>a 10 digit telephone number, or</li>
+          <li>a SIP URI ( without the sip: prefix )
+            <ul>
+              <li>in the form address-string@host IP:port, where </li>
+              <li>the host IP is an IPv4 address in the standard numerical n.n.n.n. form, and </li>
+              <li>the port is numeric, and optional</li>
+              <li>containing [a-z,A-Z,0-9], with ':', '.' and '@' to delimit the components of the overall string, and</li>
+              <li>less than 60 characters long.</li>
+            </ul>
+          </li>
+        </ul>
+        </ul>
+
+        Where:
+        <ul>
+        <li type="square"> <i>systemdefault</i> - implies that the element profile value should be removed so that the TN changes back to the default system behavior;</li>
+        <li type="square"> <i>unchanged</i> - the value should remain unchanged - implies a read before write model.</li>
+        <li type="square"><u>Leaving the element out of the payload is equivalent to <i>unchanged</i>.</u></li>
+        </ul>
+
+    body:
+        application/xml:
+            example: |
+                 <TnOptionOrder>
+                     <TnOptionGroups>
+                         <TnOptionGroup>
+                             <NumberFormat>10digit</NumberFormat>
+                             <RPIDFormat>10digit</RPIDFormat>
+                             <RewriteUser>testUser1</RewriteUser>
+                             <CallForward>6042661720</CallForward>
+                             <CallingNameDisplay>on</CallingNameDisplay>
+                             <Protected>true</Protected>
+                             <Sms>on</Sms>
+                             <FinalDestinationURI>sip:+12345678901@1.2.3.4:5060</FinalDestinationURI>
+                             <TelephoneNumbers>
+                                 <TelephoneNumber>2018551020</TelephoneNumber>
+                             </TelephoneNumbers>
+                         </TnOptionGroup>
+                         <TnOptionGroup>
+                             <CallingNameDisplay>off</CallingNameDisplay>
+                             <Protected>false</Protected>
+                             <Sms>off</Sms>
+                             <TelephoneNumbers>
+                                 <TelephoneNumber>2018551025</TelephoneNumber>
+                             </TelephoneNumbers>
+                         </TnOptionGroup>
+                     </TnOptionGroups>
+                 </TnOptionOrder>
+    responses:
+        201:
+            description: |
+                Created <br> A 201 response indicates that an order has been created.
+
+            body:
+                application/xml:
+                    example: !include POST_201_response_example.xml
+        400:
+            description: |
+                Bad Request <br> A 400 response Indicates that the order could not be created.
+
+                Error text and an error code will be provided in the ErrorList element.
+
+            body:
+                application/xml:
+                    example: !include POST_400_response_example.xml
+
+!fileScope all
+/{orderid}: !include orderid/orderid.raml

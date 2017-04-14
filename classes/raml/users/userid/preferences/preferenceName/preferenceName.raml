@@ -1,0 +1,70 @@
+!fileScope internal
+
+description: reference the user preferences for a specific user in the system
+
+get:
+    description: Retrieves the information associated with the preference name.
+    responses:
+        200:
+            description: The information has been successfully received and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <UserPreference>
+                            <Name>preferredPortal</Name>
+                            <Value>old</Value>
+                        </UserPreference>
+        404:
+            description: NOT FOUND - the user preference does not exist in the system
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserPreferenceResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12065</ErrorCode>
+                                <Description>User preference not found</Description>
+                            </ResponseStatus>
+                        </UserPreferenceResponse>
+
+put:
+    description: Updating the user preference for a specific user
+    body:
+        application/xml:
+            example: |
+                <UserPreference>
+                    <Value>shiny</Value>
+                </UserPreference>
+    responses:
+        200:
+            description: The user preference have been successfully updated.
+        404:
+            description: NOT FOUND - the user preference does not exist in the system
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserPreferenceResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12065</ErrorCode>
+                                <Description>User preference not found</Description>
+                            </ResponseStatus>
+                        </UserPreferenceResponse>
+
+delete:
+    description: Deletes the reference .
+    responses:
+        200:
+            description: The preference has been successfully deleted.
+        404:
+            description: NOT FOUND - the user preference does not exist in the system
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserPreference>
+                            <ResponseStatus>
+                                <ErrorCode>12065</ErrorCode>
+                                <Description>User preference not found</Description>
+                            </ResponseStatus>
+                        </UserPreference>

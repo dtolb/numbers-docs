@@ -1,0 +1,182 @@
+!fileScope all
+description: |
+    The E911s Resource represents the requests made to the Bandwidth Dashboard API to add or otherwise manage a request to associate the street address with the telephone number.This API allows the creation and observation of a <b>"E911"</b> work order that causes an update of a address information in a network Database. <br><br>
+
+    The E911 order processing model is consistent with the overall model of creating an order or request with the initial POST, and then checking on the status of that order using callbacks and / or GET while that order progresses through the various steps in the process. <br><br>
+
+    In the case of an E911s order, the states that the order may reside in are...<br>
+    RECEIVED, PROCESSING, COMPLETE, PARTIAL, FAILED, ADJUSTED\_COMPLETE, and ADJUSTED\_PARTIAL<br>
+    where the "ADJUSTED" indicates that the provisioning was successful, but that the street address was subtly changed to reflect a geocodable address.  As in other order-types, PARTIAL indicates that there were some errors detected, but that all elements of the order that could be processed were processed.  In this case the order record will need to be examined to determine the items that failed. <br><br>
+
+
+!scope all
+get:
+    description: |
+        Retrieve a list of the E911 orders that are associated with the account.
+    queryParameters:
+        status:
+            description: The status of the E911 order being searched for.
+            type: string
+            example: PROCESSING
+            enum: [RECEIVED, PROCESSING, COMPLETE, PARTIAL, FAILED, ADJUSTED_COMPLETE, ADJUSTED_PARTIAL]
+            repeat: true
+        tn:
+            description: A Telephone Number (TN) that is referenced in the order
+            type: string
+            example: 9199918388
+        !scope internal
+        callBack:
+            description: A callback Telephone Number (TN) used for 911 purposes.
+            type: string
+            example: 9199918388
+        !scope internal
+        aeui:
+            description: Alternate End-user Identifier used to identify the calling party for 911 purposes.
+            type: string
+            example: Alter12345
+        !scope internal
+        callingEndpoint:
+            description: A TN, callback TN or AEUI.
+            type: string
+            example: 9199918386, Alter12345
+        !scope all
+        customerOrderId:
+            description: The Customer Order ID is an ID assigned by the account owner to provide a reference number for the E911 order.
+            type: string
+            example: ABCCorp12345
+        modifiedDateFrom:
+            description: For Date-based searches, the starting date of a date range that will be used to find E911 Orders that were modified within the date range.  It is in the form yyyy-MM-dd.
+            type: string
+            example: 2013-10-22
+        modifiedDateTo:
+            description: For Date-based searches, the ending date of a date range that will be used to find E911 Orders that were modified within the date range.  It is in the form yyyy-MM-dd.
+            type: string
+            example: 2013-10-25
+        createdDateFrom:
+            description: Checks the order's creation date against this value. Orders that have a creation date after this date will be included. Format is yyyy-MM-dd
+            type: string
+            example: 2013-10-22
+        createdDateTo:
+            description: Checks the order's creation date against this value. Orders that have a creation date before this date will be included. Format is yyyy-MM-dd
+            type: string
+            example: 2013-10-25
+        lastModifiedAfter:
+            description: Checks the order's last modified date against this value. Orders that have a modification date after this date will be included. Format is yyyy-MM-dd
+            type: string
+            example: 2013-10-25
+        lastModifiedBy:
+            description: This is the user-name of the user that last modified the E911 Order.
+            type: string
+            example: smckinnon
+        orderIdFragment:
+            description: This search parameter represents the internal Bandwidth Dashboard ID that has been assigned to the E911 Order.  This parameter is the first few characters of the internal ID - the entire ID does not need to be specified.
+            type: string
+            example: ed1c0bed-e2
+        orderDetails:
+            description: If set to true, a list of order details will be displayed instead the summary information.
+            type: boolean
+            default: false
+
+    responses:
+        200:
+            description: |
+                The descriptive payload for the E911 Orders query provides a broad range of information about the E911  Orders found by the query, including the data associated with the order, the state of the order, and details about the order if it was successful.
+
+            body:
+                application/xml:
+                    example: !include GET_200_response_example.xml
+
+        404:
+            description: Not Found.  If any errors are found in the processing of the query string a 404 will be returned.  Note that parameters that are not recognized are not considered errors, and are just ignored.
+
+
+!scope all
+post:
+    description: |
+        Create E911 order to associate the address with the telephone number.
+
+        The key data elements in the submission are -
+         <table style="text-align: left; width: 80%;"
+         border="1" cellpadding="2" cellspacing="2">
+          <tbody>
+            <tr>
+              <td>TelephoneNumbers</td>
+              <td>A list of telephone numbers you need link to the street address.</td>
+            </tr>
+            <tr>
+              <td>CallerName</td>
+              <td>CallerName that will be linked to TNs. This field is required in the case of a new address assignment.</td>
+            </tr>
+            <tr>
+              <td>Address</td>
+              <td>This field is required in the case of a new address assignment.  Inner fields: HousePrefix, HouseNumber, HouseSuffix, PreDirectional, StreetName, StreetSuffix, PostDirectional, AddressLine2, City, StateCode, Zip, PlusFour.  Streetname, City, and State are required.  House Number is currently required, although this enforcement may be relaxed in the future.</td>
+            </tr>
+            <tr>
+              <td>DeleteTNSpecificE911Address</td>
+              <td>Can be true or false. If value is true then Address and CallerName should not be specified.</td>
+            </tr>
+            !scope internal
+            <tr>
+              <td>AlternateEndUserIdentifiers</td>
+              <td>A list of AEUIs acts as a replacement for the list of telephone numbers. An AlternateEndUserIdentifier consist of two required fields: Identifier and CallbackNumber.  It replaces the TelephoneNumbers payload element. </td>
+            !scope internal
+            </tr>
+          </tbody>
+        </table>
+
+    body:
+        application/xml:
+            example: |
+                 <E911Order>
+                        <CustomerOrderId>CustomOrderId1</CustomerOrderId>
+                        <TelephoneNumbers>
+                            <TelephoneNumber>9706542332</TelephoneNumber>
+                            <TelephoneNumber>9706542333</TelephoneNumber>
+                        </TelephoneNumbers>
+                        !scope internal
+                        <!-- or, to replace the TelephoneNumbers, a list of Alternative identifiers can be provided -->
+                        !scope internal
+                        <AlternateEndUserIdentifiers>
+                            <AlternateEndUserIdentifier>
+                                <CallbackNumber>9195551212</CallbackNumber>
+                                <Identifier>ACID1234</Identifier>
+                            </AlternateEndUserIdentifier>
+                        !scope internal
+                        </AlternateEndUserIdentifiers>
+                        <CallerName>CustomCallerName</CallerName>
+                        <Address>
+                            <HouseNumber>915</HouseNumber>
+                            <HouseSuffix/>
+                            <PreDirectional/>
+                            <StreetName>Elm</StreetName>
+                            <StreetSuffix>Ave</StreetSuffix>
+                            <PostDirectional/>
+                            <AddressLine2/>
+                            <City>Carpinteria</City>
+                            <StateCode>CA</StateCode>
+                            <Zip>93013</Zip>
+                            <PlusFour/>
+                            <County/>
+                            <Country/>
+                        </Address>
+                    </E911Order>
+    responses:
+        201:
+            description: |
+                Created <br> A 201 response indicates that an order has been created.
+
+            body:
+                application/xml:
+                    example: !include POST_201_response_example.xml
+        400:
+            description: |
+                Bad Request <br> A 400 response Indicates that the order could not be created.
+
+                Error text and an error code will be provided in the ErrorList element.
+
+            body:
+                application/xml:
+                    example: !include POST_400_response_example.xml
+
+!fileScope all
+/{orderid}: !include orderid/orderid.raml

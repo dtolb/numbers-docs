@@ -1,0 +1,96 @@
+!fileScope all
+
+!scope external
+get:
+    description: |
+        Retrieve sms smpp hosts associated with a Sip Peer
+    responses:
+        200:
+            description: A successful result that contains the response data
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <SmsSmppHostsResponse>
+                            <SmsHosts>
+                                <SmsHost>
+                                    <HostName>41.225.61.132</HostName>
+                                    <Port>0</Port>
+                                    <hostId>6452</hostId>
+                                    <priority>0</priority>
+                                    <username>jbm</username>
+                                    <password>macman</password>
+                                    <connectionType>TRANSCEIVER</connectionType>
+                                </SmsHost>
+                            </SmsHosts>
+                        </SmsSmppHostsResponse>
+        400:
+            description: |
+                Bad Request. Possible errors in response:
+                <ul>
+                   <li>13563 "Sip Peer '544545' account '12346159' and site '483' does not exist"</li>
+                </ul>
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <SmsSmppHostsResponse>
+                            <ResponseStatus>
+                                <ErrorCode>13563</ErrorCode>
+                                <Description>Sip Peer '544545' account '12346159' and site '483' does not exist</Description>
+                            </ResponseStatus>
+                        </SmsSmppHostsResponse>
+!scope internal
+post:
+    description: |
+
+        Add smpp sms host to sip peer
+
+    body:
+        application/xml:
+            example: |
+                <?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+                <SmsHost>
+                    <HostName>44.236.107.20</HostName>
+                    <Port>0</Port>
+                    <priority>0</priority>
+                    <username>jbm</username>
+                    <password>macman</password>
+                    <connectionType>TRANSCEIVER</connectionType>
+                </SmsHost>
+    responses:
+        201:
+            description: Sms host added
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <SmsSmppHostResponse>
+                            <SmsHost>
+                                <HostName>32.59.97.120</HostName>
+                                <Port>0</Port>
+                                <hostId>6454</hostId>
+                                <priority>0</priority>
+                                <username>jbm</username>
+                                <password>macman</password>
+                                <connectionType>TRANSCEIVER</connectionType>
+                            </SmsHost>
+                        </SmsSmppHostResponse>
+        400:
+            description: |
+                Bad Request. Possible errors in response:
+                <ul>
+                   <li>12041 "Sms product has not been configured"</li>
+                </ul>
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <SmsSmppHostResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12041</ErrorCode>
+                                <Description>Sms product has not been configured</Description>
+                            </ResponseStatus>
+                        </SmsSmppHostResponse>
+!fileScope all
+/{smsHostId}: !include host/host.raml

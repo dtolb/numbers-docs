@@ -1,0 +1,158 @@
+!fileScope internal
+description: | 
+    The Edge Management settings resource is used to define the attributes of the Edge Management product that will apply to the account specified in the URL.
+
+get:
+    description: |
+        There are three primary settings that are provided as part of the Edge Management product: The SBC settings that are associated with the account,
+        SipAuthentication that provide settings for SIP authentication and ProductSpecificAccessRestrictions that can restrict Termination traffic for sipCredendital.
+            <br>
+            <b>SbcSettings:</b>
+            <table>
+            <tr><th>Parameter</th><th>Description</th></tr>
+            <tr><td>TrunkGroupId</td><td>element defines id of the trunk group associated with the Account in TGA</td></tr>
+            <tr><td>NodeGroupName</td><td>element are the node group name set up in TGA</td></tr>
+            </table>
+            <br>
+            <b>SipAuthentication:</b>
+             <table>
+             <tr><th>Parameter</th><th>Description</th></tr>
+             <tr><td>Enabled</td><td>enable SIP Authentication on account. Values that can be accepted: true, false</td></tr>
+             <tr><td>Status</td><td>provide information about processing status. This field cannot be updated.</td></tr>
+             <tr><td>DefaultGroupName</td><td>default value for SIP Credential Group Name to be used by credentials that have not been assigned to a group by some other mechanism. Length between 1 and 32.</td></tr>
+             </table>
+            <br><br>
+            <b>ProductSpecificAccessRestrictions</b>(requires existence of SipCredentialSettings)<b>:</b>
+            <table>
+            <tr><th>Parameter</th><th>Description</th></tr>
+            <tr><td>RestrictedProduct</td><td>Product to restrict. Values that can be accepted: Termination</td></tr>
+            <tr><td>RestrictedAccessType</td><td>Type of restriction. Values that can be accepted: SipCredentials</td></tr>
+            </table>
+
+
+    responses:    
+        200:
+            description: An optional description of the response.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <EdgeManagementSettings>
+                            <SbcSettings>
+                                <TrunkGroupId>Trunkgroupidfortheaccounttraffic</TrunkGroupId>
+                                <NodeGroupName>East Coast 01</NodeGroupName>
+                            </SbcSettings>
+                            <SipAuthentication>
+                                <Enabled>true/false</Enabled>
+                                <Status>COMPLETE</Status>
+                                <DefaultGroupName>Group1.com_</DefaultGroupName>
+                            </SipAuthentication>
+                            <ProductSpecificAccessRestrictions>
+                               <AccessRestriction>
+                                   <RestrictedProduct>Termination</RestrictedProduct>
+                                   <RestrictedAccessTypes>
+                                       <RestrictedAccessType>SipCredentials</RestrictedAccessType>
+                                   </RestrictedAccessTypes>
+                               </AccessRestriction>
+                            </ProductSpecificAccessRestrictions>
+                        </EdgeManagementSettings>
+        404:
+            description: |
+                If the settings are not present for the EdgeManagement product a 404 NOT FOUND is returned with an explanatory payload.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <EdgeManagementSettingsResponse>
+                            <ResponseStatus>
+                                <Description>The resource does not exist</Description>
+                            </ResponseStatus>
+                        </EdgeManagementSettingsResponse>
+
+post:
+    description: | 
+
+        This Edge Management settings resource can be PUT or POSTed to in order to establish the appropriate settings.
+
+    body:
+        application/xml:
+            example: |
+                <?xml version="1.0"?>
+                <EdgeManagementSettings>
+                    <SbcSettings>
+                        <TrunkGroupId>Trunkgroupidfortheaccounttraffic</TrunkGroupId>
+                        <NodeGroupName>East Coast 01</NodeGroupName>
+                    </SbcSettings>
+                    <SipAuthentication>
+                        <Enabled>true</Enabled>
+                        <DefaultGroupName>Group1.com_</DefaultGroupName>
+                    </SipAuthentication>
+                    <ProductSpecificAccessRestrictions>
+                        <AccessRestriction>
+                            <RestrictedProduct>Termination</RestrictedProduct>
+                            <RestrictedAccessTypes>
+                                <RestrictedAccessType>SipCredentials</RestrictedAccessType>
+                            </RestrictedAccessTypes>
+                        </AccessRestriction>
+                    </ProductSpecificAccessRestrictions>
+                </EdgeManagementSettings>
+    responses:
+        200:
+            description: a 200 OK is returned on successful updating of the Edge Management Settings.  There is no payload returned with a 200 OK.
+        400:
+            description: a 400 BAD REQUEST will be returned with a descriptive payload if the XML describing the edge Management settings resource is incorrect or the account is not configured for Edge Management.  The error contains an error code and description.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <EdgeManagementSettingsResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12602</ErrorCode>
+                                <Description>TrunkGroupName is required when creating EdgeManagementSettings</Description>
+                            </ResponseStatus>
+                        </EdgeManagementSettingsResponse>
+                         
+put:
+    description: | 
+
+        This Edge Management settings resource can be PUT or POSTed to in order to establish the appropriate settings.
+
+    body:
+        application/xml:
+            example: |
+                <?xml version="1.0"?>
+                <EdgeManagementSettings>
+                    <SbcSettings>
+                        <TrunkGroupId>Trunkgroupidfortheaccounttraffic</TrunkGroupId>
+                        <NodeGroupName>East Coast 01</NodeGroupName>
+                    </SbcSettings>
+                    <SipAuthentication>
+                        <Enabled>true</Enabled>
+                        <DefaultGroupName>Group1.com_</DefaultGroupName>
+                    </SipAuthentication>
+                    <ProductSpecificAccessRestrictions>
+                        <AccessRestriction>
+                            <RestrictedProduct>Termination</RestrictedProduct>
+                            <RestrictedAccessTypes>
+                                <RestrictedAccessType>SipCredentials</RestrictedAccessType>
+                            </RestrictedAccessTypes>
+                        </AccessRestriction>
+                    </ProductSpecificAccessRestrictions>
+                </EdgeManagementSettings>
+    responses:
+        200:
+            description: a 200 OK is returned on successful updating of the Edge Management Settings.  There is no payload returned with a 200 OK.
+        400:
+            description: a 400 BAD REQUEST will be returned with a descriptive payload if the XML describing the edge Management settings resource is incorrect or the account is not configured for Edge Management.  The error contains an error code and description.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <EdgeManagementSettingsResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12602</ErrorCode>
+                                <Description>SbcSettings is required when creating EdgeManagementSettings</Description>
+                            </ResponseStatus>
+                        </EdgeManagementSettingsResponse>
+
+/sipauthentication: !include sipauthentication/sipauthentication.raml

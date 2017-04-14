@@ -1,0 +1,33 @@
+!fileScope internal
+
+description:  |
+	This API will expose products that are associated directly with the SIP Peer.
+	At this time all of these products are limited to Admin access, and not exposed to the normal user base
+
+	The current products that can be associated with a SIP Peer are:
+	* Termination
+	* EdgeManagement
+
+get:
+    description: list the products associated with a SIP Peer
+    responses:
+        200:
+            description: There is at least one product associated with the SIP Peer. If there is no products associated with Sip Peer, empty list will be displayed.
+            body:
+                application/xml:
+                    example: |
+						<SipPeerProductResponse>
+						    <Products>
+						        <Product>
+						            <Name>Termination</Name>
+						        </Product>
+						        <Product>
+						            <Name>EdgeManagement</Name>
+						        </Product>
+						    </Products>
+						</SipPeerProductResponse>
+
+/edgemanagement: !include edgemanagement/edgemanagement.raml
+/termination: !include hosts/hosts.raml
+/sms/smpp/hosts: !include sms/smpp/hosts/smppHosts.raml
+/sms/sip/hosts: !include sms/sip/hosts/sipHosts.raml

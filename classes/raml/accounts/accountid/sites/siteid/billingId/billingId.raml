@@ -1,0 +1,44 @@
+!fileScope internal
+
+description: Access and modify the current billing ID of a site.
+
+get:
+    description: Retrieves the current billing ID of a site.
+
+    responses:
+        200:
+            description: site id successfully retrieved
+            body: 
+                application/xml:
+                    example: |
+                        <SiteBillingIdResponse>
+                            <BillingId>
+                                <IdValue>true</IdValue>
+                            </BillingId>
+                        </SiteBillingIdResponse>
+
+put:
+    description: Modifies the billing ID of a site.
+    body:
+        application/xml:
+            example:
+                <?xml version="1.0" ?>
+                <BillingId>
+                    <IdValue>false</IdValue>
+                </BillingId>
+
+    responses:
+        200:
+            description: The site's billing ID has been successfully updated.
+        400:
+            description: The request to modify the site's billing ID was invalid.
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" ?>
+                        <SiteBillingIdResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12632</ErrorCode>
+                                <Description>Invalid BillingId->IdValue (expected numeric value).</Description>
+                            </ResponseStatus>
+                        </SiteBillingIdResponse>

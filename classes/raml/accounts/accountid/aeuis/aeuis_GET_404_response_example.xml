@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AlternateEndUserIdentifiersResponse>
+    <ResponseStatus>
+        <ErrorCode>12087</ErrorCode>
+        <Description>Alternate End User Identifiers were not found.</Description>
+    </ResponseStatus>
+</AlternateEndUserIdentifiersResponse>

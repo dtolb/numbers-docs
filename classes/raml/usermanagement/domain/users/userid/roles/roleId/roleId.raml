@@ -1,0 +1,191 @@
+!fileScope internal
+
+description: This resource retrieves information about role to user relationship.
+
+get:
+    description: Retrieves the information about permission by unique name, related to specific user.
+    responses:
+        200:
+            description: The information has been successfully retrieved and displayed in the payload.
+            body:
+                application/xml:
+                    example:
+                        <LdapUserRoleResponse>
+                            <User>
+                                <RoleList>
+                                    <Role>
+                                        <RoleId>test-1234</RoleId>
+                                        <RoleDescription>1234567</RoleDescription>
+                                    </Role>
+                                </RoleList>
+                            </User>
+                        </LdapUserRoleResponse>
+        404:
+            description: The user, role or user-to-role association does not exist.
+            body:
+                application/xml:
+                    example:
+                        <LdapUserRoleResponse>
+                             <ResponseStatus>
+                                 <ErrorCode>12073</ErrorCode>
+                                 <Description>Role 'test-12345' does not exist</Description>
+                             </ResponseStatus>
+                             <User>
+                                 <UserId>vboginskiy</UserId>
+                                 <RoleList>
+                                     <Role>
+                                         <RoleId>test-12345</RoleId>
+                                     </Role>
+                                 </RoleList>
+                             </User>
+                        </LdapUserRoleResponse>
+
+                       <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                       <LdapUserRoleResponse>
+                           <ResponseStatus>
+                               <ErrorCode>12000</ErrorCode>
+                               <Description>User 'vboginskiy1' does not exist</Description>
+                           </ResponseStatus>
+                           <User>
+                               <UserId>vboginskiy1</UserId>
+                               <RoleList>
+                                   <Role>
+                                       <RoleId>test-1234</RoleId>
+                                   </Role>
+                               </RoleList>
+                           </User>
+                       </LdapUserRoleResponse>
+
+                       <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                       <LdapUserRoleResponse>
+                           <ResponseStatus>
+                               <ErrorCode>12083</ErrorCode>
+                               <Description>Role 'test-role-put-3' is not associated with user 'vboginskiy'</Description>
+                           </ResponseStatus>
+                           <User>
+                               <UserId>vboginskiy</UserId>
+                               <RoleList>
+                                   <Role>
+                                       <RoleId>test-role-put-3</RoleId>
+                                   </Role>
+                               </RoleList>
+                           </User>
+                       </LdapUserRoleResponse>
+!scope internal
+post:
+    description: Adds role to user.
+    responses:
+        201:
+             description: The role has been successfully added to user.
+             body:
+                 application/xml:
+                     example:
+                         <LdapUserRoleResponse>
+                             <User>
+                                 <UserId>suser</UserId>
+                                 <RoleList>
+                                     <Role>
+                                         <RoleId>report-editor</RoleId>
+                                         <RoleSimpleName>Simple Name</RoleSimpleName>
+                                         <RoleDescription>123</RoleDescription>
+                                     </Role>
+                                     <Role>
+                                         <RoleId>test-role</RoleId>
+                                         <RoleSimpleName>Simple Name</RoleSimpleName>
+                                         <RoleDescription>555</RoleDescription>
+                                     </Role>
+                                     <Role>
+                                         <RoleId>test-role-put-3</RoleId>
+                                         <RoleSimpleName>Simple Name</RoleSimpleName>
+                                         <RoleDescription>1234567</RoleDescription>
+                                     </Role>
+                                     <Role>
+                                         <RoleId>test-1234</RoleId>
+                                         <RoleSimpleName>Simple Name</RoleSimpleName>
+                                         <RoleDescription>1234567</RoleDescription>
+                                     </Role>
+                                 </RoleList>
+                             </User>
+                         </LdapUserRoleResponse>
+        200:
+             description: The existing role-user relation is updated.
+             body:
+                 application/xml:
+                     example:
+                         <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                         <LdapUserRoleResponse>
+                             <User>
+                                 <UserId>suser</UserId>
+                                 <RoleList>
+                                     <Role>
+                                         <RoleId>report-editor</RoleId>
+                                         <RoleSimpleName>Simple Name</RoleSimpleName>
+                                         <RoleDescription>123</RoleDescription>
+                                     </Role>
+                                     <Role>
+                                         <RoleId>test-role</RoleId>
+                                         <RoleSimpleName>Simple Name</RoleSimpleName>
+                                         <RoleDescription>555</RoleDescription>
+                                     </Role>
+                                     <Role>
+                                         <RoleId>test-role-put-3</RoleId>
+                                         <RoleSimpleName>Simple Name</RoleSimpleName>
+                                         <RoleDescription>1234567</RoleDescription>
+                                     </Role>
+                                     <Role>
+                                         <RoleId>test-1234</RoleId>
+                                         <RoleSimpleName>Simple Name</RoleSimpleName>
+                                         <RoleDescription>1234567</RoleDescription>
+                                     </Role>
+                                 </RoleList>
+                             </User>
+                         </LdapUserRoleResponse>
+        403:
+             description: Create failed, role cannot be associated to certain user.
+             body:
+                 application/xml:
+                     example:
+                         <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                         <LdapUserRoleResponse>
+                             <ResponseStatus>
+                                 <ErrorCode>12085</ErrorCode>
+                                 <Description>Some of role(s) '[admin-role]' defined as internal. Internal roles cannot be associated to user 'accountUser' with scope 'AccountAdmin' or 'Account'</Description>
+                             </ResponseStatus>
+                             <User>
+                                 <UserId>accountUser</UserId>
+                                 <RoleList>
+                                     <Role>
+                                         <RoleId>admin-role</RoleId>
+                                     </Role>
+                                 </RoleList>
+                             </User>
+                         </LdapUserRoleResponse>
+
+
+!scope internal
+delete:
+    description: Removes specified role from user.
+    responses:
+        200:
+            description: The role has been successfully removed from user.
+        404:
+            description:
+                The role is not related to certain user.
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LdapUserRoleResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12083</ErrorCode>
+                                <Description>Role 'test' is not associated with user 'vboginskiy'</Description>
+                            </ResponseStatus>
+                            <User>
+                                <UserId>vboginskiy</UserId>
+                                <RoleList>
+                                    <Role>
+                                        <RoleId>test</RoleId>
+                                    </Role>
+                                </RoleList>
+                            </User>
+                        </LdapUserRoleResponse>

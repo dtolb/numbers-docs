@@ -1,0 +1,17 @@
+!fileScope external
+
+description: Retrieves the lata that contains the telephone number.
+
+get:
+    description: Retrieves the lata associated with that telephone number.
+    responses:
+        200:
+            description: The lata have been successfully retrieved.
+            body:
+                application/xml:
+                    example:
+                        <TelephoneNumberResponse>
+                            <TelephoneNumberDetails>
+                                <Lata>224</Lata>
+                            </TelephoneNumberDetails>
+                        </TelephoneNumberResponse>

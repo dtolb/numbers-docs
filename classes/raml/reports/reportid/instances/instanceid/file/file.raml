@@ -1,0 +1,47 @@
+!fileScope internal
+
+get:
+    description: Retrieve report instance output file, if output is available.
+    queryParameters:
+        accountId:
+            displayName: Account ID
+            type: integer
+            description: Account ID to which the request is scoped, if applicable
+            required: false
+    responses:
+        200:
+            description: Successful retrieval of report output.
+            headers:
+                Content-Disposition:
+                    description: |
+                        Indicates the response body is a downloaded file, and provides the browser details suggesting how it might be handled.
+                    example: "attachment; filename=output.pdf"
+        202:
+            description: Report generation is still in progress.  Check the status of the report instance, and When the report instance status becomes "Ready",
+            body:
+                application/xml:
+                    example: |
+                        <?xml version='1.0' encoding='UTF-8'?>
+                        <ReportInstanceFileResponse>
+                            <ResponseStatus>
+                                <ErrorCode>19048</ErrorCode>
+                                <Description>
+                                    Report generation in progress; Output not yet available
+                                </Description>
+                            </ResponseStatus>
+                        </ReportInstanceFileResponse>
+        404:
+            description: A report instance matching the supplied identification information could not be found.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version='1.0' encoding='UTF-8'?>
+                        <ReportInstanceFileResponse>
+                            <ResponseStatus>
+                                <ErrorCode>19019</ErrorCode>
+                                <Description>
+                                    No report instance found for report 123 with Id of '456'
+                                </Description>
+                            </ResponseStatus>
+                        </ReportInstanceFileResponse>
+

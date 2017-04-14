@@ -1,0 +1,130 @@
+!fileScope internal
+description: |
+    Straightforward API to retrieve information about JAX-RS service endpoints.
+
+get:
+    description: |
+        Retrieve information about one or more API endpoints with related server name, server path and resources.
+        All search parameters are compatible with all other search parameters.
+
+    queryParameters:
+        httpMethod:
+            description: Parameter will restrict the search result to the specific http method.
+            type: string
+            example: POST
+            enum: [GET, POST, PUT, DELETE]
+        authorized:
+            description: Flag allows to find all authorized or non-authorized endpoints.
+            type: boolean
+            example: true
+        userScope:
+            description: Parameter was used during authorization setup.
+            type: string
+            example: ACCOUNT
+            enum: [SYSTEM, ALL, ACCOUNT_ADMIN, ACCOUNT]
+        ignoreAccountId:
+            description: Flag was used during authorization setup.
+            type: boolean
+            example: true
+        externalAccess:
+            description: Flag was used during authorization setup.
+            type: boolean
+            example: false
+
+
+    responses:
+        200:
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <EndpointResponse>
+                            <ResourceCount>482</ResourceCount>
+                            <Endpoints>
+                                <Endpoint>
+                                    <ServerName>AccountAssociatedTnOrderHistoryRestApi</ServerName>
+                                    <ServerPath>/accounts</ServerPath>
+                                    <Resources>
+                                        <Resource>
+                                            <Method>GET</Method>
+                                            <Path>//{accountId}/orders/{orderId}/history</Path>
+                                        </Resource>
+                                        <Resource>
+                                            <Method>GET</Method>
+                                            <Path>//{accountId}/orders/totals</Path>
+                                        </Resource>
+                                        <Resource>
+                                            <Method>GET</Method>
+                                            <Path>//{accountId}/orders/{orderId}</Path>
+                                        </Resource>
+                                        <Resource>
+                                            <Method>GET</Method>
+                                            <Path>//{accountId}/orders</Path>
+                                        </Resource>
+                                        <Resource>
+                                            <Method>GET</Method>
+                                            <Path>//{accountId}/sites/{siteId}/orders/{orderId}/tns</Path>
+                                        </Resource>
+                                        <Resource>
+                                            <Method>GET</Method>
+                                            <Path>//{accountId}/orders/{orderId}/tns</Path>
+                                        </Resource>
+                                        <Resource>
+                                            <Method>GET</Method>
+                                            <Path>//{accountId}/orders/{orderId}/areaCodes</Path>
+                                        </Resource>
+                                        <Resource>
+                                            <Method>GET</Method>
+                                            <Path>//{accountId}/orders/{orderId}/npaNxx</Path>
+                                        </Resource>
+                                        <Resource>
+                                            <Method>GET</Method>
+                                            <Path>//{accountId}/sites/{siteId}/orders</Path>
+                                        </Resource>
+                                        <Resource>
+                                            <Method>GET</Method>
+                                            <Path>//{accountId}/sites/{siteId}/orders/{orderId}</Path>
+                                        </Resource>
+                                        <Resource>
+                                            <Method>GET</Method>
+                                            <Path>//{accountId}/orders/{orderId}/totals</Path>
+                                        </Resource>
+                                    </Resources>
+                                </Endpoint>
+                                <Endpoint>
+                                    <ServerName>AccountProductRestApi</ServerName>
+                                    <ServerPath>/admin/accounts/products</ServerPath>
+                                    <Resources>
+                                        <Resource>
+                                            <Method>GET</Method>
+                                            <Path>/accounts/{accountId}/products</Path>
+                                        </Resource>
+                                        <Resource>
+                                            <Method>GET</Method>
+                                            <Path>/accounts/{accountId}/products/{productName}</Path>
+                                        </Resource>
+                                        <Resource>
+                                            <Method>POST</Method>
+                                            <Path>/accounts/{accountId}/products</Path>
+                                        </Resource>
+                                        <Resource>
+                                            <Method>PUT</Method>
+                                            <Path>/accounts/{accountId}/products/{productName}</Path>
+                                        </Resource>
+                                    </Resources>
+                                </Endpoint>
+
+                                ...SNIP...
+
+                                <Endpoint>
+                                    <ServerName>VirtualTelephoneNumberRestApi</ServerName>
+                                    <ServerPath>/virtualinventory/numbers</ServerPath>
+                                    <Resources>
+                                        <Resource>
+                                            <Method>GET</Method>
+                                            <Path>/accounts/{accountId}/products/vi/numbers/</Path>
+                                        </Resource>
+                                    </Resources>
+                                </Endpoint>
+                            </Endpoints>
+                        </EndpointResponse>

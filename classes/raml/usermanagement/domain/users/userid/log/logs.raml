@@ -1,0 +1,70 @@
+!fileScope internal
+
+description: This resource retrieves information about user access activity.
+get:
+    description: Retrieves the information about user access activity in date range.
+    queryParameters:
+        page:
+            description: The number of page
+            type: integer
+            example: 2
+            required: false
+        size:
+            description: The number of items to include in a page.
+            type: integer
+            example: 100
+            required: false
+        startDate:
+            description: For Date-based searches, the starting date of a date range that will be used to find events that were created within the date range.  It is in the form yyyy-MM-dd.
+            type: string
+            example: 2013-10-22
+            required: true
+        endDate:
+            description: For Date-based searches, the ending date of a date range that will be used to find events that were created within the date range.  It is in the form yyyy-MM-dd.
+            type: string
+            example: 2013-10-25
+            required: true
+    responses:
+        200:
+            description: The information has been successfully retrieved and displayed in the payload.
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserEventLog>
+                            <Links>
+                                <first>Link=&lt;http://admin.localhost:8080/iris/usermanagement/dashboard/users/testUser1/logs?startDate=2016-05-04&amp;endDate=2016-05-06&amp;page=1&amp;size=2&gt;;rel="first";</first>
+                                <next>Link=&lt;http://admin.localhost:8080/iris/usermanagement/dashboard/users/testUser1/logs?startDate=2016-05-04&amp;endDate=2016-05-06&amp;page=2&amp;size=2&gt;;rel="next";</next>
+                            </Links>
+                            <UserEvents>
+                                <UserEvent>
+                                    <EventId>23</EventId>
+                                    <EventDate>2016-05-06T18:18:44.473Z</EventDate>
+                                    <InvokingUser>systemUser</InvokingUser>
+                                    <Event>USER_SETTINGS_UPDATE</Event>
+                                    <Success>false</Success>
+                                </UserEvent>
+                                <UserEvent>
+                                    <EventId>19</EventId>
+                                    <EventDate>2016-05-06T18:18:02.586Z</EventDate>
+                                    <InvokingUser>systemUser</InvokingUser>
+                                    <Event>USER_SETTINGS_UPDATE</Event>
+                                    <Success>true</Success>
+                                    <ContainDetails>true</ContainDetails>
+                                </UserEvent>
+                            </UserEvents>
+                        </UserEventLog>
+        400:
+            description: Incorrect date range.
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserEventLog>
+                            <ResponseStatus>
+                                <ErrorCode>15509</ErrorCode>
+                                <Description>'startDate' must not be after 'endDate'</Description>
+                            </ResponseStatus>
+                        </UserEventLog>
+
+/{eventId}: !include eventId.raml

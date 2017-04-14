@@ -1,0 +1,65 @@
+!fileScope all
+
+description: |
+    The account is the root resource for many of the operations in the Bandwidth Dashboard API.  <br>
+    The account is represented by an account id, which is the resource that represents a Bandwidth customer, providing a root resource for all of the customer's attributes and services <br>
+    The API calls that are used to manage the details of a customer account, and to manage the resources that a Bandwidth customer has access to or control over, are accessed through the /accounts resource. 
+
+!scope internal
+post:
+    description: Create an Account
+    body:
+        application/xml:
+            example: !include account.xml
+    responses:
+        200:
+            body:
+                application/xml:
+                    example: None
+
+!scope internal
+get:
+    description: Retrieve information about the an account or set of accounts, as guided by optional search parameters.
+    queryParameters:
+        TN:
+            description: a TN - 10 Digits
+            type: string
+            example: 9199918388
+        PON:
+            description: Purchase Order Number - associated with the processing of the Port-in by third parties
+            type: string
+            example: bwc0000155348
+        CustomerOrderNumber:
+            description: An order-ID assigned by the customer for their own tracking purposes.  Filters for accounts that processed an order with the identified Customer order ID
+            example: ATT123456
+        host:
+            description: An IP address or subnet (CIDR format) associated with the account. Filter for subnet applies by exact match.
+            example: 47.16.211.63 or 69.22.181.68/30
+        name:
+            description: The common name string representation of the account.  This parameter can be the first few characters of the account name.
+            type: string
+            example: Republic Wireless
+        OrderID:
+            description: An interal order ID that was used in conjunction with the account to process a transaction. This parameter can be the first few characters of the Order ID.
+            example: b1c0ffb4-76..
+    responses:
+        200:
+            description: A successful result that contains the result
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <AccountsResponse>
+                            <Accounts>
+                                <Account>
+                                    <AccountId>138</AccountId>
+                                    <CompanyName>1 Plug Corporation</CompanyName>
+                                </Account>
+                                <Account>
+                                    <AccountId>309</AccountId>
+                                    <CompanyName>1A Auto Inc</CompanyName>
+                                </Account>
+                            </Accounts>
+                        </AccountsResponse>
+
+/{accountId}: !include accountid/accountid.raml

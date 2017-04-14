@@ -1,0 +1,29 @@
+!fileScope internal
+
+description: |
+    The "orderId" resource refers to a specific element of the orders collection.  Examining that resource provides detailed information on the specific identified order.
+
+get:
+    description: |
+        Retrieve information about a specific TN Option Order identified as the resource.
+
+    responses:
+        200:
+            description: |
+                The descriptive payload for the TN Option Orders query provides a broad range of information about the TN Option Order identified in the URL.  Included amongst the information is:
+                <ul>
+                <li>ErrorList - the errors discovered with codes and explanations</li>
+                <li>ProcessingStatus(RECEIVED, PROCESSING, COMPLETE, PARTIAL, FAILED) - the overall status of the order</li>
+                </ul>
+
+            body:
+                application/xml:
+                    example: !include GET_200_response_example.xml
+        404:
+            description: NOT FOUND - the order id does not exist in the system
+            body:
+                application/xml:
+                    example: !include GET_404_response_example.xml
+
+!fileScope internal
+/history: !include history/history.raml

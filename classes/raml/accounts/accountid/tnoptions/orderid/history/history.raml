@@ -1,0 +1,38 @@
+!fileScope all
+
+description: |
+    The history API returns the various events that have impacted the specified TN Option order.
+
+!scope all
+get:
+    description: |
+        Retrieve the history information associated with an order
+
+    responses:    
+        200:
+            description: |
+                The history payload is a set of history records, each of which contains:
+                    <table style="text-align: left; width: 80%;" border="1" cellpadding="2" cellspacing="2">
+                        <tbody>
+                            <tr>
+                                <td>OrderModifiedDate</td>
+                                <td>The date that the order history event happened</td>
+                            </tr>
+                            <tr>
+                                <td>Status</td>
+                                <td>The new state of the TN Option order - RECEIVED, PROCESSING, COMPLETE, PARTIAL, FAILED </td>
+                            </tr>
+                            <tr>
+                                <td>Note</td>
+                                <td>A Note or additional information included with the state change </td>
+                           </tr>
+                           <tr>
+                                <td>Author</td>
+                                <td>The user id that implemented the state change</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+            body: 
+                application/xml:
+                    example: !include GET_200_response_example.xml

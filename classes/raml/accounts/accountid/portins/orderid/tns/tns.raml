@@ -1,0 +1,17 @@
+!fileScope external
+
+description: Retrieves a list of all telephone numbers associated with the specified port-in number.
+
+!scope external
+get:
+    description: Retrieves a list of telephone numbers associated with the specified port-in number and displays them in the payload.
+    responses:
+        200:
+            description: The telephone numbers have been successfully retrieved and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <TelephoneNumbers>
+                            <Count>1</Count>
+                            <TelephoneNumber>9192809870</TelephoneNumber>
+                        </TelephoneNumbers>

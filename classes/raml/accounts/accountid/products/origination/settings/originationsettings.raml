@@ -1,0 +1,120 @@
+!fileScope internal
+!scope all
+description: | 
+    The Origination settings resource is used to define the attributes of the Origination product, typically that deal with limiting the Origination traffic levels that are enabled for the account.
+!scope all
+get:
+    description: |
+        The GET returns the current settings, describing the inbound and bidirectional traffic levels that will be permitted.  See the 
+
+    responses:    
+        200:
+            description: The settings element is returned.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <OriginationSettingResponse>
+                            <OriginationSettings>
+                                <ConcurrentBidirectionalCalls>5</ConcurrentBidirectionalCalls>
+                                <ConcurrentInboundCalls>500</ConcurrentInboundCalls>
+                                <RedirectEnabled>true</RedirectEnabled>
+                            </OriginationSettings>
+                        </OriginationSettingResponse>
+        400:
+            description: |
+                BAD REQUEST
+                If the settings are not present for the Origination product a 404 NOT FOUND is returned with an explanatory payload.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <OriginationSettingResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12017</ErrorCode>
+                                <Description>Account '646' does not have product 'Origination'</Description>
+                            </ResponseStatus>
+                        </OriginationSettingResponse>
+        404:
+            description: |
+                NOT FOUND
+                If the product exists on the account, but settings are missing, then the not found response is used.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <OriginationSettingResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12030</ErrorCode>
+                                <Description>Origination product has not been configured</Description>
+                            </ResponseStatus>
+                        </OriginationSettingResponse>
+
+post:
+    description: | 
+
+        This resource can be PUT or POSTed to in order to establish the appropriate settings.
+
+        Some of the important values that are established as part of this termination are...
+        <table>
+        <tr><th>parameter</th><th>description</th></tr>
+        <tr><td>ConcurrentInboundCalls</td><td>integer</td></tr>
+        <tr><td>ConcurrentBidirectionalCalls</td><td>integer</td></tr>
+        <tr><td>RedirectEnabled</td><td>true | false - enables 3xx redirection routing for account</td></tr>
+        </table>
+    body:
+        application/xml:
+            example: |
+                <OriginationSettings>
+                    <ConcurrentBidirectionalCalls>5</ConcurrentBidirectionalCalls>
+                    <ConcurrentInboundCalls>500</ConcurrentInboundCalls>
+                    <RedirectEnabled>true</RedirectEnabled>
+                </OriginationSettings>
+    responses:
+        200:
+            description: a 200 OK is returned on successful updating of the Termination Settings.  There is no payload returned with a 200 OK.
+        400:
+            description: a 400 BAD REQUEST will be returned with a descriptive payload if the XML describing the termination settings resource is incorrect or other factors prevent execution of the POST  The error contains an error code and description.
+            body: 
+                application/xml:
+                    example: |
+                        <OriginationSettingResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12591</ErrorCode>
+                                <Description>ConcurrentBidirectionalCalls requires Termination and Origination product</Description>
+                            </ResponseStatus>
+                        </OriginationSettingResponse>
+put:
+    description: | 
+
+        This resource can be PUT or POSTed to in order to establish the appropriate settings.
+
+        Some of the important values that are established as part of this termination are...
+        <table>
+        <tr><th>parameter</th><th>description</th></tr>
+        <tr><td>ConcurrentInboundCalls</td><td>integer</td></tr>
+        <tr><td>ConcurrentBidirectionalCalls</td><td>integer</td></tr>
+        <tr><td>RedirectEnabled</td><td>true | false - enables 3xx redirection routing for account</td></tr>
+        </table>
+    body:
+        application/xml:
+            example: |
+                <OriginationSettings>
+                    <ConcurrentBidirectionalCalls>5</ConcurrentBidirectionalCalls>
+                    <ConcurrentInboundCalls>500</ConcurrentInboundCalls>
+                    <RedirectEnabled>true</RedirectEnabled>
+                </OriginationSettings>
+    responses:
+        200:
+            description: a 200 OK is returned on successful updating of the Termination Settings.  There is no payload returned with a 200 OK.
+        400:
+            description: a 400 BAD REQUEST will be returned with a descriptive payload if the XML describing the termination settings resource is incorrect or other factors prevent execution of the POST  The error contains an error code and description.
+            body: 
+                application/xml:
+                    example: |
+                        <OriginationSettingResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12591</ErrorCode>
+                                <Description>ConcurrentBidirectionalCalls requires Termination and Origination product</Description>
+                            </ResponseStatus>
+                        </OriginationSettingResponse>

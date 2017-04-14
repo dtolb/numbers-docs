@@ -1,0 +1,35 @@
+!fileScope internal
+
+description: This resource retrieves information about vendors
+
+get:
+    description: |
+            Get all vendors and filter by name
+    queryParameters:
+        nameFragment:
+            description: Fragment of vendor name
+            type: string
+            example: Old
+            repeat: false
+    responses:
+        200:
+            description: |
+                Return existed Vendors
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <AdminDataResponse>
+                            <VendorList>
+                                <Vendor>
+                                    <VendorId>47</VendorId>
+                                    <VendorName> Broadwing</VendorName>
+                                </Vendor>
+                                <Vendor>
+                                    <VendorId>32</VendorId>
+                                    <VendorName> Connexstar</VendorName>
+                                </Vendor>
+                            </VendorList>
+                        </AdminDataResponse>
+
+/{id}: !include id/id.raml

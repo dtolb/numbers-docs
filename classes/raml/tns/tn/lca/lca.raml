@@ -1,0 +1,38 @@
+!fileScope external
+
+description: | 
+    Retrieves the LCA information associated with that telephone number.<br>
+    This call will return the NPA-NXX pairs and the Rate Centers that are in the Local Calling Area of the Telephone Number in the API call. <br>
+    Due to the fact that not all LCA relationships are symmetrical, the telephone number may not be part of the LCAs centered on the provided NPA-NXX or Rate Center values.
+
+get:
+    description: Retrieves the LCAs associated with that telephone number.
+    responses:
+        200:
+            description: The LCAs have been successfully retrieved and displayed.
+            body:
+                application/xml:
+                    example:
+                        <SearchResult>
+                            <ListofNPANXX>
+                                <NPANXX>201202</NPANXX>
+                                <NPANXX>201203</NPANXX>
+                                <NPANXX>201206</NPANXX>
+                                    <!--- SNIP --->
+                                <NPANXX>973930</NPANXX>
+                                <NPANXX>973931</NPANXX>
+                                <NPANXX>973955</NPANXX>
+                            </ListofNPANXX>
+                            <Location>
+                                <RateCenters>
+                                    <State>NJ</State>
+                                    <RCs>
+                                        <RC>CLIFFSIDE</RC>
+                                        <RC>DUMONT</RC>
+                                            <!--- SNIP --->
+                                        <RC>UNION CITY</RC>
+                                        <RC>WESTWOOD</RC>
+                                    </RCs>
+                                </RateCenters>
+                            </Location>
+                        </SearchResult>

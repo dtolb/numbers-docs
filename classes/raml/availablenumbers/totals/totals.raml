@@ -1,0 +1,62 @@
+!fileScope internal
+
+description: |
+    Find the number of In Service numbers on the account, structured in a number of ways
+
+    This API is used in gathering data that can assist in inventory management, by reporting on the number of TNs in a variety of ways.
+
+get:
+    description: Get the total number of available TNs filtered by the search parameters. 
+    queryParameters:
+        npa:
+            description: An NPA search filter - all returned TNs will be in the entered NPA
+            type: integer
+            example: 919
+            minimum: 200
+            maximum: 999
+        tier:
+            description: An Originating Services Tier search filter - Tier 0 - Bandwidth CLEC etc. All returned TNs will be in the entered Tier 
+            type: integer
+            example: 0
+            minimum: 0
+            maximum: 5
+        npaNxx:
+            description: An NPA NXX search filter - all returned TNs will be in the entered NPA NXX dial plan
+            type: integer
+            example: 919859
+            minimum: 200000
+            maximum: 999999
+        npaNxxX:
+            description: An NPA NXX X search filter - all returned TNs will be in the entered NPA NXX X dial plan
+            type: integer
+            example: 9198592
+            minimum: 2000000
+            maximum: 9999999
+        lata:
+            description: A LATA search filter - all returned TNs will be in the entered Rate Center.  Typically this is a 3 or 5 digit value
+            type: integer
+            example: 435
+            minimum: 001
+            maximum: 99999
+        state:
+            description: A State search filter - all returned TNs will be in the entered State.  This is a 2-character State or Province abbreviation
+            type: string
+            example: TX
+        city:
+            description: A City search filter - all returned TNs will be in or around the indicated CIty.  This Rate Center must be combined with a State in the query.  If State is not included in the query then the queryu will fail.
+            type: string
+            example: Allen
+        rateCenter:
+            description: A Rate Center search filter - all returned TNs will be in the entered Rate Center.  This Rate Center must be combined with a State in the query.  If State is not included in the query then the queryu will fail.
+            type: string
+            example: PLANO
+
+    responses: 
+        200:
+            description: A successful result that contains the number of available TNs after the filter is applied.  Parameters that are not understood are ignored, and invalid search terms yield a payload with a count of 0
+            body: 
+                application/xml:
+                    example: |
+                        <Quantity>
+                           <Count>2002</Count>
+                        </Quantity>     

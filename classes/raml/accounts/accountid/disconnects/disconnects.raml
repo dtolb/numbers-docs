@@ -1,0 +1,174 @@
+!fileScope external 
+   
+description: |
+    Use this method to disconnect telephone numbers from the account. <br>
+    This call creates a disconnects order that can be used to track the disconnection of the numbers.
+    <table>
+        <tr>
+            <th>Parameter</th><th>Description</th>
+        </tr>
+        <tr>
+            <td>accountid</td><td>The numerical Account ID that you will be disconnecting the numbers from.</td>
+        </tr>
+        <tr>
+            <td>Name</td><td>The name of the order. Max length restricted to 50 characters</td>
+        </tr>
+        <tr>
+            <td>TelephoneNumberList</td><td>A list of telephone numbers to disconnect.</td>
+        </tr>
+
+        !scope internal
+        <tr>
+            <td>DisconnectMode</td>
+            <td>A mode of the disconnect order. Optional parameter.<br/>
+            The valid values are:
+            <ul>
+                <li><b>normal</b> - default mode if DisconnectMode is not specified</li>
+                <li><b>soft-remove</b> - remove the telephone numbers from the system. No SMS, E911 and Core2 external deactivation</li>
+                <li><b>purge</b> - remove the telephone numbers from the system with SMS, Core2, E911 external deactivation</li>
+            </ul>
+            <b>soft-remove</b> and <b>purge</b> modes are only valid if issued by an ADMIN or AGENT
+            </td>
+        </tr>
+        !scope external
+        <tr>
+            <td>DisconnectMode</td>
+            <td>The severity of disconnect order. Optional parameter.  Typically normal.<br/>
+            </td>
+        </tr>
+        !scope external
+        <tr>
+            <td>Protected</td>
+            <td>Change protected status of telephones during disconnection. Optional parameter. Possible values: <b>TRUE</b>, <b>FALSE</b>, <b>UNCHANGED</b>. Typically <b>UNCHANGED</b>.<br/>
+            </td>
+        </tr>
+    </table>
+
+!scope external
+get:
+    description: retrieve a list of disconnect orders that is associated with an account
+    queryParameters:
+        page:
+            type: string
+            required: true
+            description: The disconnect order-id of the first record on the page.   "1" is used as a convention for the first disconnect order in the collection
+            example: 59e69657-44d2-4e7e-90f8-777988be4aef
+            default: 1
+        size:
+            description: The number of records that should be returned by the query
+            required: true
+            type: integer
+            example: 30
+            default: 300
+        userid:
+            description: The user ID associated with disconnected phone numbers
+            type: string
+            example: jbm
+        status:
+            description: The status of the order
+            type: string
+            example: complete
+        startdate:
+            description: Retrieves all phone numbers disconnected after this date. The start date also requires the end date to be specified.
+            type: date 
+            example: yy-mm-dd
+        enddate:
+            description: Retrieves all phone numbers disconnected before this date. The end date also requires the start date to be specified.
+            type: date
+            example: yy-mm-dd
+    responses:
+        200:
+            description: A list of Disconnect orders
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <ResponseSelectWrapper>
+                            <ListOrderIdUserIdDate>
+                                <TotalCount>7</TotalCount>
+                                <Links>
+                                                   <!-- SNIP -->
+                                </Links>
+                                <OrderIdUserIdDate>
+                                    <CountOfTNs>1</CountOfTNs>
+                                    <userId>smckinnon</userId>
+                                    <lastModifiedDate>2014-01-10T17-34-15Z</lastModifiedDate>
+                                    <OrderId>6d7da966-e071-4741-b31c-1d8932f4b8da</OrderId>
+                                    <OrderType>disconnect</OrderType>
+                                    <OrderDate>2014-01-10T17-34-15.797Z</OrderDate>
+                                    <OrderStatus>COMPLETE</OrderStatus>
+                                    <TelephoneNumberDetails>
+                                                    <!-- SNIP -->
+                                    </TelephoneNumberDetails>
+                                </OrderIdUserIdDate>
+                                <OrderIdUserIdDate>
+                                    <CountOfTNs>1</CountOfTNs>
+                                    <userId>jbm</userId>
+                                    <lastModifiedDate>2013-12-04T21-59-32Z</lastModifiedDate>
+                                    <OrderId>4ffe9262-1965-4479-a1d5-b8584440667d</OrderId>
+                                    <OrderType>disconnect</OrderType>
+                                    <OrderDate>2013-12-04T21-59-32.243Z</OrderDate>
+                                    <OrderStatus>COMPLETE</OrderStatus>
+                                    <TelephoneNumberDetails>
+                                                      <!-- SNIP -->
+                                    </TelephoneNumberDetails>
+                                </OrderIdUserIdDate>
+                            </ListOrderIdUserIdDate>
+                        </ResponseSelectWrapper>
+        404:
+            description: No disconnect orders are present on the indicated account
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <Links>
+                            <first>   Link description  </first>
+                        </Links>
+
+!scope external
+post:
+    description: Create a Disconnect order, and disconnect the numbers listed in the disconnect order.
+    body:
+        application/xml:
+            example: |
+                <?xml version="1.0"?>
+                <DisconnectTelephoneNumberOrder>
+                    <name>training run</name>
+                    <DisconnectTelephoneNumberOrderType>
+                        !scope internal
+                        <DisconnectMode>normal</DisconnectMode> <!-- one of normal, soft-remove, or purge -->
+                        <TelephoneNumberList>
+                            <TelephoneNumber>4158714245</TelephoneNumber>
+                            <TelephoneNumber>4352154439</TelephoneNumber>
+                            <TelephoneNumber>4352154466</TelephoneNumber>
+                        </TelephoneNumberList>
+                        <Protected>UNCHANGED</Protected>
+                    </DisconnectTelephoneNumberOrderType>
+                </DisconnectTelephoneNumberOrder> 
+    responses:
+        201:
+            description: |
+                The order has been created as described in the payload <br>
+                The Location header contains the url of the disconnect order that has been created.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <DisconnectTelephoneNumberOrderResponse>
+                            <orderRequest>
+                                <CustomerOrderId></CustomerOrderId>
+                                <id>ba05e04b-192a-47cb-b182-b1bf6cfef0d7</id>
+                                <OrderCreateDate>2014-07-03T14-12-57.840Z</OrderCreateDate>
+                                <DisconnectTelephoneNumberOrderType>
+                                    <TelephoneNumberList>
+                                        <TelephoneNumber>4158714245</TelephoneNumber>
+                                        <TelephoneNumber>4352154439</TelephoneNumber>
+                                        <TelephoneNumber>4352154466</TelephoneNumber>
+                                    </TelephoneNumberList>
+                                    <DisconnectMode>normal</DisconnectMode>
+                                    <Protected>UNCHANGED</Protected>
+                                </DisconnectTelephoneNumberOrderType>
+                            </orderRequest>
+                        </DisconnectTelephoneNumberOrderResponse>
+
+/{disconnectid}: !include disconnectid/disconnectid.raml

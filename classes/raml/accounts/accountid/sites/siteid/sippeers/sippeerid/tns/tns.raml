@@ -1,0 +1,128 @@
+!fileScope all
+
+!scope external
+get:
+    description: Retrieve information about a Telephone number or set of Telephone numbers
+    queryParameters:
+        includeAttributes:
+            type: boolean
+            description: If the value is false SipPeerTelephoneNumber will contain FullNumber tags only. This makes processing faster.
+            required: false
+            default: true
+            example: "false"
+    responses:
+        200:
+            description: A successful result that contains the response data
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <SipPeerTelephoneNumbersResponse>
+                            <SipPeerTelephoneNumbers>
+                                <SipPeerTelephoneNumber>
+                                    <FullNumber>2052160148</FullNumber>
+                                    <CallingNameDisplay>true</CallingNameDisplay>
+                                    <TnAttributes>
+                                        <TnAttribute>Protected</TnAttribute>
+                                    </TnAttributes>
+                                    <MessagingSettings>
+                                        <SmsEnabled>true</SmsEnabled>
+                                    </MessagingSettings>
+                                </SipPeerTelephoneNumber>
+                                <SipPeerTelephoneNumber>
+                                    <FullNumber>2053161118</FullNumber>
+                                    <CallingNameDisplay>false</CallingNameDisplay>
+                                    <MessagingSettings>
+                                        <SmsEnabled>true</SmsEnabled>
+                                    </MessagingSettings>
+                                </SipPeerTelephoneNumber>
+                                <SipPeerTelephoneNumber>
+                                    <FullNumber>2053160118</FullNumber>
+                                    <CallForward>2014563025</CallForward>
+                                    <CallingNameDisplay>false</CallingNameDisplay>
+                                </SipPeerTelephoneNumber>
+                            </SipPeerTelephoneNumbers>
+                        </SipPeerTelephoneNumbersResponse>
+
+!scope internal
+post:
+    description: Moves an existing TN on the account to the specified SIP Peer, and sets the various TN-related options.  This API call remains unpublished externally.  /movetns is preferred for TN moving.
+    body:
+        application/xml:
+            example: |
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <SipPeerTelephoneNumber>
+                  <FullNumber>2052160156</FullNumber>
+                  <NumberFormat>10digit</NumberFormat>
+                  <RPIDFormat>10digit</RPIDFormat>
+                  <RewriteUser/>
+                  <CallForward>7042661720</CallForward>
+                  <CallingNameDisplay>true</CallingNameDisplay>
+                  <TnAttributes>
+                      <TnAttribute>Protected</TnAttribute>
+                  </TnAttributes>
+                  <MessagingSettings>
+                      <SmsEnabled>true</SmsEnabled>
+                  </MessagingSettings>
+                </SipPeerTelephoneNumber>
+    responses:
+        201:
+            description: Telephone number installed on the indicated SIP Peer with indicated capabilties provisioned.
+            body:
+                application/xml:
+                    example: None
+        400:
+            description: |
+                Bad Request. Possible errors in response:
+                <ul>
+                   <li>13513 "Call Forwarding number '%s' is not a valid 10-digit telephone number"</li>
+                   <li>13514 "Number Format '%s' is invalid for telephone number '%s'"</li>
+                   <li>13515 "Rewrite User '%s' is invalid for telephone number '%s'"</li>
+                   <li>13516 "RPID Format '%s' is invalid for telephone number '%s'"</li>
+                   <li>13517 "Telephone number '%s' is not available"</li>
+                   <li>13518 "Telephone number '%s' is not available"</li>
+                   <li>13519 "There is an issue with telephone number '%s'. Please contact Customer Service"</li>
+                   <li>13575 "CallingNameDisplay '%s' is invalid. Valid values are: 'true', 'false'"</li>
+                   <li>13576 "Account '%s' has no [CallForwarding|CNAM] product feature"</li>
+                   <li>13583 "CNAM for '%s' is applied at the Location level and it is not applicable at the TN level."</li>
+                </ul>
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <SipPeerTelephoneNumberResponse>
+                            <ResponseStatus>
+                                <ErrorCode>13513</ErrorCode>
+                                <Description>Call Forwarding number '%s' is not a valid 10-digit telephone number</Description>
+                            </ResponseStatus>
+                        </SipPeerTelephoneNumberResponse>
+        409:
+            description: Conflict - Telephone number exists on Sip Peer
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <SipPeerTelephoneNumberResponse>
+                            <ResponseStatus>
+                                <ErrorCode>13526</ErrorCode>
+                                <Description>Telephone number '%s' is already associated with SIP Peer '%s'</Description>
+                            </ResponseStatus>
+                        </SipPeerTelephoneNumberResponse>
+        404:
+            description: |
+                Bad Request. Possible errors in response:
+                   13536 "Telephone number %s does not exist on Account %s, Site %s, and Sip Peer %s"
+                   13563 "Sip Peer '%s' account '%s' and site '%s' does not exist"
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <SipPeerTelephoneNumberResponse>
+                            <ResponseStatus>
+                                <ErrorCode>13536</ErrorCode>
+                                <Description>Telephone number %s does not exist on Account %s, Site %s, and Sip Peer %s</Description>
+                            </ResponseStatus>
+                        </SipPeerTelephoneNumberResponse>
+
+!fileScope all
+/{tn}: !include tn/tn.raml

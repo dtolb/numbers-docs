@@ -1,0 +1,151 @@
+!fileScope internal
+
+description: |
+    The report instance endpoints of the Iris API allow users to view and manage report instances for a specific report.
+    Report instances capture invocations of a report, including the specific set of parameters provided and any output
+    generated as a result.
+
+get:
+    description: |
+        Retrieve report instances associated with a specific report, including the up-to-date report generation status.
+    queryParameters:
+        accountId:
+            displayName: Account ID
+            type: integer
+            description: Account ID to which the request is scoped, if applicable
+            required: false
+        userInstancesOnly:
+            displayName: userInstancesOnly
+            type: boolean
+            description: If this query parameter is set to true, only instances created by current user will be returned
+            required: false
+    responses:
+        200:
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <ReportInstancesResponse>
+                            <Instances>
+                                <Instance>
+                                    <Id>100090</Id>
+                                    <ReportId>100020</ReportId>
+                                    <JasperId>aadbb201-1e1c-4f4d-920b-a18ec121da6d</JasperId>
+                                    <JasperExportId>703aef1d-8ca5-4265-8114-308c2ffa517c</JasperExportId>
+                                    <JasperSessionId>E8279C44E4E88B361282EC9AD4F7665A</JasperSessionId>
+                                    <ReportName>Sample Report</ReportName>
+                                    <OutputFormat>pdf</OutputFormat>
+                                    <RequestedByUserName>jbm</RequestedByUserName>
+                                    <RequestedAt>2015-05-18 14:03:04</RequestedAt>
+                                    <Parameters>
+                                        <Parameter>
+                                            <Name>AccountId</Name>
+                                            <Value>1</Value>
+                                        </Parameter>
+                                    </Parameters>
+                                    <JasperReportStatus>Expired</JasperReportStatus>
+                                    <Status>Expired</Status>
+                                </Instance>
+                                <Instance>
+                                    <Id>100098</Id>
+                                    <ReportId>100020</ReportId>
+                                    <JasperId>4ff4d77c-a2b6-4ab6-8dd7-193bf072b64e</JasperId>
+                                    <JasperExportId>61c444e3-b8d1-4299-92f8-0371ba45e123</JasperExportId>
+                                    <JasperSessionId>813885D097A3DF7B0CAC94475CEE0CAA</JasperSessionId>
+                                    <ReportName>Sample Report</ReportName>
+                                    <OutputFormat>html</OutputFormat>
+                                    <RequestedByUserName>jbm</RequestedByUserName>
+                                    <RequestedAt>2015-05-19 09:18:40</RequestedAt>
+                                    <Parameters>
+                                        <Parameter>
+                                            <Name>AccountId</Name>
+                                            <Value>1</Value>
+                                        </Parameter>
+                                        <Parameter>
+                                            <Name>SiteId</Name>
+                                            <Value>1</Value>
+                                        </Parameter>
+                                    </Parameters>
+                                    <JasperReportStatus>Expired</JasperReportStatus>
+                                    <Status>Expired</Status>
+                                </Instance>
+                                <Instance>
+                                    <Id>100102</Id>
+                                    <ReportId>100020</ReportId>
+                                    <JasperId>83a5fd11-801d-4ee7-9f0c-0ab83882be86</JasperId>
+                                    <JasperExportId>d8396a60-200c-4205-9609-ceca3d47dc7a</JasperExportId>
+                                    <JasperSessionId>21E6866B95AC144828178A2CF251F756</JasperSessionId>
+                                    <ReportName>Sample Report</ReportName>
+                                    <OutputFormat>pdf</OutputFormat>
+                                    <RequestedByUserName>jbm</RequestedByUserName>
+                                    <RequestedAt>2015-05-19 11:05:12</RequestedAt>
+                                    <Parameters>
+                                        <Parameter>
+                                            <Name>AccountId</Name>
+                                            <Value>1</Value>
+                                        </Parameter>
+                                    </Parameters>
+                                    <JasperReportStatus>Ready</JasperReportStatus>
+                                    <Status>Ready</Status>
+                                    <ExpiresAt>2016-06-15</ExpiresAt>
+                                </Instance>
+                            </Instances>
+                        </ReportInstancesResponse>
+
+post:
+    description: Create a new report instance for a specific report.
+    queryParameters:
+        accountId:
+            displayName: Account ID
+            type: integer
+            description: Account ID to which the request is scoped, if applicable
+            required: false
+    body:
+        application/xml:
+            example: |
+                <Instance>
+                    <OutputFormat>pdf</OutputFormat>
+                    <Parameters>
+                        <Parameter>
+                            <Name>Account</Name>
+                            <Value>1</Value>
+                        </Parameter>
+                        <Parameter>
+                            <Name>Sub-account</Name>
+                            <Value>1</Value>
+                        </Parameter>
+                    </Parameters>
+                    <ExpiresAt>2016-11-25</ExpiresAt>  <!-- the date (not longer than 30 days in the future) at the end of which the instance will expire, should be specified in YYYY-MM-DD format-->
+                </Instance>
+    responses:
+        200:
+            description: Successful creation of report instance.
+            headers:
+                Location:
+                    description: Contains URL of newly-created report instance.
+                    example: https://dashboard.bandwidth.com/api/reports/1234/instances/5678
+            body:
+                application/xml:
+                    example: None
+        400:
+            body:
+                application/xml:
+                    example: |
+                        <ReportInstanceResponse>
+                            <ResponseStatus>
+                                <ErrorCode>19032</ErrorCode>
+                                <Description>Missing one or more required report parameters: AccountId</Description>
+                            </ResponseStatus>
+                        </ReportInstanceResponse>
+        503:
+            body:
+                application/xml:
+                    example: |
+                        <ReportInstanceResponse>
+                            <ResponseStatus>
+                                <ErrorCode>19031</ErrorCode>
+                                <Description>Error encountered processing request via external reporting service.  Please contact Bandwidth support for further assistance.</Description>
+                            </ResponseStatus>
+                        </ReportInstanceResponse>
+
+/{instanceId}: !include instanceid/instanceid.raml

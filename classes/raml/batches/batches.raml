@@ -1,0 +1,24 @@
+!fileScope internal
+
+description:
+    This API allows to see the list of all batch jobs which are ran by the system and forcefully trigger them.
+
+get:
+
+    responses:
+        200:
+            description: |
+                Ok.
+
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <BatchNames>
+                            <BatchName>dldaFinalizationTask</BatchName>
+                            <BatchName>manualOffNetPortInActivationTask</BatchName>
+                            <BatchName>billingReportCleanUpTask</BatchName>
+                            <BatchName>internalPortOutPotTask</BatchName>
+                        </BatchNames>
+
+/{batchName}: !include batchName/batchName.raml

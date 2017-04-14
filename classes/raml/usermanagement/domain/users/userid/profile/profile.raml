@@ -1,0 +1,128 @@
+!fileScope internal
+
+description: This resource retrieves information about users profile.
+get:
+    description: Retrieves the information about first name, last name, company name, contact telephone numbers and address by unique user name.
+    responses:
+        200:
+            description: The information has been successfully retrieved and displayed in the payload.
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserProfileResponse>
+                            <User>
+                                <UserProfile>
+                                    <FirstName>J</FirstName>
+                                    <LastName>M</LastName>
+                                    <StreetAddress>
+                                        <HouseNumber>123</HouseNumber>
+                                        <StreetName>Street</StreetName>
+                                        <City>Raleigh</City>
+                                        <State>NC</State>
+                                        <PostalCode>12345</PostalCode>
+                                    </StreetAddress>
+                                    <TelephoneNumbers>
+                                        <HomePhone>2027445566</HomePhone>
+                                        <CellPhone>2027445577</CellPhone>
+                                        <WorkPhone>2027445588</WorkPhone>
+                                        <OtherPhone>2027445599</OtherPhone>
+                                    </TelephoneNumbers>
+                                    <CompanyName>MyCompany</CompanyName>
+                                </UserProfile>
+                            </User>
+                        </UserProfileResponse>
+        404:
+            description: The user does not exist.
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserProfileResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12000</ErrorCode>
+                                <Description>User 'jbm' does not exist</Description>
+                            </ResponseStatus>
+                            <User>
+                                <UserProfile>
+                                    <FirstName>J</FirstName>
+                                    <LastName>M</LastName>
+                                    <StreetAddress>
+                                        <HouseNumber>123</HouseNumber>
+                                        <StreetName>Street</StreetName>
+                                        <City>Raleigh</City>
+                                        <State>NC</State>
+                                        <PostalCode>12345</PostalCode>
+                                    </StreetAddress>
+                                    <TelephoneNumbers>
+                                        <HomePhone>2027445566</HomePhone>
+                                        <CellPhone>2027445577</CellPhone>
+                                        <WorkPhone>2027445588</WorkPhone>
+                                        <OtherPhone>2027445599</OtherPhone>
+                                    </TelephoneNumbers>
+                                    <CompanyName>MyCompany</CompanyName>
+                                </UserProfile>
+                            </User>
+                        </UserProfileResponse>
+put:
+    description: Updates the information about user profile by unique user name. Note, that empty fields will work like delete.
+    body:
+        application/xml:
+            example:
+                <UserProfile>
+                    <FirstName>J</FirstName>
+                    <LastName>M</LastName>
+                    <StreetAddress>
+                        <HouseNumber>345</HouseNumber>
+                    </StreetAddress>
+                    <TelephoneNumbers>
+                        <HomePhone>2027445599</HomePhone>
+                    </TelephoneNumbers>
+                    <CompanyName>MyCompany</CompanyName>
+                </UserProfile>
+    responses:
+        200:
+             description: The user profile has been successfully updated and displayed in the payload.
+             body:
+                 application/xml:
+                      example:
+                          <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                          <UserProfileResponse>
+                              <User>
+                                  <UserId>jbm</UserId>
+                                  <UserProfile>
+                                      <FirstName>J</FirstName>
+                                      <LastName>M</LastName>
+                                      <StreetAddress>
+                                          <HouseNumber>345</HouseNumber>
+                                      </StreetAddress>
+                                      <TelephoneNumbers>
+                                          <HomePhone>2027445599</HomePhone>
+                                      </TelephoneNumbers>
+                                      <CompanyName>MyCompany</CompanyName>
+                                  </UserProfile>
+                              </User>
+                          </UserProfileResponse>
+        400:
+            description: The user don't put telephone number.
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserProfileResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12686</ErrorCode>
+                                <Description>At least one telephone number must be provided.</Description>
+                            </ResponseStatus>
+                            <User>
+                                <UserId>jbm</UserId>
+                                <UserProfile>
+                                    <FirstName>J</FirstName>
+                                    <LastName>M</LastName>
+                                    <StreetAddress>
+                                        <HouseNumber>345</HouseNumber>
+                                    </StreetAddress>
+                                    <CompanyName>MyCompany</CompanyName>
+                                </UserProfile>
+                            </User>
+                        </UserProfileResponse>

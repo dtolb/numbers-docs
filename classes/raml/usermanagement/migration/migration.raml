@@ -1,0 +1,78 @@
+!fileScope internal
+
+description: This resource manage migration process
+
+get:
+    description: Retrieve data about the migration.
+    queryParameters:
+            accountId:
+                description: This is the account about which we found migration information
+                type: integer
+                example: 9900012
+                repeat: true
+                required: true
+    responses:
+        200:
+            description: The information has been successfully retrieved and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LdapUserMigrationResponse>
+                            <MigrationStatus>
+                                <MigratedAccount>
+                                    <AccountId>9900012</AccountId>
+                                    <MigratedUsers>
+                                        <UserId>wandedemo_user</UserId>
+                                        <UserId>bwc_user</UserId>
+                                        <UserId>customer2</UserId>
+                                    </MigratedUsers>
+                                    <UnMigratedUsers/>
+                                </MigratedAccount>
+                                <MigratedAccount>
+                                    <AccountId>9900040</AccountId>
+                                    <MigratedUsers>
+                                        <UserId>ipc_test</UserId>
+                                        <UserId>customer2</UserId>
+                                        <UserId>broldan</UserId>
+                                    </MigratedUsers>
+                                    <UnMigratedUsers/>
+                                </MigratedAccount>
+                            </MigrationStatus>
+                        </LdapUserMigrationResponse>
+        400:
+            description: AccountId is required and should be valid.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LdapUserMigrationResponse>
+                            <ResponseStatus>
+                                <ErrorCode>1002</ErrorCode>
+                                <Description>accountId must be a non-negative number</Description>
+                            </ResponseStatus>
+                        </LdapUserMigrationResponse>
+post:
+    description: Run migration of users from MySQL to LDAP.
+    queryParameters:
+            accountId:
+                description: This is the account on which users will be migrated
+                type: integer
+                example: 9900012
+                repeat: true
+                required: true
+    responses:
+        201:
+            description: migration was successfully
+        400:
+            description: AccountId is required and should be valid.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LdapUserMigrationResponse>
+                            <ResponseStatus>
+                                <ErrorCode>1002</ErrorCode>
+                                <Description>accountId must be a non-negative number</Description>
+                            </ResponseStatus>
+                        </LdapUserMigrationResponse>

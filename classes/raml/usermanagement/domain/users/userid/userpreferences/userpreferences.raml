@@ -1,0 +1,158 @@
+!fileScope internal
+
+description: This resource retrieves information about preferences for single user.
+
+get:
+    description: Retrieves all user preferences.
+    responses:
+        200:
+            description: The information has been successfully retrieved and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserPreferencesResponse>
+                            <UserPreferences>
+                                <UserPreference>
+                                    <PreferenceName>tnFormat</PreferenceName>
+                                    <PreferenceValue>E.164</PreferenceValue>
+                                </UserPreference>
+                                <UserPreference>
+                                    <PreferenceName>preferredPortal</PreferenceName>
+                                    <PreferenceValue>NEW</PreferenceValue>
+                                </UserPreference>
+                            </UserPreferences>
+                        </UserPreferencesResponse>
+put:
+    description: Updates preference list for single user.
+    body:
+            application/xml:
+                example:
+                    <UserPreferences>
+                            <UserPreference>
+                                <PreferenceName>tnFormat</PreferenceName>
+                                <PreferenceValue>E.164</PreferenceValue>
+                            </UserPreference>
+                            <UserPreference>
+                                <PreferenceName>preferredPortal</PreferenceName>
+                                <PreferenceValue>NEW</PreferenceValue>
+                            </UserPreference>
+                    </UserPreferences>
+    responses:
+        200:
+            description: The information has been successfully updated and displayed in the payload.
+            body:
+                 application/xml:
+                    example:
+                        <LdapUserPreferencesResponse>
+                            <User>
+                                <UserId>user</UserId>
+                                <UserPreferences>
+                                    <UserPreference>
+                                        <PreferenceName>tnFormat</PreferenceName>
+                                        <PreferenceValue>E.164</PreferenceValue>
+                                    </UserPreference>
+                                    <UserPreference>
+                                        <PreferenceName>preferredPortal</PreferenceName>
+                                        <PreferenceValue>NEW</PreferenceValue>
+                                    </UserPreference>
+                                </UserPreferences>
+                            </User>
+                        </LdapUserPreferencesResponse>
+        422:
+            description: The information was not processed and error appeared.
+            body:
+                application/xml:
+                    example: |
+                        <LdapUserPreferencesResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12091</ErrorCode>
+                                <Description>User preference 'tnFormat' value 'E.1641' is invalid. Valid values : '[E.164, 10D, 11D]'</Description>
+                            </ResponseStatus>
+                            <User>
+                                <UserId>user</UserId>
+                                <UserPreferences>
+                                    <UserPreference>
+                                        <PreferenceName>tnFormat</PreferenceName>
+                                        <PreferenceValue>E.1641</PreferenceValue>
+                                    </UserPreference>
+                                    <UserPreference>
+                                        <PreferenceName>preferredPortal</PreferenceName>
+                                        <PreferenceValue>NEW</PreferenceValue>
+                                    </UserPreference>
+                                </UserPreferences>
+                            </User>
+                        </LdapUserPreferencesResponse>
+
+post:
+    description: Creates user-preference relation if it doesn't exist.
+    body:
+        application/xml:
+            example: |
+                <UserPreference>
+                    <PreferenceName>preferredPortal</PreferenceName>
+                    <PreferenceValue>OLD</PreferenceValue>
+                </UserPreference>
+    responses:
+        201:
+            description: The relation has been successfully created and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <LdapUserPreferencesResponse>
+                            <User>
+                                <UserId>user</UserId>
+                                <UserPreferences>
+                                    <UserPreference>
+                                        <PreferenceName>tnFormat</PreferenceName>
+                                        <PreferenceValue>E.164</PreferenceValue>
+                                    </UserPreference>
+                                    <UserPreference>
+                                        <PreferenceName>preferredPortal</PreferenceName>
+                                        <PreferenceValue>NEW</PreferenceValue>
+                                    </UserPreference>
+                                </UserPreferences>
+                            </User>
+                        </LdapUserPreferencesResponse>
+        409:
+            description: User preference already exists.
+            body:
+                application/xml:
+                    example: |
+                        <LdapUserPreferenceResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12090</ErrorCode>
+                                <Description>User 'user' already has preference 'preferredPortal'</Description>
+                            </ResponseStatus>
+                            <User>
+                                <UserId>user</UserId>
+                                <UserPreferences>
+                                    <UserPreference>
+                                        <PreferenceName>preferredPortal</PreferenceName>
+                                        <PreferenceValue>OLD</PreferenceValue>
+                                    </UserPreference>
+                                </UserPreferences>
+                            </User>
+                        </LdapUserPreferenceResponse>
+        422:
+            description: Provided data in payload is incorrect.
+            body:
+                application/xml:
+                    example: |
+                        <LdapUserPreferenceResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12092</ErrorCode>
+                                <Description>User Preference 'preferredPortal1' does not exist</Description>
+                            </ResponseStatus>
+                            <User>
+                                <UserId>user</UserId>
+                                <UserPreferences>
+                                    <UserPreference>
+                                        <PreferenceName>preferredPortal1</PreferenceName>
+                                        <PreferenceValue>OLD</PreferenceValue>
+                                    </UserPreference>
+                                </UserPreferences>
+                            </User>
+                        </LdapUserPreferenceResponse>
+
+/{preferenceName}: !include userPreferenceName/userPreferenceName.raml

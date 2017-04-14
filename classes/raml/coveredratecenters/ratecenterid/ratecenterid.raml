@@ -1,0 +1,16 @@
+!fileScope all
+
+description: |
+    The "rateCenterId" resource refers to a specific element of the covered rate centers collection. A lists of zip codes, cities, NPA-NXX-Xs, local rate center IDs and vendors (for admin users only) are included into response.
+
+get:
+    description: |
+        Retrieve information about a specific covered rate center identified as the resource.
+
+    responses:
+        200:
+            body:
+                application/xml:
+                    example: !include 200_response_example.xml
+        404:
+            description: NOT FOUND - the rate center id does not exist in the system

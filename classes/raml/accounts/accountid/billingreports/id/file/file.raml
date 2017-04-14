@@ -1,0 +1,40 @@
+!fileScope all
+
+description: |
+    The file resource is an explicit reference to the zip file that has been created.
+get:
+    description:
+        A GET on the /file resource subtending a report ID will cause the download of the file.  Executing this resource path within a browser will cause the download of the file.
+    responses:
+        200:
+            description: |
+                A 200 OK indicates that the request for the file download was accepted and will be processed.
+            headers:
+                Content-Disposition:
+                   example: "attachment; filename=bdrs_2013-05-21_2013-05-29.zip"
+        400:
+            description: |
+                A 400 indicates that the report ID is malformed.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <BillingReportArchiveRetrievalResponse>
+                            <ResponseStatus>
+                                <ErrorCode>1008</ErrorCode>
+                                <Description>'9b428b4c-159b-465f-9667-' is not a valid UUID</Description>
+                            </ResponseStatus>
+                        </BillingReportArchiveRetrievalResponse>
+        404:
+            description: |
+                A 404 indicates that the requested report cannot be found.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <BillingReportArchiveRetrievalResponse>
+                            <ResponseStatus>
+                                <ErrorCode>15603</ErrorCode>
+                                <Description>The requested report was not found.</Description>
+                            </ResponseStatus>
+                        </BillingReportArchiveRetrievalResponse>

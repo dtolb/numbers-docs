@@ -1,0 +1,21 @@
+get:
+  description: |
+    Get rate deck metadata by id.
+  responses:
+    200:
+      body:
+        application/xml:
+          example: |
+            <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <TerminationRateDeckMetadataResponse>
+                <TerminationRateDeckMetadata>
+                    <id>3</id>
+                    <name>npanxx1.xlsx</name>
+                    <deckType>NPANXX</deckType>
+                    <rows>5</rows>
+                    <fileName>npanxx1.xlsx</fileName>
+                </TerminationRateDeckMetadata>
+            </TerminationRateDeckMetadataResponse>
+delete:
+  description: |
+    Delete rate deck by id.

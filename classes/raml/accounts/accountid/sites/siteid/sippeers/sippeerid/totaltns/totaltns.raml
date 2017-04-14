@@ -1,0 +1,27 @@
+!fileScope external
+
+get:
+    description: Retrieve count of Telephone numbers for Sip Peer
+    queryParameters:
+       feature:
+         displayName: feature
+         description: Telephone number feature
+         type: string
+         enum: [CNAM, LIDB]
+         required: false
+         example: CNAM
+         repeat: true
+    responses:
+        200:
+            description: A successful result that contains the response data
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <SipPeerTelephoneNumbersCountResponse>
+                            <SipPeerTelephoneNumbersCount>
+                                <SipPeerTelephoneNumbersCount>4</SipPeerTelephoneNumbersCount>
+                                <CnamCount>4</CnamCount>
+                                <LidbCount>0</LidbCount>
+                            </SipPeerTelephoneNumbersCount>
+                        </SipPeerTelephoneNumbersCountResponse>

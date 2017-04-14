@@ -1,0 +1,67 @@
+!fileScope internal
+
+description: reference the user preferences for a specific user in the system
+
+post:
+    
+    description: add a preferences to a specified user
+    body:
+        application/xml:
+            example: |
+                <?xml version="1.0"?>
+                <UserPreference>
+                    <Name>preferredPortal</Name>
+                    <Value>shiny</Value>
+                </UserPreference>
+    responses:
+        201:
+            description: Created - the preference was established for the specified user.
+            body: 
+                application/xml:
+                    example: empty response
+        404:
+            description: NOT FOUND - the user preference does not exist in the system
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserPreferenceResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12065</ErrorCode>
+                                <Description>User preference not found</Description>
+                            </ResponseStatus>
+                        </UserPreferenceResponse>
+        409:
+            description: The preference as described in the payload already exists for the user.
+            body:
+                application/xml:
+                    example: |
+                        <UserPreferenceResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12066</ErrorCode>
+                                <Description>A user preference with name 'preferredPortal' already exists</Description>
+                            </ResponseStatus>
+                        </UserPreferenceResponse>
+
+get:
+    
+    description: Retrieve the user preferences that are associated with a named user-id
+
+    responses:
+        200:
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserPreferences>
+                            <UserPreference>
+                                <Name>preferredPortal</Name>
+                                <Value>old</Value>
+                            </UserPreference>
+                            <UserPreference>
+                                <Name>numberFormat</Name>
+                                <Value>10D</Value>
+                            </UserPreference>
+                        </UserPreferences>
+
+/{preferenceName}: !include preferenceName/preferenceName.raml

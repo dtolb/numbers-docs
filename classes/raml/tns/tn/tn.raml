@@ -1,0 +1,31 @@
+!fileScope all
+
+description: Retrieves information about the specified telephone number.  The information returned provides status and historic information about the Telephone Number, including the status, the order id and date assocated with the last modification, and the account and site information associated with the TN. <br> The request for more information can be made by requesting a number of specific derived sub-resources.
+
+get:
+    description: Retrieves the telephone number's information.
+    responses:
+        200:
+            description: The information has been successfully retrieved and displayed.
+            body:
+                application/xml:
+                    example:
+                        <TelephoneNumberResponse>
+                            <TelephoneNumber>2012035013</TelephoneNumber>
+                            <Status>Inservice</Status>
+                            <LastModifiedDate>2014-03-25 12:55:11.0</LastModifiedDate>
+                            <OrderCreateDate>2014-03-25T12:55:11.810Z</OrderCreateDate>
+                            <OrderId>cf79d3c3-21b7-4db7-9867-273a1867f934</OrderId>
+                            <OrderType>NEW_NUMBER_ORDER</OrderType>
+                            <SiteId>2409</SiteId>
+                            <AccountId>8000273</AccountId>
+                        </TelephoneNumberResponse>
+
+/tndetails: !include tndetails/tndetails.raml
+/sites: !include sites/sites.raml
+/sippeers: !include sippeers/sippeers.raml
+/ratecenter: !include ratecenter/ratecenter.raml
+/lca: !include lca/lca.raml
+/lata: !include lata/lata.raml
+/history: !include history/history.raml
+/tnreservation: !include tnreservation/tnreservation.raml

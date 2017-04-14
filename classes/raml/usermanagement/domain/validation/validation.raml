@@ -1,0 +1,34 @@
+!fileScope internal
+
+description: |
+    This resource provides capability to validate that an email address is owned by the intended party. Email validation is required for newly created user and after already validated user updated an email, or to communicate to user the password reset link. This resource and its subresources don't need authentication.
+get:
+    description: Determines whether a key associated with specified userId exists in the system. Searches only among keys created in scope of new user creation or email validation processes. Unlike all other requests under current resource, you need to authenticate to make this one.
+    queryParameters:
+        userId:
+            type: string
+            example: testUser
+            required: true
+    responses:
+	    200:
+            description: The key exists.
+        404:
+            description: The key is not present.
+post:
+    description: Initiates a validation action by creating a key, and indicating the validation work-flow that should be initiated. Created key is associated either with userId or email depending on validation action.
+    body:
+        application/xml:
+            example: |
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <ValidationRequest>
+                    <!-- used to declare what the key is used for -->
+                    <Trigger>[passwordreset|emailvalidation]</Trigger>
+                    <!-- userid for emailvalidation, email for passwordreset -->
+                    <Email>test@bandwidth.com</Email>
+                    <Userid>testUser</Userid>
+                </ValidationRequest>
+    responses:
+	    200:
+            description: Always (except for syntactically invalid payloads). Any attempt to breach the security model will not be able to tell success from failure.
+
+/{key}: !include key/key.raml

@@ -1,0 +1,68 @@
+!fileScope all
+
+description: |
+    !scope internal
+    This API controls the users that have  access to the API and GUI functions exposed by the Bandwidth Dashboard.  Users are described by information about the user themselves, and then by a set of permissions granted them to execute various API and UI functions.  Each of the permissions typically has a View and an Update aspect - a user can be given read-only or read-write access to a function by the application of these capabilities.
+    !scope all
+    The /users API also enables resetting but not retrieving credential information 
+    !scope internal
+    The resource that is being managed is a collection of users, and that the payload reflects that.  
+
+!scope internal
+post:
+    description: 
+        Create a user.  All fields in the payload are required
+        POSTing to the users resource permits the creation of multiple user instances as part of a single action.
+    body:
+        application/xml:
+            example: |
+                <Users>
+                    <User>
+                        <Username>testcustomer</Username>
+                        <Password>test123</Password>
+                        <FirstName>Jane</FirstName>
+                        <LastName>Doe</LastName>
+                        <EmailAddress>janedoe@bandwidth.com</EmailAddress>
+                        <TelephoneNumber>9199999999</TelephoneNumber>
+                    </User>
+                </Users>
+    responses:
+        201:
+            description: |
+                Created.
+
+                No Body or location header is returned with this API call.  Details on the created user can be retieved with a get on the user-id
+
+!scope internal
+get: 
+    description: 
+        Get a list of all users in the system <br>
+
+        The Payload includes a description of each user, without the user permissions. User details and a list of customers that the user serves is contained in the payload response to a GET on a specific user resource
+    responses:
+        200:
+            description: The request is valid and a list of users can be returned.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0"?>
+                        <UsersResponse>
+                            <Users>
+                                <User>
+                                    <Username>testcustomer</Username>
+                                    <FirstName>Jane</FirstName>
+                                    <LastName>Doe</LastName>
+                                    <EmailAddress>janedoe@bandwidth.com</EmailAddress>
+                                    <TelephoneNumber>9199999999</TelephoneNumber>
+                                </User>
+                                <User>
+                                    <Username>johndoe</Username>
+                                    <FirstName>John</FirstName>
+                                    <LastName>Doe</LastName>
+                                    <EmailAddress>johndoe@bandwidth.com</EmailAddress>
+                                    <TelephoneNumber>9199999998</TelephoneNumber>
+                                </User>
+                            </Users>
+                        </UsersResponse>
+
+/{userid}: !include userid/userid.raml

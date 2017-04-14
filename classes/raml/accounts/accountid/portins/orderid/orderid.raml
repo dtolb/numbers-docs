@@ -1,0 +1,170 @@
+!fileScope external
+
+description: |
+    This resource retrieves information associated with the port-in associated with the ID number specified.
+
+!scope external
+get:
+    description: Retrieves the information associated with the specified port-in ID number.
+    responses:
+        200:
+            description: The information has been successfully retrieved and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <LnpOrderResponse>
+                            <Errors>
+                                <Code>7205</Code>
+                                <Description>Telephone number is already being processed on another order</Description>
+                            </Errors>
+                            <ProcessingStatus>CANCELLED</ProcessingStatus>
+                            <CustomerOrderId>SJM00002</CustomerOrderId>
+                            <LoaAuthorizingPerson>The Authguy</LoaAuthorizingPerson>
+                            <Subscriber>
+                                <SubscriberType>BUSINESS</SubscriberType>
+                                <FirstName>First</FirstName>
+                                <LastName>Last</LastName>
+                                <ServiceAddress>
+                                    <HouseNumber>11235</HouseNumber>
+                                    <StreetName>Back</StreetName>
+                                    <City>Denver</City>
+                                    <StateCode>CO</StateCode>
+                                    <Zip>27541</Zip>
+                                    <County>Canyon</County>
+                                    <Country>United States</Country>
+                                    <AddressType>Service</AddressType>
+                                </ServiceAddress>
+                            </Subscriber>
+                            <WirelessInfo>
+                                <AccountNumber>771297665AABC</AccountNumber>
+                                <PinNumber>1234</PinNumber>
+                            </WirelessInfo>
+                            <TnAttributes>
+                                <TnAttribute>Protected</TnAttribute>
+                            </TnAttributes>
+                            <BillingTelephoneNumber>9195551234</BillingTelephoneNumber>
+                            <ListOfPhoneNumbers>
+                                <PhoneNumber>9194809871</PhoneNumber>
+                            </ListOfPhoneNumbers>
+                            <AccountId>20</AccountId>
+                            <SiteId>2857</SiteId>
+                            <PeerId>317771</PeerId>
+                            <LosingCarrierName>Mock Carrier</LosingCarrierName>
+                            <VendorName>Bandwidth CLEC</VendorName>
+                            <OrderCreateDate>2014-08-04T13:37:06.323Z</OrderCreateDate>
+                            <LastModifiedDate>2014-08-04T13:37:08.676Z</LastModifiedDate>
+                            <userId>jbm</userId>
+                            <LastModifiedBy>jbm</LastModifiedBy>
+                            <PartialPort>false</PartialPort>
+                            !scope internal
+                            <Immediately>false</Immediately>
+                            <Triggered>false</Triggered>
+                            !scope internal
+                            <BillingType>PORTIN</BillingType>
+                            <PortType>AUTOMATED</PortType> <!-- [ AUTOMATED | INTERNAL | MANUALOFFNET ] -->
+                            !scope internal
+                            <OverrideValidation>false</OverrideValidation>
+                        </LnpOrderResponse>
+
+!scope external
+put:
+    description: |
+        It is possible to change ("SUPP" in LNP terms) an existing LNP order.  This is done via a PUT on the existing order-id.
+        Since many of the entries in an LNP Order cannot be changed after the initial order is placed (the list to TNs for example) the PUT on a porting order-id does *not* require that the full order payload is included.<br/>
+        !scope internal
+        *OverrideValidation this flag will force portout to complete bypassing any validity checking (if has not terminal errors). Flag can be supped only for an orders in EXCEPTION status.
+    body:
+        application/xml:
+            example: |
+                <?xml version="1.0" encoding="UTF-8"?>
+                <LnpOrderSupp>
+                    <CustomerOrderId>SJM00002</CustomerOrderId>
+                    <RequestedFocDate>2014-12-04T13:00:00.000Z</RequestedFocDate>
+                    <BillingTelephoneNumber>8045030092</BillingTelephoneNumber>
+                    <WirelessInfo>
+                        <AccountNumber>23453245</AccountNumber>
+                        <PinNumber>1111</PinNumber>
+                    </WirelessInfo>
+                    <TnAttributes>
+                        <TnAttribute>Protected</TnAttribute>
+                    </TnAttributes>
+                    <Subscriber>
+                        <SubscriberType>RESIDENTIAL</SubscriberType>
+                        <FirstName>Steve</FirstName>
+                        <LastName>McKinnon</LastName>
+                        <ServiceAddress>
+                        <!-- If true will overwrite all address fields, 
+                             those which should be required remain required.
+                             Affect only supp. Default false. -->
+                            <ResetAddressFields>true</ResetAddressFields> 
+                            <HouseNumber>115</HouseNumber>
+                            <StreetName>Monarch Way</StreetName>
+                            <City>Cary</City>
+                            <StateCode>NC</StateCode>
+                            <Zip>27518</Zip>
+                        </ServiceAddress>
+                    </Subscriber>
+                    <SiteId>743</SiteId>
+                    <PartialPort>true</PartialPort>
+                    <LoaAuthorizingPerson>Steve McKinnon</LoaAuthorizingPerson>
+                    !scope internal
+                    <Immediately>false</Immediately>
+                    !scope internal
+                    <OverrideValidation>false</OverrideValidation>
+                </LnpOrderSupp>
+    responses:
+        200:
+            description: The information has been successfully retrieved and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <LnpOrderResponse>
+                            <OrderId>b6080e4c-7ddf-4faa-bbd8-328a72de9297</OrderId>
+                            <Status>
+                                <Code>200</Code>
+                                <Description>Supp request received. Please use the order id to check the status of your order later.</Description>
+                            </Status>
+                            <ProcessingStatus>REQUESTED_SUPP</ProcessingStatus>
+                            <RequestedFocDate>2014-12-04T13:00:00Z</RequestedFocDate>
+                            <BillingTelephoneNumber>8045030092</BillingTelephoneNumber>
+                            <Triggered>false</Triggered>
+                            !scope internal
+                            <OverrideValidation>false</OverrideValidation>
+                        </LnpOrderResponse>
+
+!scope external
+delete:
+    description: |
+        Cancels the port-in order. This does not remove the order from the system.  It simply places the existing order in a canceled state.
+        Note that only a pending port-in order can be canceled; if the order was previously canceled or completed, then a DELETE will not be possible. 
+    responses:
+        200:
+            description: The port-in order has been successfully deleted.
+        400:
+            description: The port-in order is already processed, and therefore cannot be deleted.
+            body:
+                application/xml:
+                    example: |
+                        <LnpOrderResponse>
+                            <OrderId>2ffd0af4-7c54-40dc-9bfe-40f08b57e63a</OrderId>
+                            <Status>
+                                <Code>400</Code>
+                                <Description>Validation Failed. Please check your input parameters.</Description>
+                            </Status>
+                            <Errors>
+                                <Code>7304</Code>
+                                <Description>The order is already complete and cannot be modified or cancelled</Description>
+                            </Errors>
+                            <ProcessingStatus>EXCEPTION</ProcessingStatus>
+                        </LnpOrderResponse>
+
+/notes: !include ../../shared/notes/notes.raml
+/history: !include history/history.raml
+/activationStatus: !include activation/activation.raml
+/loas: !include loas/loas.raml
+/areaCodes: !include areaCodes/areaCodes.raml
+/npaNxx: !include npaNxx/npaNxx.raml
+/tns: !include tns/tns.raml
+/totals: !include totals/totals.raml
+/losingCarrier: !include losingcarrier/losingcarrier.raml
+/adminparameters: !include ../../shared/adminparameters/adminparameters.raml

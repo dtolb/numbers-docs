@@ -1,0 +1,23 @@
+!fileScope all
+
+description: Retrieves a total number of disconnects for the account within the specified (optional) date range.
+
+get:
+    description: Retrieves a total number of disconnects.
+    queryParameters:
+        startdate:
+        	description: The starting date of a search. startdate and enddate <strong>must</strong> be used as a pair.
+            type: date
+            example: yy-mm-dd
+        enddate:
+        	description: The end date of a search. startdate and enddate <strong>must</strong> be used as a pair.
+            type: date
+            example: yy-mm-dd
+    responses:
+        200:
+            body:
+                application/xml:
+                    example: |
+                        <Quantity>
+                            <Count>4</Count>
+                        </Quantity>

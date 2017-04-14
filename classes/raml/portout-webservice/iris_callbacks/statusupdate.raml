@@ -1,0 +1,64 @@
+ !fileScope internal 
+
+ description: |
+          This API is used by POT to updating a corresponding portin order in Iris. The error messages listed below that come back with a ProcessingStatus of EXCEPTION should be treated in Iris as an automatic cancellation of the portin.
+          <ul>
+           <li>  "One or more of the numbers submitted already has a pending FOC date. Any changes to this existing port must be submitted as a supplemental port.\n\n" + "TNs found with a pending FOC Date:"<br/></li>
+           <li>  "A submitted order with PON [%s] already exists. Please use a different PON for this order."<br/></li>
+           <li>  "TN [" + phoneNumber + "] was not found to be In Service in either the Iris or MyBWC systems."<br/></li>
+           <li>  "TN [" + phoneNumber + "] is a Google Voice number that has not been approved for porting."<br/></li>
+           <li>  "The TNs specified in the request belong to multiple accounts. All TNs for a single port out request must belong to a single account."<br/></li>
+           <li>  "TN [" + phoneNumber + "] belongs to an Iris or MyBWC account which is blocked from porting. Blocked account ID: [" + accountId + "]"<br/></li>
+           <li>  "TN [" + phoneNumber + "] is not a Bandwidth CLEC number."<br/></li>
+           <li>  "FOC date cannot fall on a holiday."<br/></li>
+           </ul>
+          Errors returned from various portout validations might be compound, for example - "7513: PIN Invalid" <br/> 
+          Errors with codes 7510-7515 treated as recoverable and changes portin order status to EXCEPTION. <br/> 
+          Errors with codes 7516-7519 treated as unrecoverable and changes order status to CANCELLED or in case of LSR order to FAILED. <br/>
+          <ul>
+            <li>"7510: Required Account Code missing<br/></li>
+            <li>"7511: Invalid Account Code<br/></li>
+            <li>"7512: Required PIN missing<br/></li>
+            <li>"7513: PIN Invalid<br/></li>
+            <li>"7514: Required ZIP Code missing<br/></li>
+            <li>"7515: Invalid ZIP Code<br/></li>
+            <li>"7516: Telephone Number not recognized or invalid for this account <TN><br/></li>
+            <li>"7517: Too many Telephone numbers in this request<br/></li>
+            <li>"7518: Telephone Number Not Active <TN><br/></li>
+            <li>"7519: Customer info does not match <Explanation><br/></li>
+           </ul>
+           
+ put:
+      description: 
+        Updates sent to this resource for example when order status is changed.
+      body:
+           application/xml:                         
+             example: |
+                     <InternalPortEvent>
+                        <ProcessingErrors>
+                            <Error>
+                                FOC date cannot fall on a holiday
+                            </Error>
+                            <Error>
+                                7514: Required ZIP Code missing
+                            </Error>
+                        </ProcessingErrors>
+                        <ProcessingStatus>FOC</ProcessingStatus>
+                        <BulkPortOut>
+                           <PON>2578d71f-5e1a-4d6a-a9f4-16cf08f3e4b6</PON>
+                           <Pin>55678</Pin>
+                           <FocDate>2015-01-22</FocDate>
+                           <Supplemental>UPDATE</Supplemental>
+                           <Immediately>false</Immediately>
+                           <TelephoneNumberList>
+                             <TelephoneNumberToPort>2565224455</TelephoneNumberToPort>
+                           </TelephoneNumberList>
+                           <InternalPort>true</InternalPort>
+                        </BulkPortOut>
+                      </InternalPortEvent>   
+      responses:            
+        200:
+          description: Event accepted
+        400:
+          description: Some validation error
+                      

@@ -1,0 +1,142 @@
+!fileScope internal
+
+description: This is a single line of descriptive text.  See other formats below
+
+get:
+    description: |
+        A sample description.  Long descriptions can be piped, and short ones can go on the line with the keyword 
+    queryParameters:
+        account:
+            type: string
+            required: true
+            description: the account that the user is valid for
+            default: 20
+        direction:
+            description: hardy har har
+            type: string
+            example: a_string
+        inclination:
+            description: another fing description
+            type: integer
+            example: 98764
+            maximum: 99999
+    responses:    # note that the responses cannot be generic.  4xx is unfortunately not a valid response tag
+        200:
+            description: An optional description of the response.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <example>
+                            example content is piped content that will be provided as an example
+                            in this case of the Response
+                        </example> 
+        400:
+            description: |
+                The description can be used for discussing generic responses.
+                Note that descriptions anywhere can be piped content. Lines will be concatenated together.
+                *_Markup is allowed_*
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <example>
+                            example content is piped content that will be provided as an example
+                            in this case of the Response
+                        </example> 
+
+post:
+    description: Create a user
+    body:
+        application/xml:
+            example: |
+                <Users>
+                    <User>
+                        <Username>testcustomer</Username>
+                        <Password>test123</Password>
+                        <FirstName>Jane</FirstName>
+                        <LastName>Doe</LastName>
+                        <EmailAddress>janedoe@bandwidth.com</EmailAddress>
+                        <TelephoneNumber>9199999999</TelephoneNumber>
+                    </User>
+                </Users>
+    responses:
+        200:
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UsersResponse>
+                            <Users>
+                                <User>
+                                    <Username>admin</Username>
+                                    <Roles>
+                                        <Role>
+                                            <RoleName>ROLE_ADMIN</RoleName>
+                                            <Permissions>
+                                                <Permission>
+                                                    <PermissionName>VIEW</PermissionName>
+                                                </Permission>
+                                                <Permission>
+                                                    <PermissionName>UPDATE</PermissionName>
+                                                </Permission>
+                                            </Permissions>
+                                        </Role>
+                                        <Role>
+                                            <RoleName>ROLE_BDR</RoleName>
+                                            <Permissions>
+                                                <Permission>
+                                                    <PermissionName>VIEW</PermissionName>
+                                                </Permission>
+                                            </Permissions>
+                                        </Role>
+                                    </Roles>
+                                </User>
+                            </Users>
+                        </UsersResponse>
+ 
+put:
+    description: |
+        A piped description that has 
+        more than one line and some 
+        * markup 
+    responses:
+        200:
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UsersResponse>
+                            <Users>
+                                <User>
+                                    <Username>admin</Username>
+                                    <Roles>
+                                        <Role>
+                                            <RoleName>ROLE_ADMIN</RoleName>
+                                            <Permissions>
+                                                <Permission>
+                                                    <PermissionName>VIEW</PermissionName>
+                                                </Permission>
+                                                <Permission>
+                                                    <PermissionName>UPDATE</PermissionName>
+                                                </Permission>
+                                            </Permissions>
+                                        </Role>
+                                        <Role>
+                                            <RoleName>ROLE_BDR</RoleName>
+                                            <Permissions>
+                                                <Permission>
+                                                    <PermissionName>VIEW</PermissionName>
+                                                </Permission>
+                                            </Permissions>
+                                        </Role>
+                                    </Roles>
+                                </User>
+                            </Users>
+                        </UsersResponse>               
+
+#  The resource tree that follows the root can be placed here.
+# values in curly braces will appear as fillable parameters in the URL
+# remember to fix these / delete these until the files are really there.
+# /{example_ID}: #include example/example.raml
+# /resourcename: #include resourcename/resourcename.raml

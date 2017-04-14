@@ -1,0 +1,45 @@
+!fileScope all
+#%RAML 0.8
+---
+title: Bandwidth Dashboard REST API Documentation
+# Use null host here to trigger automatic replacement in javascript
+baseUri: http://null
+version: v1
+
+securedBy: [basic]
+
+securitySchemes:
+   - basic:
+        type: Basic Authentication
+
+/accounts: !include accounts/accounts.raml
+/aeuis: !include aeuis/aeuis.raml
+/tns: !include tns/tns.raml
+/orders: !include orders/orders.raml
+/lsrorders: !include lsrorders/lsrorders.raml
+/portins: !include portins/portins.raml
+/portouts: !include portouts/portouts.raml
+/e911s: !include e911s/e911s.raml
+/dldas: !include dldas/dldas.raml
+/lidbs: !include lidbs/lidbs.raml
+/users: !include users/users.raml
+/reports: !include reports/reports.raml
+/terminationProducts: !include terminationproducts/terminationProducts.raml
+/cities: !include cities/cities.raml
+/rateCenters: !include ratecenters/ratecenters.raml
+/availablenumbers: !include availablenumbers/availablenumbers.raml
+/agingnumbers: !include agingnumbers/agingnumbers.raml
+/coveredRateCenters: !include coveredratecenters/coveredratecenters.raml
+/callbacks: !include callbacks/callbacks.raml
+/suggestions: !include typeahead/suggestions.raml
+/sipcredentials: !include sipcredentials/sipcredentials.raml
+/testapi: !include testapi/testapi.raml
+/tnoptions: !include tnoptions/tnoptions.raml
+/usermanagement: !include usermanagement/usermanagement.raml
+/endpoints: !include endpoints/endpoints.raml
+/externalTns: !include externalTns/externalTns.raml
+/numbersAssignment: !include numbersAssignment/numbersAssignment.raml
+/reprovisionTns: !include reprovisiontns/reprovisiontns.raml
+/admin: !include admin/admin.raml
+/audit: !include audit/audit.raml
+/batches: !include batches/batches.raml

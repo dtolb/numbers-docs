@@ -1,0 +1,119 @@
+!fileScope all
+
+description: |
+    This resource deals with the port-out requests of the account ID; this resource can retrieve a port-out request
+    !scope internal
+    or create a request
+    .
+
+!scope external
+get:
+    description: Retrieves a list of port-out requests for the given account ID.
+    queryParameters:
+        page:
+            description: The port-out ID of the first order of the page. "1" is used as a convention for the first port-out in the account ID.
+            type: string
+            required: true
+            default: 1
+            example: ca8065d1-ec1a-43da-af40-1dcee43becb5
+        size:
+            description: The number of port-outs retrieved. 
+            type: integer
+            required: true
+            default: 300
+            example: 30
+        status:
+            description: Displays the port-outs with the given status.
+            type: string
+            example: complete
+        date:
+            description: The date of when the order was placed.
+            type: date
+            example: 2014-08-01
+        startdate:
+            description: |
+                The earliest date that the order was last modified. <strong>NOTE: </strong> startdate and enddate must be simultaneously declared.
+            type: date
+            example: 2014-08-05
+        enddate:
+            description: |
+                The latest date that the order was last modified. <strong>NOTE: </strong> startdate and enddate must be simultaneously declared.
+            type: date
+            example: 2014-08-05
+    responses:
+        200:
+            description: the port-outs have been successfully retrieved and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <LNPResponseWrapper>
+                            <TotalCount>3</TotalCount>
+                            <Links />
+                            <lnpPortInfoForGivenStatus>
+                                <CountOfTNs>0</CountOfTNs>
+                                <userId>System</userId>
+                                <OrderId>4299b1ad-aa08-433e-a316-f9219b3450d2</OrderId>
+                                <OrderType>port_out</OrderType>
+                                <lastModifiedDate>2014-07-31T16:34:37.530Z</lastModifiedDate>
+                                <ErrorCode>201</ErrorCode>
+                                <ErrorMessage>Order request received. Please use the order id to check the status of your order later.</ErrorMessage>
+                                <OrderDate>2014-07-31T16:34:37.480Z</OrderDate>
+                                <ProcessingStatus>NEW</ProcessingStatus>
+                                <RequestedFOCDate>2014-08-02T12:34:37.000Z</RequestedFOCDate>
+                                <VendorId>512E</VendorId>
+                            </lnpPortInfoForGivenStatus>
+                        </LNPResponseWrapper>
+!scope internal
+post:
+    description: |
+        Creates a port-out request.<br>
+        In the payload, CallbackUrl and InternalPort are optional.<br>
+        There are also multiple options for the following:
+        <table>
+            <tr>
+                <th>Option</th>
+                <th>Choices</th>
+            </tr>
+            <tr>
+                <td>Supplemental</td><td>NONE<br>CANCEL<br>UPDATE<br>OTHER<br></td>
+            </tr>
+            <tr>
+                <td>PortOutAction</td><td>NEW<br>SUPP<br>MODIFY<br>CANCEL<br></td>
+            </tr>
+            <tr>
+                <td>InternalPort</td><td>true or false<br></td>
+            </tr>
+        </table>
+    body:
+        application/xml:
+            example: |
+                <PortOutRequest>
+                    <Pin>1234</Pin>
+                    <NewNetworkSPID>2857</NewNetworkSPID>
+                    <TelephoneNumberToPort>2014087001</TelephoneNumberToPort>
+                    <FocDate>2014-08-11</FocDate>
+                    <PortOutAction/>
+                    <BulkPortOut>
+                        <Pin>1234</Pin>
+                        <NewNetworkSPID>2857</NewNetworkSPID>
+                        <FocDate>2014-08-11</FocDate>
+                        <Supplemental>CANCEL</Supplemental>
+                        <TelephoneNumberList>
+                            <TelephoneNumberToPort>2014087001</TelephoneNumberToPort>
+                        </TelephoneNumberList>
+                    </BulkPortOut>
+                </PortOutRequest>
+    responses:
+        200:
+            description: The port-out request has been successfully received.
+            body:
+                application/xml:
+                    example: |
+                        <PortOutResponse>
+                            <Status>
+                                <Code>200</Code>
+                                <Description>Request is complete and results returned.</Description>
+                            </Status>
+                        </PortOutResponse>
+
+/{orderid}: !include orderid/orderid.raml

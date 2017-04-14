@@ -1,0 +1,8 @@
+<AnalyticsResult>
+    <ErrorList>
+        <Error>
+            <Code>12753</Code>
+            <Description>This account is not enabled for TN Assignment analytics data</Description>
+        </Error>
+    </ErrorList>
+</AnalyticsResult>

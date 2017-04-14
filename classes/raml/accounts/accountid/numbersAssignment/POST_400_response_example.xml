@@ -1,0 +1,8 @@
+!fileScope all
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<TelephoneNumbersAssignmentOrderResponse>
+    <ResponseStatus>
+        <ErrorCode>13554</ErrorCode>
+        <Description>Assignment action is invalid. Valid values ASSIGN, UNASSIGN</Description>
+    </ResponseStatus>
+</TelephoneNumbersAssignmentOrderResponse>

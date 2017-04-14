@@ -1,0 +1,114 @@
+!fileScope internal
+
+description: This resource allow manage TPA information.
+
+get:
+    description: Get TPA.
+    responses:
+        200:
+            description: |
+                Return TPA
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <AdminDataResponse>
+                            <Tpa>
+                                <Spid>5123</Spid>
+                                <Name>ATT</Name>
+                                <NeustarTradingPartner>true</NeustarTradingPartner>
+                                <Ebonded>true</Ebonded>
+                                <Wireless>false</Wireless>
+                                <AccountNumberRequired>false</AccountNumberRequired>
+                                <StateMatchRequired>true</StateMatchRequired>
+                                <PortOutMinDays>3</PortOutMinDays>
+                            </Tpa>
+                        </AdminDataResponse>
+        404:
+            description: |
+                TPA not found
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <AdminDataResponse>
+                            <ResponseStatus>
+                                <Description>The resource does not exist</Description>
+                            </ResponseStatus>
+                        </AdminDataResponse>
+
+put:
+    description: Allows to create or update TPA.
+    body:
+        application/xml:
+            example: |
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <Tpa>
+                   <Spid>5123</Spid>
+                   <Name>ATT</Name>
+                   <NeustarTradingPartner>true</NeustarTradingPartner>
+                   <Ebonded>true</Ebonded>
+                   <Wireless>false</Wireless>
+                   <AccountNumberRequired>false</AccountNumberRequired>
+                   <StateMatchRequired>true</StateMatchRequired>
+                   <PortOutMinDays>3</PortOutMinDays>
+                </Tpa>
+    responses:
+        200:
+            description: |
+                TPA updated
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <AdminDataResponse>
+                            <Tpa>
+                                <Spid>5123</Spid>
+                                <Name>ATT</Name>
+                                <NeustarTradingPartner>true</NeustarTradingPartner>
+                                <Ebonded>true</Ebonded>
+                                <Wireless>false</Wireless>
+                                <AccountNumberRequired>false</AccountNumberRequired>
+                                <StateMatchRequired>true</StateMatchRequired>
+                                <PortOutMinDays>3</PortOutMinDays>
+                            </Tpa>
+                        </AdminDataResponse>
+        201:
+            description: |
+                TPA created
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <AdminDataResponse>
+                            <Tpa>
+                                <Spid>5123</Spid>
+                                <Name>ATT</Name>
+                                <NeustarTradingPartner>true</NeustarTradingPartner>
+                                <Ebonded>true</Ebonded>
+                                <Wireless>false</Wireless>
+                                <AccountNumberRequired>false</AccountNumberRequired>
+                                <StateMatchRequired>true</StateMatchRequired>
+                                <PortOutMinDays>3</PortOutMinDays>
+                            </Tpa>
+                        </AdminDataResponse>
+        400:
+            description: |
+                Validation error
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <AdminDataResponse>
+                            <ResponseStatus>
+                                <ErrorCode>1003</ErrorCode>
+                                <Description>Spid is required</Description>
+                            </ResponseStatus>
+                        </AdminDataResponse>
+
+delete:
+    description: Delete TPA.
+    responses:
+        200:
+            description: |
+                TPA deleted

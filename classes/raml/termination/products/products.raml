@@ -1,0 +1,24 @@
+!fileScope internal
+
+get:
+  description: |
+      Retrieve list of all available Termination Products.
+
+  responses:
+    200:
+      description: |
+              This will return a list of all available Termination Products, intended for use in configuring a termination product against an IRIS Account or a SIP Peer.
+              Information about product.
+                <ul>
+                <li> ProfileID (long) - a product may be associated with a profile. (profile in this case can't have any contained products)</li>
+                <li> ProductId (long) - product identifier. </li>
+                <li> ProductName (string) - product name. </li>
+                <li> ProductDescription (string) - product description </li>
+                </ul>
+      body:
+           application/xml:
+             example: !include productlist.xml
+
+    404:
+         description: Not Found.  If any errors are found in the processing of the query string a 404 will be returned.  Note that parameters that are not recognized are not considered errors, and are just ignored.
+/{productId}: !include productid/productid.raml

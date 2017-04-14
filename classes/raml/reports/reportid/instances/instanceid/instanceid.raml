@@ -1,0 +1,54 @@
+!fileScope internal
+
+get:
+    description: Retrieve report instance details, including the current report instance status.
+    queryParameters:
+        accountId:
+            displayName: Account ID
+            type: integer
+            description: Account ID to which the request is scoped, if applicable
+            required: false
+    responses:
+        200:
+            description: Successful retrieval of report instance.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <ReportInstanceResponse>
+                                <Instance>
+                                    <Id>100102</Id>
+                                    <ReportId>100020</ReportId>
+                                    <JasperId>83a5fd11-801d-4ee7-9f0c-0ab83882be86</JasperId>
+                                    <JasperExportId>d8396a60-200c-4205-9609-ceca3d47dc7a</JasperExportId>
+                                    <JasperSessionId>21E6866B95AC144828178A2CF251F756</JasperSessionId>
+                                    <ReportName>Sample Report</ReportName>
+                                    <OutputFormat>pdf</OutputFormat>
+                                    <RequestedByUserName>jbm</RequestedByUserName>
+                                    <RequestedAt>2015-05-19 11:05:12</RequestedAt>
+                                    <Parameters>
+                                        <Parameter>
+                                            <Name>AccountId</Name>
+                                            <Value>1</Value>
+                                        </Parameter>
+                                    </Parameters>
+                                    <JasperReportStatus>Ready</JasperReportStatus>
+                                    <Status>Ready</Status>
+                                    <ExpiresAt>2016-06-15</ExpiresAt>
+                                </Instance>
+                        </ReportInstanceResponse>
+        404:
+            description: A report template matching the provided ID could not be found.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <ReportInstanceResponse>
+                            <ResponseStatus>
+                                <ErrorCode>19019</ErrorCode>
+                                <Description>No report instance found for report 100020 with Id of '100103'</Description>
+                            </ResponseStatus>
+                        </ReportInstanceResponse>
+
+/file: !include file/file.raml
+

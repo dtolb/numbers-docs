@@ -1,0 +1,83 @@
+!fileScope internal
+!scope all
+description: |
+    UC Trunking is a product separate from traditional wholesale that allows customers to purchase services in more
+    granular ways. Bandwidth partners can more finely tune the services of their customers using UC Trunking.
+!scope all
+get:
+    description: A GET on the UC Trunking product indicates the support (or lack of support) for the UC Trunking capabilities for the specified account.
+    responses:
+        200:
+            description: A small payload that indicates that the UC Trunking product is provisioned for the account.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <AccountProductResponse>
+                            <Product>
+                                <Name>UcTrunking</Name>
+                            </Product>
+                        </AccountProductResponse>
+        404:
+            description: NOT FOUND - is returned if the Termination Resource is not found.  An explanatory payload will be returned with explanation and an error code.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <AccountProductResponse>
+                            <ResponseStatus>
+                                <ErrorCode></ErrorCode>
+                                <Description>Account '' does not have product 'UC Trunking'</Description>
+                            </ResponseStatus>
+                        </AccountProductResponse>
+
+put:
+    description: |
+        Updates the UC Trunking according to the features specified in the body. <br>
+        Updates available are: <br>
+        <ul>
+        <li>DlDa</li>
+        <li>CNAM</li>
+        <li>CallForwarding</li>
+        <li>LIDB</li>
+        </ul>
+        a PUT on a UC Trunking resource that already exists will succeed, but does not change the UC Trunking product.
+    body:
+        application/xml:
+            example: |
+                <Product>
+                    <Name>UcTrunking</Name>
+                    <Features>
+                        <Feature>CallForwarding</Feature>
+                        <Feature>CNAM</Feature>
+                        <Feature>LIDB</Feature>
+                        <Feature>DlDa</Feature>
+                    </Features>
+                </Product>
+    responses:
+        200:
+            description: 200 OK indicates that the UC Trunking capability is associated with the account. If UC Trunking is not already associated with the account then a 404 is returned. NO payload is returned with the 200 OK
+        400:
+            description: 400 Bad Request indicates that the feature being added is not an allowable feature.
+            body:
+                application/xml:
+                    example: |
+                        <AccountProductResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12019</ErrorCode>
+                                <Description>Feature 'this doesnt exist' does not exist. Valid values: DlDa, CNAM, CallForwarding, LIDB</Description>
+                            </ResponseStatus>
+                        </AccountProductResponse>
+        404:
+            description: NOT FOUND - If the UC Trunking resource is not found a 404 Not Found with an explanatory payload will be returned.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <AccountProductResponse>
+                            <ResponseStatus>
+                                <ErrorCode></ErrorCode>
+                                <Description>Account '' does not have product 'UC Trunking'</Description>
+                            </ResponseStatus>
+                        </AccountProductResponse>
+/settings: !include settings/settings.raml

@@ -1,0 +1,60 @@
+!fileScope internal
+
+description: The {role ID} resource interacts with the specific role associated with the user ID; this resource can update the permissions, retrieve the information, as well as delete the role.
+
+get:
+    description: Retrieves the information associated with the Role ID.
+    responses:
+        200:
+            description: The information has been successfully received and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <RolesResponse>
+                            <Roles>
+                                <Role>
+                                    <RoleName>ROLE_API_ORDERING</RoleName>
+                                    <Permissions>
+                                        <Permission>
+                                            <PermissionName>VIEW</PermissionName>
+                                        </Permission>
+                                    </Permissions>
+                                </Role>
+                                <Role>
+                                    <RoleName>ROLE_ADMIN</RoleName>
+                                    <Permissions>
+                                        <Permission>
+                                            <PermissionName>VIEW</PermissionName>
+                                        </Permission>
+                                    </Permissions>
+                                </Role>
+                            </Roles>
+                        </RolesResponse>
+
+put:
+    description: |
+        Add a permission to a userid.<br>
+        <strong>However</strong>, if the user ID has a permission that isn't <u>explicitly</u> stated in the PUT payload, that permission will be removed from the user ID. 
+        <strong>For this reason</strong>, adding a permission to a user ID is best done in the permissions sublevel. Avoid adding permissions at this level unless you wish to <strong>completely change</strong> all permissions for the user ID.
+    body:
+        application/xml:
+            example: |
+                <Role>
+                    <RoleName>ROLE_API_ORDERING</RoleName>
+                    <Permissions>
+                        <Permission>
+                            <PermissionName>VIEW</PermissionName>
+                        </Permission>
+                    </Permissions>
+                </Role>
+    responses:
+        200:
+            description: The permissions have been successfully updated.
+
+delete:
+    description: Deletes the role.
+    responses:
+        200:
+            description: The role has been successfully deleted.
+
+/permissions: !include permissions/permissions.raml

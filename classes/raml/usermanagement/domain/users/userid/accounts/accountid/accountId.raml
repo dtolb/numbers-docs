@@ -1,0 +1,185 @@
+!fileScope internal
+
+description: This resource retrieves information about  account associated with user.
+get:
+    description: Retrieves the information about user.
+    responses:
+        200:
+            description: The information has been successfully retrieved and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserAccountResponse>
+                            <User>
+                                <AccountList>
+                                    <Account>
+                                        <AccountId>123</AccountId>
+                                        <AccountName>Neustar</AccountName>
+                                    </Account>
+                                </AccountList>
+                            </User>
+                        </UserAccountResponse>
+        404:
+            description: User not found.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserAccountResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12000</ErrorCode>
+                                <Description>User 'testing' does not exist</Description>
+                            </ResponseStatus>
+                            <User>
+                                <AccountList>
+                                    <Account>
+                                        <AccountId>123</AccountId>
+                                    </Account>
+                                </AccountList>
+                            </User>
+                        </UserAccountResponse>
+        403:
+            description: User is not associated with account.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserAccountResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12006</ErrorCode>
+                                <Description>User 'testing' is not associated with account '1'</Description>
+                            </ResponseStatus>
+                            <User>
+                                <AccountList>
+                                    <Account>
+                                        <AccountId>1</AccountId>
+                                    </Account>
+                                </AccountList>
+                            </User>
+                        </UserAccountResponse>
+post:
+    description: Allows to add account to user.
+    body:
+        application/xml:
+            example: empty body
+    responses:
+        201:
+            description: Successfully added account to user.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserAccountResponse>
+                            <User>
+                                <AccountList>
+                                    <Account>
+                                        <AccountId>123</AccountId>
+                                        <AccountName>Neustar</AccountName>
+                                    </Account>
+                                </AccountList>
+                            </User>
+                        </UserAccountResponse>
+        200:
+            description: Account already added to user.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserAccountResponse>
+                            <User>
+                                <AccountList>
+                                    <Account>
+                                        <AccountId>123</AccountId>
+                                        <AccountName>Neustar</AccountName>
+                                    </Account>
+                                </AccountList>
+                            </User>
+                        </UserAccountResponse>
+        403:
+            description: Account scope user can add just own accounts.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserAccountResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12689</ErrorCode>
+                                <Description>Account(s) assigned to this user must be managed by the assigning user</Description>
+                            </ResponseStatus>
+                            <User>
+                                <AccountList>
+                                    <Account>
+                                        <AccountId>1</AccountId>
+                                    </Account>
+                                </AccountList>
+                            </User>
+                        </UserAccountResponse>
+        404:
+            description: Account not found.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserAccountResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12020</ErrorCode>
+                                <Description>Account '111' does not exist</Description>
+                            </ResponseStatus>
+                            <User>
+                                <AccountList>
+                                    <Account>
+                                        <AccountId>111</AccountId>
+                                    </Account>
+                                </AccountList>
+                            </User>
+                        </UserAccountResponse>
+delete:
+    description: Remove user account association.
+    body:
+        application/xml:
+            example: empty body
+    responses:
+        200:
+            description: User account association deleted.
+            body:
+                application/xml:
+                    example: empty body
+        404:
+            description: Account not found.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserAccountResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12020</ErrorCode>
+                                <Description>Account '3' does not exist</Description>
+                            </ResponseStatus>
+                            <User>
+                                <AccountList>
+                                    <Account>
+                                        <AccountId>3</AccountId>
+                                    </Account>
+                                </AccountList>
+                            </User>
+                        </UserAccountResponse>
+        403:
+            description: User is not associated with account.
+            body:
+                application/xml:
+                    example: |
+                       <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                       <UserAccountResponse>
+                           <ResponseStatus>
+                               <ErrorCode>12006</ErrorCode>
+                               <Description>User 'testing' is not associated with account '2'</Description>
+                           </ResponseStatus>
+                           <User>
+                               <AccountList>
+                                   <Account>
+                                       <AccountId>2</AccountId>
+                                   </Account>
+                               </AccountList>
+                           </User>
+                       </UserAccountResponse>

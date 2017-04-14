@@ -1,0 +1,17 @@
+!fileScope external
+
+get:
+    description: Retrieve count of Telephone numbers for the indicated site
+
+    responses:
+        200:
+            description: The total count of Telephone Numbers associated with the site.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <SiteTNsResponse>
+                            <SiteTNs>
+                                <TotalCount>26</TotalCount>
+                            </SiteTNs>
+                        </SiteTNsResponse>

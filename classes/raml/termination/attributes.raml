@@ -1,0 +1,230 @@
+!fileScope internal
+
+get:
+  description: |
+    This API allow get a list of all available Termination Attributes, intended for use in
+    configuring a termination product against an IRIS Account or a SIP Peer.
+  responses:
+    200:
+      body:
+        application/xml:
+          example:
+            <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <TerminationAttributesResponse>
+              <TerminationAttributeList>
+                <AttributeType>Name A</AttributeType>
+                <AttributeType>Name B</AttributeType>
+              </TerminationAttributeList>
+            </TerminationAttributesResponse>
+    500:
+      body:
+        application/xml:
+          example:
+            <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <TerminationAttributesResponse>
+              <ResponseStatus>
+                <ErrorCode>18000</ErrorCode>
+                <Description>Internal Roger error</Description>
+              </ResponseStatus>
+            </TerminationAttributesResponse>
+/{attributeName}:
+  uriParameters:
+    attributeName:
+      type: string
+  get:
+    description: Get the details associated with an Attribute.
+    responses:
+      200:
+        body:
+          application/xml:
+            example:
+              <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+              <RogerAttributeResponse>
+                <TerminationAttributeDetails>
+                  <TypeName>DOMESTIC_MARGINPROTECTION</TypeName>
+                  <ValidationType>REGEX</ValidationType>
+                  <enabledForAccounts>true</enabledForAccounts>
+                  <enabledForGateways>false</enabledForGateways>
+                  <lcrEnabled>true</lcrEnabled>
+                  <core2Enabled>false</core2Enabled>
+                  <billingEnabled>true</billingEnabled>
+                  <ValuesList>
+                    <CandidateValue>A</CandidateValue>
+                    <CandidateValue>B</CandidateValue>
+                  </ValuesList>
+                </TerminationAttributeDetails>
+              </RogerAttributeResponse>
+      400:
+        body:
+          application/xml:
+            example:
+              <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+              <TerminationAttributeResponse>
+                <ResponseStatus>
+                  <ErrorCode>18001</ErrorCode>
+                  <Description>Attribute name must be not empty</Description>
+                </ResponseStatus>
+              </TerminationAttributeResponse>
+      404:
+        body:
+          application/xml:
+            example:
+              <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+              <TerminationAttributeResponse>
+                <ResponseStatus>
+                  <ErrorCode>18002</ErrorCode>
+                  <Description>Attribute with name 'NAME' not found</Description>
+                </ResponseStatus>
+              </TerminationAttributeResponse>
+      500:
+        body:
+          application/xml:
+            example:
+              <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+              <TerminationAttributesResponse>
+                <ResponseStatus>
+                  <ErrorCode>18000</ErrorCode>
+                  <Description>Internal Roger error</Description>
+                </ResponseStatus>
+              </TerminationAttributesResponse>
+/carriermask:
+  get:
+    description: Get list of named Carrier Masks from Roger
+    responses:
+      200:
+        body:
+          application/xml:
+            example:
+              <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+              <CarrierMaskResponse>
+                <TermCarriermaskList>
+                  <Carriermask>
+                    <TermCarriermaskName>Mask name A</TermCarriermaskName>
+                    <TermCarriermaskId>1/TermCarriermaskId>
+                  </Carriermask>
+                  <Carriermask>
+                    <TermCarriermaskName>Mask name B</TermCarriermaskName>
+                    <TermCarriermaskId>2</TermCarriermaskId>
+                  </Carriermask>
+                </TermCarriermaskList>
+              </CarrierMaskResponse>
+      500:
+        body:
+          application/xml:
+            example:
+              <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+              <TerminationAttributesResponse>
+                <ResponseStatus>
+                  <ErrorCode>18000</ErrorCode>
+                  <Description>Internal Roger error</Description>
+                </ResponseStatus>
+              </TerminationAttributesResponse>
+  post:
+      description: Create a carrier mask
+      body:
+          application/xml:
+              example:
+                  <?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+                  <CarrierMaskApiDto>
+                    <carrierMaskName>testName1406</carrierMaskName>
+                    <carrierMaskType>NPANXX</carrierMaskType>
+                    <npaNxxCarrierMasks>
+                        <carrierMask>00000</carrierMask>
+                        <npaNxx>222222</npaNxx>
+                    </npaNxxCarrierMasks>
+                    <userType>TERMINATION_SERVICES</userType>
+                  </CarrierMaskApiDto>
+      responses:
+          201:
+              description:
+                  The carrier mask has been created as described in the payload <br>
+              body:
+                  application/xml:
+                      example:
+                          <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                          <CarrierMaskCreateResponse>
+                            <Carriermask>
+                              <TermCarriermaskName>testName1406</TermCarriermaskName>
+                              <TermCarriermaskId>11</TermCarriermaskId>
+                            </Carriermask>
+                          </CarrierMaskCreateResponse>
+          500:
+              description: It may happen in many cases, e.g. such carrier mask name already exists
+              body:
+                  application/xml:
+                      example:
+                        <CarrierMaskCreateResponse>
+                          <ResponseStatus>
+                            <ErrorCode>18000</ErrorCode>
+                            <Description>Internal Roger error</Description>
+                          </ResponseStatus>
+                        </CarrierMaskCreateResponse>
+/routingexception :
+  get:
+    description: Get list of named Routing Exceptions from Roger
+    responses:
+      200:
+        body:
+          application/xml:
+            example:
+              <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+              <RoutingExceptionResponse>
+                <TermRoutingexceptionList>
+                  <TermRoutingexception>
+                    <TermRoutingexceptionName>Exception name A</TermRoutingexceptionName>
+                    <TermRoutingexceptionId>1</TermRoutingexceptionId>
+                  </TermRoutingexception>
+                  <TermRoutingexception>
+                    <TermRoutingexceptionName>Exception name B</TermRoutingexceptionName>
+                    <TermRoutingexceptionId>2</TermRoutingexceptionId>
+                  </TermRoutingexception>
+                </TermRoutingexceptionList>
+              </RoutingExceptionResponse>
+      500:
+        body:
+          application/xml:
+            example:
+              <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+              <TerminationAttributesResponse>
+                <ResponseStatus>
+                  <ErrorCode>18000</ErrorCode>
+                  <Description>Internal Roger error</Description>
+                </ResponseStatus>
+              </TerminationAttributesResponse>
+  post:
+    description: Create a routing exception
+    body:
+        application/xml:
+            example:
+                <?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+                <RoutingExceptionApiDto>
+                    <routingExceptionName>routingExceptionTestName1234</routingExceptionName>
+                        <routingExceptions>
+                            <prefix>403459</prefix>
+                            <routingExceptionType>BLOCK</routingExceptionType>
+                        </routingExceptions>
+                </RoutingExceptionApiDto>
+    responses:
+        201:
+            description: The routing exception has been created as described in the payload <br>
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <RoutingExceptionCreateResponse>
+                            <TermRoutingException>
+                                <TermRoutingexceptionName>routingExceptionTestName1234</TermRoutingexceptionName>
+                                <TermRoutingexceptionId>9</TermRoutingexceptionId>
+                            </TermRoutingException>
+                        </RoutingExceptionCreateResponse>
+        500:
+            description: It may happen in many cases, e.g. such routing exception name already exists
+            body:
+                application/xml:
+                    example:
+                         <RoutingExceptionCreateResponse>
+                           <ResponseStatus>
+                             <ErrorCode>18000</ErrorCode>
+                             <Description>Internal Roger error</Description>
+                           </ResponseStatus>
+                         </RoutingExceptionCreateResponse>

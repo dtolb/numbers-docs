@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AlternateEndUserIdentifierResponse>
+    <AlternateEndUserIdentifier>
+        <Identifier>DavidAcid</Identifier>
+        <CallbackNumber>8042105760</CallbackNumber>
+        <E911>
+            <CallerName>David</CallerName>
+            <Address>
+                <HouseNumber>900</HouseNumber>
+                <HouseSuffix></HouseSuffix>
+                <PreDirectional></PreDirectional>
+                <StreetName>MAIN CAMPUS</StreetName>
+                <StreetSuffix>DR</StreetSuffix>
+                <AddressLine2></AddressLine2>
+                <City>RALEIGH</City>
+                <StateCode>NC</StateCode>
+                <Zip>27606</Zip>
+                <PlusFour>5214</PlusFour>
+                <Country>United States</Country>
+                <AddressType>Billing</AddressType>
+            </Address>
+        </E911>
+    </AlternateEndUserIdentifier>
+</AlternateEndUserIdentifierResponse>

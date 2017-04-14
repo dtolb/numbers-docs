@@ -1,0 +1,100 @@
+!fileScope internal
+
+description: This resource retrieves information about users settings.
+get:
+    description: Retrieves the information about scope and active status by unique user name.
+    responses:
+        200:
+            description: The information has been successfully retrieved and displayed in the payload.
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserSettingsResponse>
+                            <User>
+                                <UserSettings>
+                                    <Scope>Account</Scope>
+                                    <Active>true</Active>
+                                    <AllowedApiOrigin>GUI</AllowedApiOrigin>
+                                </UserSettings>
+                            </User>
+                        </UserSettingsResponse>
+        404:
+            description: The user does not exist.
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserSettingsResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12000</ErrorCode>
+                                <Description>User 'jbm' does not exist</Description>
+                            </ResponseStatus>
+                            <User/>
+                        </UserSettingsResponse>
+        400:
+            description: The user has more then one scope.
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserSettingsResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12070</ErrorCode>
+                                <Description>User 'jbm' has more than one scope. Will automatically reset to lowest users scope.</Description>
+                            </ResponseStatus>
+                            <User>
+                                <UserSettings>
+                                    <Scope>All</Scope>
+                                    <Active>true</Active>
+                                    <AllowedApiOrigin>GUI</AllowedApiOrigin>
+                                </UserSettings>
+                            </User>
+                        </UserSettingsResponse>
+put:
+    description: Updates the information about scope and active by unique user name.
+    body:
+        application/xml:
+            example:
+                <UserSettings>
+                    <Scope>All</Scope>
+                    <Active>true</Active>
+                    <AllowedApiOrigin>API</AllowedApiOrigin>
+                </UserSettings>
+    responses:
+        200:
+             description: The user settings has been successfully updated and displayed in the payload.
+             body:
+                 application/xml:
+                      example:
+                          <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                          <UserSettingsResponse>
+                              <User>
+                                  <UserId>testCreatingUser1</UserId>
+                                  <UserSettings>
+                                      <Scope>All</Scope>
+                                      <Active>true</Active>
+                                      <AllowedApiOrigin>API</AllowedApiOrigin>
+                                  </UserSettings>
+                              </User>
+                          </UserSettingsResponse>
+        400:
+            description: The user try setup scope that higher than his own.
+            body:
+                application/xml:
+                    example:
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <UserSettingsResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12676</ErrorCode>
+                                <Description>Scope priority can't be higher than your own.</Description>
+                            </ResponseStatus>
+                            <User>
+                                <UserId>testCreatingUser1</UserId>
+                                <UserSettings>
+                                    <Scope>All</Scope>
+                                    <Active>true</Active>
+                                    <AllowedApiOrigin>API</AllowedApiOrigin>
+                                </UserSettings>
+                            </User>
+                        </UserSettingsResponse>

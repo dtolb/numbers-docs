@@ -1,0 +1,24 @@
+!fileScope all
+#%RAML 0.8
+---
+title: TermServices REST API Documentation
+# Use null host here to trigger automatic replacement in javascript
+baseUri: http://null
+version: v1
+
+securedBy: [basic]
+
+securitySchemes:
+   - basic:
+        type: Basic Authentication
+
+/customer/account: !include termservices/account.raml
+/carriermask: !include termservices/carrierMask.raml
+/customer/account/{id}/attribute: !include termservices/customerAccountAttribute.raml
+/customer/attribute: !include termservices/customerAttributeMetadata.raml
+/customer/product: !include termservices/customerProduct.raml
+/customer/account/{accountId}/product: !include termservices/customerProductAssignment.raml
+/customer/ratedeck: !include termservices/customerRateDeck.raml
+/customer/account/{id}/ratedeck: !include termservices/customerRateDeckAssignment.raml
+/customer/account/{id}/gateway: !include termservices/gateway.raml
+/routingexception: !include termservices/routingException.raml

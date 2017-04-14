@@ -1,0 +1,187 @@
+  !fileScope internal 
+
+  description: |
+         This API is used by POT internally to enqueue a portout request directly in Iris.
+  delete:
+    description: |
+        Cancels a portout enqueued in Iris. 
+    body:
+        application/xml:           
+          example: |
+                <PortOutRequest>
+                    <BulkPortOut>
+                        <PON>[POT assigned PON]</PON>
+                        <Pin>55678</Pin>
+                        <NewNetworkSPID>512E</NewNetworkSPID>
+                        <FocDate>2012-09-29T15:00:00.000Z</FocDate>  ; either date or date-time
+                        <Immediately>[ true | false ]</Immediately>
+                        <Supplemental>[ NONE | UPDATE | CANCEL ]</Supplemental>
+                        <TelephoneNumberList>
+                            <TelephoneNumberToPort>[10d]</TelephoneNumberToPort>
+                            <TelephoneNumberToPort>[10d]</TelephoneNumberToPort>
+                        </TelephoneNumberList>
+                    </BulkPortOut>
+                </PortOutRequest>
+    responses:            
+      200:
+        body:
+          application/xml:
+            example: |
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <PortOutResponse>
+                      <Status>
+                        <Code>200</Code>
+                        <Description>Request is complete and results returned.</Description>
+                      </Status>
+                </PortOutResponse>
+      400:
+        body:
+          application/xml:
+            example: |
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <PortOutResponse>
+                      <Status>
+                        <Code>400</Code>
+                        <Description>Please see the error list for more details.</Description>
+                       </Status>
+                       <Errors>Some validation error</Errors>
+                       <PortOutRequest>Original request</PortOutRequest>
+                </PortOutResponse>
+                
+  put:
+    description: |
+       Updates a portout enqueued in Iris. 
+    body:
+        application/xml:           
+          example: |
+                <PortOutRequest>
+                    <!-- <PortOutAction>NEW|SUPP|MODIFY|CANCEL</PortOutAction> -->
+                    <BulkPortOut>
+                        <PON>[POT assigned PON]</PON>
+                        <Pin>55678</Pin>
+                        <NewNetworkSPID>512E</NewNetworkSPID>
+                        <FocDate>2012-09-29T15:00:00.000Z</FocDate>  ; either date or date-time
+                        <Immediately>[ true | false ]</Immediately>
+                        <Supplemental>[ NONE | UPDATE | CANCEL ]</Supplemental>
+                        <TelephoneNumberList>
+                            <TelephoneNumberToPort>[10d]</TelephoneNumberToPort>
+                            <TelephoneNumberToPort>[10d]</TelephoneNumberToPort>
+                        </TelephoneNumberList>
+                    </BulkPortOut>
+                </PortOutRequest>
+    responses:            
+      200:
+        body:
+          application/xml:
+            example: |
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <PortOutResponse>
+                      <Status>
+                        <Code>200</Code>
+                        <Description>Request is complete and results returned.</Description>
+                      </Status>
+                </PortOutResponse>
+      400:
+        body:
+          application/xml:
+            example: |
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <PortOutResponse>
+                      <Status>
+                        <Code>400</Code>
+                        <Description>Please see the error list for more details.</Description>
+                       </Status>
+                       <Errors>Some validation error</Errors>
+                       <PortOutRequest>Original request</PortOutRequest>
+                </PortOutResponse>
+  post: 
+    description: |
+      Enqueues a portout directly in Iris. 
+    body:
+        application/xml:           
+          example: |
+                <PortOutRequest>
+                    <BulkPortOut>
+                        <PON>[POT assigned PON]</PON>
+                        <Pin>55678</Pin>
+                        <NewNetworkSPID>512E</NewNetworkSPID>
+                        <FocDate>2012-09-29T15:00:00.000Z</FocDate>  ; either date or date-time
+                        <Immediately>[ true | false ]</Immediately>
+                        <Supplemental>[ NONE | UPDATE | CANCEL ]</Supplemental>
+                        <TelephoneNumberList>
+                            <TelephoneNumberToPort>[10d]</TelephoneNumberToPort>
+                            <TelephoneNumberToPort>[10d]</TelephoneNumberToPort>
+                        </TelephoneNumberList>
+                    </BulkPortOut>
+                </PortOutRequest>
+    responses:            
+      200:
+        body:
+          application/xml:
+            example: |
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <PortOutResponse>
+                      <Status>
+                        <Code>200</Code>
+                        <Description>Request is complete and results returned.</Description>
+                      </Status>
+                </PortOutResponse>
+      400:
+        body:
+          application/xml:
+            example: |
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <PortOutResponse>
+                      <Status>
+                        <Code>400</Code>
+                        <Description>Please see the error list for more details.</Description>
+                       </Status>
+                       <Errors>Some validation error</Errors>
+                       <PortOutRequest>Original request</PortOutRequest>
+                </PortOutResponse>
+
+  /{orderId}:
+   put:
+    description: |
+      Updates a portout enqueued in Iris.  
+    body:
+        application/xml:           
+          example: |
+                <PortOutRequest>
+                    <PortOutAction>NEW|SUPP|MODIFY|CANCEL</PortOutAction> 
+                    <BulkPortOut>
+                        <PON>[POT assigned PON]</PON>
+                        <Pin>55678</Pin>
+                        <NewNetworkSPID>512E</NewNetworkSPID>
+                        <FocDate>2012-09-29T15:00:00.000Z</FocDate>  <!-- either date or date-time -->
+                        <Immediately>[ true | false ]</Immediately>
+                        <Supplemental>[ NONE | UPDATE | CANCEL ]</Supplemental>
+                        <TelephoneNumberList>
+                            <TelephoneNumberToPort>[10d]</TelephoneNumberToPort>
+                            <TelephoneNumberToPort>[10d]</TelephoneNumberToPort>
+                        </TelephoneNumberList>
+                    </BulkPortOut>
+                </PortOutRequest>
+    responses:            
+      200:
+        body:
+          application/xml:
+            example: |
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <PortOutResponse>
+                      <Status>
+                        <Code>200</Code>
+                        <Description>Request is complete and results returned.</Description>
+                      </Status>
+                </PortOutResponse>
+      400:
+        body:
+          application/xml:
+            example: |
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <PortOutResponse>
+                      <Status>
+                        <Code>400</Code>
+                        <Description>Validation Failed. Please check your input parameters.</Description>
+                       </Status>
+                </PortOutResponse>

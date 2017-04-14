@@ -1,0 +1,76 @@
+!fileScope internal
+
+description: The tntotals resource is a derived resource that reports the number of TNs that are associated with the Origination product on the indicated account.  These counts are broken outbut NPANXX and Tier for billing purposes.
+get:
+    description: Retrieve the total number of TNs associated with Origination service on the account.
+
+    responses: 
+        200:
+            description: |
+                The tntotals API call result is decomposed by NPANXX and Tier, detailing the number of Origination Service TNs associated with the account in each combination of NPANXX and Tier.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <ProductTNDetailsResponse>
+                            <ProductTNDetails>
+                                <Origination>
+                                    <NPANXXDetailList>
+                                        <NPANXXDetail>
+                                            <NPANXX>804210</NPANXX>
+                                            <Tier>0</Tier>
+                                            <Count>2</Count>
+                                        </NPANXXDetail>
+                                        <NPANXXDetail>
+                                            <NPANXX>919999</NPANXX>
+                                            <Tier>0</Tier>
+                                            <Count>3</Count>
+                                        </NPANXXDetail>
+                                        <NPANXXDetail>
+                                            <NPANXX>919295</NPANXX>
+                                            <Tier>0</Tier>
+                                            <Count>1</Count>
+                                        </NPANXXDetail>
+                                    </NPANXXDetailList>
+                                </Origination>
+                            </ProductTNDetails>
+                        </ProductTNDetailsResponse>
+        400:
+            description: |
+                This indicates that an error has occurred in requesting totals.
+                Some related errors include:
+                <table style="text-align: left; width: 80%;" border="1" cellpadding="2" cellspacing="0">
+                    <tbody>
+                        <tr>
+                            <th>Error Code</td>
+                            <th>Error Text</td>
+                        </tr>
+                        <tr>
+                             <td>12017</td>
+                             <td>Account '12346157' does not have product 'TollFree'</td>
+                        </tr>
+                        <tr>
+                            <td>15000</td>
+                            <td>Product 'Termination' is not supported</td>
+                        </tr>
+                        <tr>
+                            <td>12039</td>
+                            <td>Can not request telephone number reports for product 'UcTrunking'</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <ProductTNDetailsResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12017</ErrorCode>
+                                <Description>Account '12346157' does not have product 'TollFree'</Description>
+                            </ResponseStatus>
+                        </ProductTNDetailsResponse>

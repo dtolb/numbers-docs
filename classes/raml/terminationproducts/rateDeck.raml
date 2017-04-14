@@ -1,0 +1,96 @@
+get:
+  description: |
+    Get all rate deck metadata
+  responses:
+    200:
+      body:
+        application/xml:
+          example: |
+            <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <TerminationRateDeckMetadatasResponse>
+                <TerminationRateDeckMetadatas>
+                    <TerminationRateDeckMetadata>
+                        <id>6</id>
+                        <name>npanxx1.xlsx</name>
+                        <deckType>NPANXX</deckType>
+                        <rows>5</rows>
+                        <fileName>npanxx1.xlsx</fileName>
+                    </TerminationRateDeckMetadata>
+                </TerminationRateDeckMetadatas>
+            </TerminationRateDeckMetadatasResponse>
+post:
+    description: post rate deck
+    headers:
+      Content-Type:
+        example: multipart/form-data
+      Content-Disposition:
+        example: form-data; name="file"; filename="npanxx1.xlsx"
+    body:
+        application/x-www-form-urlencoded:
+            formParameters:
+              file:
+                    type: file
+                    description: file to upload
+    responses:
+      201:
+        description: rate deck was successfully uploaded
+        headers:
+          Location:
+            description: contains rate deck id<br>
+            example: http://termservices.url/account/1
+        body:
+          application/xml:
+            example: |
+              <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+              <TerminationRateDeckResponse>
+                <TerminationRateDeckWrapper>
+                    <TerminationRateDeckMetadata>
+                        <id>1</id>
+                        <fileName>npanxx1.xlsx</fileName>
+                    </TerminationRateDeckMetadata>
+                </TerminationRateDeckWrapper>
+              </TerminationRateDeckResponse>
+
+/{rateDeckId}: !include ratedeckId/rateDeckId.raml
+/type/{deckType}:
+    get:
+      description: |
+        Get all rate decks by type
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <TerminationRateDeckMetadataByTypeResponse>
+                    <TerminationRateDeckMetadatas>
+                        <TerminationRateDeckMetadata>
+                            <id>16</id>
+                            <name>npanxx1.xlsx</name>
+                            <deckType>NPANXX</deckType>
+                            <rows>5</rows>
+                            <fileName>npanxx1.xlsx</fileName>
+                        </TerminationRateDeckMetadata>
+                    </TerminationRateDeckMetadatas>
+                </TerminationRateDeckMetadataByTypeResponse>
+/filetype/{deckId}:
+    get:
+      description: |
+        Download rate deck file by id
+      queryParameters:
+        filetype:
+            example: XLS
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <TerminationRateDeckResponse>
+                    <TerminationRateDeckWrapper>
+                        <TerminationRateDeck>
+                            <deckByteBuffer>UEsDBBQACAgI.....gAAKAsAAAAA</deckByteBuffer>
+                            <deckFileType>XLS</deckFileType>
+                        </TerminationRateDeck>
+                    </TerminationRateDeckWrapper>
+                </TerminationRateDeckResponse>

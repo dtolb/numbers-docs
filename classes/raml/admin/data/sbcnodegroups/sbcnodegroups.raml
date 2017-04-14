@@ -1,0 +1,24 @@
+!fileScope internal
+
+description: This resource retrieves information about SBC Node Groups.
+
+get:
+    responses:
+        200:
+            description: |
+                Return all existing SBC Node Groups
+            body:
+                application/xml:
+                    example: |
+                        <AdminDataResponse>
+                            <SbcNodeGroups>
+                             		<SbcNodeGroup>
+                             			<Id>1</Id>
+                             			<Name>East Coast 01</Name>
+                             		</SbcNodeGroup>
+                             		<SbcNodeGroup>
+                             			<Id>2</Id>
+                             			<Name>West Coast 01</Name>
+                             		</SbcNodeGroup>
+                             	</SbcNodeGroups>
+                        </AdminDataResponse>

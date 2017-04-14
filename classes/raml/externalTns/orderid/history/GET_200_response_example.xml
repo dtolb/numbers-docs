@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<OrderHistoryWrapper>
+    <OrderHistory>
+        <OrderDate>2015-06-16T13:30:08.623Z</OrderDate>
+        <Author>admin</Author>
+        <Status>RECEIVED</Status>
+    </OrderHistory>
+    <OrderHistory>
+        <OrderDate>2015-06-16T13:30:09.041Z</OrderDate>
+        <Author>admin</Author>
+        <Status>FAILED</Status>
+    </OrderHistory>
+</OrderHistoryWrapper>

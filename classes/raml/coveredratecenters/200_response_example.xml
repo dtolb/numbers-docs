@@ -1,0 +1,120 @@
+!fileScope all
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<CoveredRateCenters>
+    <TotalCount>18</TotalCount>
+    <Links>
+        <first>Link=&lt;https://api.inetwork.com:443/v1.0/coveredRateCenters?npa=310&amp;size=10&amp;embed=Cities&amp;embed=ZipCodes&amp;embed=NpaNxxX&amp;embed=Vendors&amp;page=1&gt;;rel="first";</first>
+        <next>Link=&lt;https://api.inetwork.com:443/v1.0/coveredRateCenters?npa=310&amp;size=10&amp;embed=Cities&amp;embed=ZipCodes&amp;embed=NpaNxxX&amp;embed=Vendors&amp;page=5&gt;;rel="next";</next>
+    </Links>
+    <CoveredRateCenter>
+        <Name>AVALON</Name>
+        <Abbreviation>AVALON</Abbreviation>
+        <State>CA</State>
+        <Lata>730</Lata>
+        <AvailableNumberCount>1</AvailableNumberCount>
+        <ZipCodes>
+            <ZipCode>90731</ZipCode>
+        </ZipCodes>
+        <Cities>
+            <City>SAN PEDRO</City>
+        </Cities>
+        !scope internal
+        <Vendors>
+            <Vendor>Bandwidth CLEC</Vendor>
+        </Vendors>
+        <Tiers>
+            <Tier>0</Tier>
+        </Tiers>
+        <NpaNxxXs>
+            <NpaNxxX>3105100</NpaNxxX>
+            <NpaNxxX>3105101</NpaNxxX>
+            <NpaNxxX>3109498</NpaNxxX>
+            <NpaNxxX>3109499</NpaNxxX>
+            <NpaNxxX>4242260</NpaNxxX>
+        </NpaNxxXs>
+        <Id>3151</Id>
+        <LocalRateCenters>
+            <RateCenterId>369</RateCenterId>
+            <RateCenterId>7843</RateCenterId>
+            <RateCenterId>7945</RateCenterId>
+            <RateCenterId>2461</RateCenterId>
+            <RateCenterId>10741</RateCenterId>
+            <RateCenterId>7059</RateCenterId>
+        </LocalRateCenters>
+    </CoveredRateCenter>
+    <CoveredRateCenter>
+        <Name>BEVERLY HILLS</Name>
+        <Abbreviation>BEVERLYHLS</Abbreviation>
+        <State>CA</State>
+        <Lata>730</Lata>
+        <AvailableNumberCount>25</AvailableNumberCount>
+        <ZipCodes>
+            <ZipCode>90013</ZipCode>
+            <ZipCode>90014</ZipCode>
+            <ZipCode>90015</ZipCode>
+            <ZipCode>90017</ZipCode>
+            <ZipCode>90044</ZipCode>
+            <ZipCode>90048</ZipCode>
+            <ZipCode>90059</ZipCode>
+            <ZipCode>90061</ZipCode>
+            <ZipCode>90071</ZipCode>
+            <ZipCode>90079</ZipCode>
+            <ZipCode>90210</ZipCode>
+            <ZipCode>90211</ZipCode>
+            <ZipCode>90212</ZipCode>
+            <ZipCode>90247</ZipCode>
+            <ZipCode>90248</ZipCode>
+            <ZipCode>90249</ZipCode>
+            <ZipCode>91352</ZipCode>
+            <ZipCode>91403</ZipCode>
+            <ZipCode>91411</ZipCode>
+            <ZipCode>91423</ZipCode>
+            <ZipCode>91504</ZipCode>
+            <ZipCode>91505</ZipCode>
+        </ZipCodes>
+        <Cities>
+            <City>BEVERLY HILLS</City>
+            <City>BURBANK</City>
+            <City>GARDENA</City>
+            <City>LOS ANGELES</City>
+            <City>SHERMAN OAKS</City>
+            <City>SUN VALLEY</City>
+            <City>VAN NUYS</City>
+        </Cities>
+        !scope internal
+        <Vendors>
+            <Vendor>Bandwidth CLEC</Vendor>
+        </Vendors>
+        <Tiers>
+            <Tier>0</Tier>
+        </Tiers>
+        <NpaNxxXs>
+            <NpaNxxX>3102010</NpaNxxX>
+            <NpaNxxX>3102011</NpaNxxX>
+            <NpaNxxX>3102012</NpaNxxX>
+            <NpaNxxX>3102013</NpaNxxX>
+            <NpaNxxX>3102014</NpaNxxX>
+            <NpaNxxX>3102015</NpaNxxX>
+            <NpaNxxX>3102016</NpaNxxX>
+            <NpaNxxX>3102017</NpaNxxX>
+            <NpaNxxX>3102018</NpaNxxX>
+            <NpaNxxX>3102019</NpaNxxX>
+            <NpaNxxX>4246669</NpaNxxX>
+            <NpaNxxX>4247770</NpaNxxX>
+            <NpaNxxX>4247771</NpaNxxX>
+            <NpaNxxX>4247772</NpaNxxX>
+            <NpaNxxX>4247773</NpaNxxX>
+            <NpaNxxX>4247774</NpaNxxX>
+            <NpaNxxX>4247775</NpaNxxX>
+            <NpaNxxX>4247776</NpaNxxX>
+            <NpaNxxX>4247777</NpaNxxX>
+            <NpaNxxX>4247778</NpaNxxX>
+            <NpaNxxX>4247779</NpaNxxX>
+        </NpaNxxXs>
+        <Id>3538</Id>
+        <LocalRateCenters>
+            <RateCenterId>4421</RateCenterId>
+            <RateCenterId>14259</RateCenterId>
+        </LocalRateCenters>
+    </CoveredRateCenter>
+</CoveredRateCenters>

@@ -1,0 +1,178 @@
+!fileScope internal
+
+description: |
+    Find the In Service numbers on the account
+
+    The inservicenumbers query will return all of the inservice numbers on the account, filtered with a wide range of 
+    search query parameters.  Note that many search combinations will not return a meaningful result because the search 
+    parameters are mutually exclusive.  Since mutually exclusive search criteria result from data that can't  satisfy all of
+    the criteria, these are not flagged as errors, and instead simply return an empty result.
+
+get:
+    description: Get a  report on the Import to Available orders
+    queryParameters:
+        page:
+            description: the page to fetch in a paginated collection
+            type: integer
+            required: true
+            default: 1
+        size:
+            description: the number of TNs to retrieve
+            type: integer
+            required: true
+            default: 300
+#        areacode:
+#            description: An Area Code search filter - all returned TNs will be in the entered Area Code
+#            type: integer
+#            example: 919
+#            minimum: 200
+#            maximum: 999
+#        npanxx:
+#            description: An NPA NXX search filter - all returned TNs will be in the entered NPA NXX dial plan
+#            type: integer
+#            example: 919859
+#            minimum: 200000
+#            maximum: 999999
+#        lata:
+#            description: A LATA search filter - all returned TNs will be in the entered Rate Center.  Typically this is a 3 or 5 digit value
+#            type: integer
+#            example: 435
+#            minimum: 001
+#            maximum: 99999
+#        ratecenter:
+#            description: A Rate Center search filter - all returned TNs will be in the entered Rate Center.  This Rate Center must be combined with a State in the query.  If State is not included in the query then the queryu will fail.
+#            type: string
+#            example: PLANO
+
+    responses: 
+        200:
+            description: A successful result that contains the response data
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0"?>
+                        <ResponseSelectWrapper>
+                            <ListOrderIdUserIdDate>
+                                <TotalCount>7</TotalCount>
+                                <Links>
+                                    <first>
+                                    </first>
+                                </Links>
+                                <OrderIdUserIdDate>
+                                    <CountOfTNs>10</CountOfTNs>
+                                    <lastModifiedDate>2012-07-18T13:06:58.000Z</lastModifiedDate>
+                                    <OrderDate>2012-12-05T20:54:54.418Z</OrderDate>
+                                    <orderId>ed1c0bed-e2ba-432d-bb58-81dca35a62ef</orderId>
+                                    <OrderStatus>COMPLETE</OrderStatus>
+                                    <TelephoneNumberDetails>
+                                        <States>
+                                            <StateWithCount>
+                                                <State>MD</State>
+                                                <Count>10</Count>
+                                            </StateWithCount>
+                                        </States>
+                                        <RateCenters>
+                                            <RateCenterWithCount>
+                                                <Count>10</Count>
+                                                <RateCenter>GAITHERSBG</RateCenter>
+                                            </RateCenterWithCount>
+                                        </RateCenters>
+                                        <Cities>
+                                            <CityWithCount>
+                                                <City>GAITHERSBURG</City>
+                                                <Count>10</Count>
+                                            </CityWithCount>
+                                        </Cities>
+                                        <Tiers>
+                                            <TierWithCount>
+                                                <Tier>0</Tier>
+                                                <Count>10</Count>
+                                            </TierWithCount>
+                                        </Tiers>
+                                        <Vendors>
+                                            <VendorWithCount>
+                                                <VendorId>49</VendorId>
+                                                <Count>10</Count>
+                                            </VendorWithCount>
+                                        </Vendors>
+                                    </TelephoneNumberDetails>
+                                    <userId>irisuser_nms</userId>
+                                </OrderIdUserIdDate>
+                                <OrderIdUserIdDate>...</OrderIdUserIdDate>
+                                <OrderIdUserIdDate>...</OrderIdUserIdDate>
+                                <OrderIdUserIdDate>
+                                    <CountOfTNs>0</CountOfTNs>
+                                    <lastModifiedDate>2012-07-17T19:51:57.000Z</lastModifiedDate>
+                                    <OrderDate>2012-12-05T20:54:54.315Z</OrderDate>
+                                    <orderId>8facbdcf-ea51-4527-aace-254a5485a496</orderId>
+                                    <OrderStatus>FAILED</OrderStatus>
+                                    <userId>irisuser_nms</userId>
+                                </OrderIdUserIdDate>
+                                <OrderIdUserIdDate>...</OrderIdUserIdDate>
+                                <OrderIdUserIdDate>...</OrderIdUserIdDate>
+                                <OrderIdUserIdDate>...</OrderIdUserIdDate>
+                            </ListOrderIdUserIdDate>
+                        </ResponseSelectWrapper>
+        204:
+            description: No Content - there are no numbers found using the search parameters
+        404:
+            description: Not Found - The search parameters are invalid and prevent finding any content   
+
+post:
+    description: |
+        A POST to the available orders API will add the listed TNs to the overall inventory, and create a work-order that can be used to track the status of that attempt.
+
+        Key data elements in the payload include...
+        * The account and gateway profile, that control the routing of calls that are placed to these numbers.  The typical values are *UnallocatedNonTF* and *UnallocatedTF*.
+        * The Vendor name that will be associated with these numbers.  There must be allignment with the NPANXX of the numbers that are being imported, and the Vendor that supplies the rate center in which the numbers will land.
+        * The list of telephone numbers themselves.
+    body: 
+        application/xml:
+            example: |
+                <?xml version="1.0"?>
+                <ImportAvailableNumberOrder>
+                    <ImportAvailableNumberOrderType>
+                        <AccountProfile>UnallocatedNonTF</AccountProfile>
+                        <GatewayProfile>UnallocatedNonTF</GatewayProfile>
+                        <TelephoneNumberList>
+                            <TelephoneNumber>9702122349</TelephoneNumber>
+                            <TelephoneNumber>9702122350</TelephoneNumber>
+                            <TelephoneNumber>9702122351</TelephoneNumber>
+                            <TelephoneNumber>9702122352</TelephoneNumber>
+                        </TelephoneNumberList>
+                        <VendorName>Bandwidth.com powered by Level 3</VendorName>
+                    </ImportAvailableNumberOrderType>
+                </ImportAvailableNumberOrder>
+    responses:
+        201:
+            description: | 
+                Created.
+                This response describes the creation of the import to available work-order that describes the attempt to import numbers into the Bandwidth Dashboard available inventory.  The response includes an XML payload that describes the order, and also includes a Location header value that will access the created order resource.
+
+                Payload items include...
+                * the ID of the work order that was created
+                * the details provided in the POST that created the order.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                            <ImportAvailableNumberOrderResponse>
+                                <orderRequest>
+                                    <id>6b811ff6-3e48-4513-a3b3-8f41cce1bfd5</id>
+                                    <ImportAvailableNumberOrderType>
+                                        <AccountProfile>UnallocatedNonTF</AccountProfile>
+                                        <GatewayProfile>UnallocatedNonTF</GatewayProfile>
+                                        <TelephoneNumberList>
+                                            <TelephoneNumber>9702122349</TelephoneNumber>
+                                            <TelephoneNumber>9702122350</TelephoneNumber>
+                                            <TelephoneNumber>9702122351</TelephoneNumber>
+                                            <TelephoneNumber>9702122352</TelephoneNumber>
+                                        </TelephoneNumberList>
+                                        <VendorName>Bandwidth.com powered by Level 3</VendorName>
+                                    </ImportAvailableNumberOrderType>
+                                </orderRequest>
+                            </ImportAvailableNumberOrderResponse>
+
+
+
+/{orderid}: !include orderid/orderid.raml

@@ -1,0 +1,107 @@
+!fileScope internal
+
+description: Access and modify the current contract of a site.
+
+get:
+    description: Retrieves the current billing ID of a site.
+    responses:
+        200:
+            description: contract successfully retrieved
+            body: 
+                application/xml:
+                    example: |
+                        <SiteContractResponse>
+							<Contract>
+								<SalesRepresentative>
+									<Id>12345</Id>
+									<FirstName>John</FirstName>
+									<LastName>Doe</LastName>
+									<Email>noreply@bandwidth.com</Email>
+									<PhoneNumber>9195555555</PhoneNumber>
+								</SalesRepresentative>
+								<ContactPerson>
+									<FirstName>Jane</FirstName>
+									<LastName>Doe</LastName>
+									<Email>jbs@bandwidth.com</Email>
+									<PhoneNumber>9195555555</PhoneNumber>
+								</ContactPerson>
+							</Contract>
+						</SiteContractResponse>
+		404:
+			description: the billing ID does not exist
+            body:
+                application/xml:
+                    example: |
+                        <SiteContractResponse>
+							<ResponseStatus>
+								<ErrorCode>12057</ErrorCode>
+								<Description>Contract for site id '332' does not exist</Description>
+							</ResponseStatus>
+						</SiteContractResponse>
+
+put:
+    description: Updates the contract of a site.
+    body:
+        application/xml:
+            example: |
+                <?xml version="1.0" ?>
+				<Contract>
+					<ContactPerson>
+						<FirstName>Jane</FirstName>
+						<LastName>Doe</LastName>
+						<Email>jbs@bandwidth.com</Email>
+						<PhoneNumber>9195555555</PhoneNumber>
+					</ContactPerson>
+					<SalesRepresentative>
+						<Id>12345</Id>
+						<FirstName>John</FirstName>
+						<LastName>Doe</LastName>
+						<Email>noreply@bandwidth.com</Email>
+						<PhoneNumber>9195555555</PhoneNumber>
+					</SalesRepresentative>
+				</Contract>
+
+    responses:
+        200:
+            description: 
+            	An HTTP 200 (OK) is returned if the site's contract has been successfully updated.
+        400:
+            description: 
+            	An HTTP 400 (BAD REQUEST) is returned if the request to modify the site's contract was invalid, e.g. the Contact Person is omitted.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" ?>
+						<SiteContractResponse>
+							<ResponseStatus>
+								<ErrorCode>12051</ErrorCode>
+								<Description>The following fields are required for Agent accounts: ContactPerson->Email</Description>
+							</ResponseStatus>
+						</SiteContractResponse>
+
+delete:
+	description: Deletes the contract from a locked site.
+
+	responses:
+		200:
+			description: 
+				An HTTP 200 (OK) is returned if the site's contract has been successfully deleted.
+		404:
+			description: 
+				An HTTP 404 (NOT FOUND) is returned if the site's contract does not exist
+		408:
+			description: 
+				An HTTP 408 (CONFLICT) is returned if the request to modify the site's contract can not be completed in the site's current state. The site must be unlocked to perform this operation.
+			body:
+				application/xml:
+					example: |
+						<?xml version="1.0" ?>
+						<SiteContractResponse>
+							<ResponseStatus>
+								<ErrorCode>12058</ErrorCode>
+								<Description>
+									This site is currently unlocked, and the requested operation can only be completed on a locked site. Please contact support for further assistance.
+								</Description>
+							</ResponseStatus>
+						</SiteContractResponse>
+			

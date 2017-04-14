@@ -1,0 +1,66 @@
+!fileScope internal
+get:
+    description: get all customer rate decks
+    responses:
+        200:
+            description: managed to get all customer rate decks
+            body:
+                application/json:
+                 schema: |
+                    {
+                        "deckMap" : {
+                            "1" :  {
+                                "id" : 1,
+                                "name" : "npanxx1.xlsx",
+                                "deckType" : "NPANXX",
+                                "rows" : 7,
+                                "fileName" : "npanxx1.xlsx"
+                            }
+                        }
+                    }
+        500:
+            description: any transaction error
+/{deckId}:
+    get:
+        description: get rate decks by its id
+        responses:
+            200:
+                description: managed to get all customer rate decks
+                body:
+                    application/json:
+                     schema: |
+                        {
+                            "deckMap" : {
+                                          "1" : {
+                                                  "id" : 1,
+                                                  "name" : "npanxx1.xlsx",
+                                                  "deckType" : "NPANXX",
+                                                  "rows" : 7,
+                                                  "fileName" : "npanxx1.xlsx"
+                                               }
+                                          }
+                            }
+            400:
+                description: rate deck with such id does not exist
+            500:
+                description: any transaction error
+/upload:
+    post:
+        description: upload customer deck file
+        body:
+            application/x-www-form-urlencoded:
+                formParameters:
+                  file:
+                    type: file
+                    description: file to upload
+        responses:
+            201:
+                description: File was successfully uploaded
+            400:
+                description: File is empty, has invalid structure or unsupported format
+            500:
+                description: any transaction error
+
+
+
+

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<TnOptionOrder>
+    <OrderCreateDate>2016-01-15T11:36:52.727Z</OrderCreateDate>
+    <AccountId>1</AccountId>
+    <CreatedByUser>jbm</CreatedByUser>
+    <OrderId>65e03a35-6b97-48a5-8126-f47bad02df2a</OrderId>
+    <LastModifiedDate>2016-01-15T11:36:52.853Z</LastModifiedDate>
+    <ProcessingStatus>COMPLETE</ProcessingStatus>
+    <TnOptionGroups>
+        <TnOptionGroup>
+            <NumberFormat>10digit</NumberFormat>
+            <RPIDFormat>10digit</RPIDFormat>
+            <RewriteUser>testUser1</RewriteUser>
+            <CallForward>6042661720</CallForward>
+            <CallingNameDisplay>on</CallingNameDisplay>
+            <Protected>true</Protected>
+            <Sms>on</Sms>
+            <TelephoneNumbers>
+                <TelephoneNumber>2018551025</TelephoneNumber>
+            </TelephoneNumbers>
+        </TnOptionGroup>
+    </TnOptionGroups>
+    <ErrorList/>
+</TnOptionOrder>

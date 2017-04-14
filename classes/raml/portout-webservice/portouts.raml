@@ -1,0 +1,308 @@
+!fileScope internal 
+       
+  description: |
+    This API is used to search, create and update internal portouts managed by POT. 
+  get: 
+        description: This resource is used to search for a set of portouts in POT by specifying one or more of the query parameters listed below.
+        queryParameters: 
+          TN: 
+              description: a TN - 10 Digits 
+              type: string 
+              example: 9199918388
+          PON:
+              description: Purchase Order Number - associated with the processing of the Port-in by third parties
+              type: string
+              example: 2578d71f-5e1a-4d6a-a9f4-16cf08f3e4b6
+          supplemental:
+              description: update type - (NONE, 0), (CANCEL, 1), (UPDATE, 2), (OTHER, 3); 
+              type: integer
+          internalPort:
+              description: is portout internal 
+              type: boolean 
+          focDateLow:
+              description: date range to search
+              type: string 
+          focDateHigh:
+              description:  date range to search
+              type: string 
+          submitStatus:
+              description: SUCCESS, FAIL, REJECT;
+              type: string
+              
+        responses:
+          200:
+              body: 
+                application/xml:
+                  example: |
+                          <PortOutSearchResponse>
+                            <Status>
+                              <Code>200</Code>
+                              <Description>Request is complete and results returned.</Description>
+                            </Status>
+                            <pon>d82b811e-803a-4996-8a1f-565aab3a86a6</pon>
+                            <errorDetails></errorDetails> 
+                            <PortOutResults>
+                              <PortOutResult>
+                                <tn>[10d]</tn>
+                                <pon>d82b811e-803a-4996-8a1f-565aab3a86a6</pon>
+                                <supplemental>OrderType</supplemental>
+                                <internalPort>boolean</internalPort>
+                                <inService>Boolean</inService>
+                                <googleNumber>Boolean</googleNumber>
+                                <googleApproved>Boolean</googleApproved>
+                                <bandwidthNumber>Boolean</bandwidthNumber>
+                                <irisNumber>Boolean</irisNumber>
+                                <accountName>String</accountName>
+                                <accountId>String</accountId>
+                                <SubmitStatus>SUCCESS|FAIL|REJECT</SubmitStatus>
+                                <focDate>Date</focDate>
+                                <apiCallTime>Date</apiCallTime>
+                                <submitTime>Date</submitTime>
+                                <focDate>Date</focDate>
+                                <immediately>Boolean</immediately>
+                                <rejectCodes>
+                                  <rejectCode>
+                                     NOT_IN_SERVICE|
+                                     NOT_BANDWIDTH_CLEC|
+                                     GOOGLE_NOT_APPROVED|
+                                     CUSTOMER_MISMATCH|
+                                     MULTIPLE_ACCOUNTS|
+                                     BLOCKED_ACCOUNT|
+                                     OTHER_REJECTED_IN_ORDER|
+                                     OTHER
+                                  </rejectCode>
+                                </rejectCodes>
+                              </PortOutResult>
+                            </PortOutResults>
+                          </PortOutSearchResponse>
+              
+  post:
+        description: | 
+             Creates an internal portout request to POT. At the creation stage, the PON should not be specified in the request as it will be created by POT and returned in the response.
+        body:
+          application/xml:   
+            example:  !include bulkportout.xml
+        responses:    
+          201:
+              description: |
+                  Response for the POST request contains newly generated PON and location field. Example - Location {Base URL}/portout-webservice/portouts/d82b811e-803a-4996-8a1f-565aab3a86a6
+              body: 
+                  application/xml:
+                    example: |
+                          <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                          <BulkPortOutResponse>
+                              <PON>d82b811e-803a-4996-8a1f-565aab3a86a6</PON>
+                          </BulkPortOutResponse>"
+          400:
+              description: Other status codes handled as failed and put into EXCEPTION state. 
+  put:
+        description: Resource that is used to update the portout state.    
+        body:
+          application/xml:   
+            example:  !include internalportevent.xml
+        responses:    
+          200:
+              description: |
+                  Response indicating a successful update of the portout.
+          404: 
+              description: |
+                  specified PON is not found.
+  
+  /{pon}: 
+    description: |
+      This API is used to update a portout by PON.
+    put: 
+      description: |
+        This resource is used to update (supplement) an existing portout. Users will need to parse the ProcessingStatus field to determine the status of the order after the update. If the ProcessingStatus is EXCEPTION, users will need to parse the ProcessingErrors section for all Error elements that will provide the error description. 
+      body: 
+        application/xml:           
+          example:  !include bulkportout.xml
+      responses:    
+        200:
+            description: |
+               POT successfully received update.
+            body:
+                application/xml:                         
+                  example: |
+                      <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                          <BulkPortOutResponse>
+                              <PON>011ff629-ca9d-4cd6-9ebb-e00f3510be91</PON>
+                              <Status>
+                                 <Code>200</Code>
+                                 <Description>Request is complete and results returned.</Description>
+                              </Status>
+                              <ProcessingStatus>EXCEPTION</ProcessingStatus>
+                              <ProcessingErrors>
+                                 <Error>
+                                  TN [2012001294] was not found to be In Service in either the Iris or MyBWC systems.
+                                 </Error>
+                                 <Error>TN [3035551234] is not a Bandwidth CLEC number.</Error>
+                              </ProcessingErrors>
+                              <BulkPortOut>
+                               <PON></PON>
+                               <Pin>55678</Pin>
+                               <NewNetworkSPID>512E</NewNetworkSPID>
+                               <FocDate>2014-01-31 00:00:00</FocDate>
+                               <Immediately>false</Immediately>
+                               <InternalPort>true</InternalPort>
+                               <Supplemental>NONE</Supplemental>
+                               <TelephoneNumberList>
+                                   <TelephoneNumberToPort>[10d]</TelephoneNumberToPort>
+                                   <TelephoneNumberToPort>[10d]</TelephoneNumberToPort>
+                                </TelephoneNumberList>
+                              </BulkPortOut>
+                         </BulkPortOutResponse>
+        404:
+            description: | 
+                PON is not found put order into CANCELLED state 
+        500:
+            description: | 
+                Something failed put order into EXCEPTION state 
+ 
+    get: 
+      description: Retrieve info about the portout.
+      queryParameters:
+            PON:
+                description: Purchase Order Number - associated with the processing of the Port-in by third parties
+                type: string
+                example: 2578d71f-5e1a-4d6a-a9f4-16cf08f3e4b6
+      responses:
+              200:
+                description: |
+                    This api call searches portouts by given criteria. 
+                body: 
+                    application/xml:
+                      example: |
+                          <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                          <BulkPortOutResponse>
+                            <PON>2578d71f-5e1a-4d6a-a9f4-16cf08f3e4b6</PON>
+                            <Status>
+                               <Code>200</Code>
+                               <Description>Request is complete and results returned.</Description>
+                            </Status>
+                            <ProcessingStatus></ProcessingStatus>
+                            <ProcessingErrors>
+                              <Error></Error>
+                            </ProcessingErrors>
+                            <BulkPortOut>
+                               <PON>2578d71f-5e1a-4d6a-a9f4-16cf08f3e4b6</PON>
+                               <Pin>55678</Pin>
+                               <FocDate>2015-01-22</FocDate>
+                               <Supplemental>UPDATE</Supplemental>
+                               <Immediately>false</Immediately>
+                               <TelephoneNumberList>
+                                 <TelephoneNumberToPort>2565224455</TelephoneNumberToPort>
+                               </TelephoneNumberList>
+                               <InternalPort>true</InternalPort>
+                            </BulkPortOut>
+                          </BulkPortOutResponse>
+    
+    /validate/{pon}:
+        post:
+          description: Validate  PortOutRequest. 
+          body:
+               application/xml:                         
+                 example:  !include portout.xml
+          responses:    
+            200:
+                description: |
+                    The validation response
+                body: 
+                    application/xml:
+                      example: |
+                            <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                            <PortOutValidationResponse>
+                              <Status>
+                                 IrisStatus
+                              </Status>
+                              <pon>d82b811e-803a-4996-8a1f-565aab3a86a6</pon>
+                              <errorDetails></errorDetails>
+                              <PortOutResults>
+                                <PortOutResult>
+                                  <tn>[10d]</tn>
+                                  <pon>d82b811e-803a-4996-8a1f-565aab3a86a6</pon>
+                                  <supplemental>OrderType</supplemental>
+                                  <internalPort>boolean</internalPort>
+                                  <inService>Boolean</inService>
+                                  <googleNumber>Boolean</googleNumber>
+                                  <googleApproved>Boolean</googleApproved>
+                                  <bandwidthNumber>Boolean</bandwidthNumber>
+                                  <irisNumber>Boolean</irisNumber>
+                                  <accountName>String</accountName>
+                                  <accountId>String</accountId>
+                                  <SubmitStatus>SUCCESS|FAIL|REJECT</SubmitStatus>
+                                  <focDate>Date</focDate>
+                                  <apiCallTime>Date</apiCallTime>
+                                  <submitTime>Date</submitTime>
+                                  <focDate>Date</focDate>
+                                  <immediately>Boolean</immediately>
+                                  <rejectCodes>
+                                    <rejectCode>
+                                       NOT_IN_SERVICE|
+                                       NOT_BANDWIDTH_CLEC|
+                                       GOOGLE_NOT_APPROVED|
+                                       CUSTOMER_MISMATCH|
+                                       MULTIPLE_ACCOUNTS|
+                                       BLOCKED_ACCOUNT|
+                                       OTHER_REJECTED_IN_ORDER|
+                                       OTHER
+                                    </rejectCode>
+                                  </rejectCodes>
+                                </PortOutResult>
+                              </PortOutResults>
+                            </PortOutValidationResponse>
+                            
+    /submit/{pon}:
+        post:
+          description: Submit PortOutRequest. 
+          body:
+               application/xml:                         
+                 example:  !include portout.xml
+          responses:    
+            200:
+                description: |
+                    The validation response
+                body: 
+                    application/xml:
+                      example: |
+                            <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                            <PortOutSubmissionResponse>
+                              <Status>
+                                 IrisStatus
+                              </Status>
+                              <pon>d82b811e-803a-4996-8a1f-565aab3a86a6</pon>
+                              <errorDetails></errorDetails> 
+                              <PortOutResults>
+                                <PortOutResult>
+                                  <tn>[10d]</tn>
+                                  <pon>d82b811e-803a-4996-8a1f-565aab3a86a6</pon>
+                                  <supplemental>OrderType</supplemental>
+                                  <internalPort>boolean</internalPort>
+                                  <inService>Boolean</inService>
+                                  <googleNumber>Boolean</googleNumber>
+                                  <googleApproved>Boolean</googleApproved>
+                                  <bandwidthNumber>Boolean</bandwidthNumber>
+                                  <irisNumber>Boolean</irisNumber>
+                                  <accountName>String</accountName>
+                                  <accountId>String</accountId>
+                                  <SubmitStatus>SUCCESS|FAIL|REJECT</SubmitStatus>
+                                  <focDate>Date</focDate>
+                                  <apiCallTime>Date</apiCallTime>
+                                  <submitTime>Date</submitTime>
+                                  <focDate>Date</focDate>
+                                  <immediately>Boolean</immediately>
+                                  <rejectCodes>
+                                    <rejectCode>
+                                       NOT_IN_SERVICE|
+                                       NOT_BANDWIDTH_CLEC|
+                                       GOOGLE_NOT_APPROVED|
+                                       CUSTOMER_MISMATCH|
+                                       MULTIPLE_ACCOUNTS|
+                                       BLOCKED_ACCOUNT|
+                                       OTHER_REJECTED_IN_ORDER|
+                                       OTHER
+                                    </rejectCode>
+                                  </rejectCodes>
+                                </PortOutResult>
+                              </PortOutResults>
+                            </PortOutSubmissionResponse>

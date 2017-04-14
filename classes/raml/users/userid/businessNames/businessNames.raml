@@ -1,0 +1,28 @@
+!fileScope internal
+
+description: A GET on this resource retrieves all the business names associated with that User ID.
+
+get:
+    description: Retrieves the business names associated with the specified User ID.
+    responses:
+        200:
+            description: The business names have been successfully found and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <UserResponse>
+                            <User>
+                                <Username>mowoc</Username>
+                                <Accounts>
+                                    <Account>
+                                        <CompanyName>mowoc llc</CompanyName>
+                                    </Account>
+                                    <Account>
+                                        <CompanyName>Steveco</CompanyName>
+                                    </Account>
+                                    <Account>
+                                        <CompanyName>mowocAgent</CompanyName>
+                                    </Account>
+                                </Accounts>
+                            </User>
+                        </UserResponse>

@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+ <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:element name="Account" type="Account" />
+
+	<xs:complexType name="Account">
+		<xs:sequence>
+			<xs:element minOccurs="0" name="AccountId" type="xs:string" />
+			<xs:element minOccurs="0" name="CompanyName" type="xs:string" />
+			<xs:element minOccurs="0" name="AccountType" type="xs:string" />
+			<xs:element minOccurs="0" name="ExternalId" type="xs:string" />
+			<xs:element minOccurs="0" name="BillingCycle" type="xs:int" />
+			<xs:element minOccurs="0" name="PenaltyType" type="xs:string" />
+			<xs:element minOccurs="0" name="Pricing" type="xs:string" />
+			<xs:element minOccurs="0" name="NenaId" type="xs:string" />
+			<xs:element minOccurs="0" name="Tiers">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="Tier"
+							type="xs:string" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element minOccurs="0" name="Address" type="address" />
+			<xs:element minOccurs="0" name="Contact" type="Contact" />
+			<xs:element minOccurs="0" name="ReservationAllowed" type="xs:boolean" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="address">
+		<xs:complexContent>
+			<xs:extension base="baseDto">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="HouseNumber" type="xs:string" />
+					<xs:element minOccurs="0" name="HouseSuffix" type="xs:string" />
+					<xs:element minOccurs="0" name="PreDirectional" type="xs:string" />
+					<xs:element minOccurs="0" name="StreetName" type="xs:string" />
+					<xs:element minOccurs="0" name="StreetSuffix" type="xs:string" />
+					<xs:element minOccurs="0" name="PostDirectional" type="xs:string" />
+					<xs:element minOccurs="0" name="AddressLine2" type="xs:string" />
+					<xs:element minOccurs="0" name="City" type="xs:string" />
+					<xs:element minOccurs="0" name="StateCode" type="xs:string" />
+					<xs:element minOccurs="0" name="Zip" type="xs:string" />
+					<xs:element minOccurs="0" name="PlusFour" type="xs:string" />
+					<xs:element minOccurs="0" name="County" type="xs:string" />
+					<xs:element minOccurs="0" name="Country" type="xs:string" />
+					<xs:element minOccurs="0" name="AddressType" type="xs:string" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="baseDto">
+		<xs:sequence />
+	</xs:complexType>
+	<xs:complexType name="Contact">
+		<xs:complexContent>
+			<xs:extension base="baseDto">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="FirstName" type="xs:string" />
+					<xs:element minOccurs="0" name="LastName" type="xs:string" />
+					<xs:element minOccurs="0" name="Suffix" type="xs:string" />
+					<xs:element minOccurs="0" name="Title" type="xs:string" />
+					<xs:element minOccurs="0" name="Phone" type="xs:string" />
+					<xs:element minOccurs="0" name="Fax" type="xs:string" />
+					<xs:element minOccurs="0" name="Mobile" type="xs:string" />
+					<xs:element minOccurs="0" name="OtherPhone" type="xs:string" />
+					<xs:element minOccurs="0" name="Email" type="xs:string" />
+					<xs:element minOccurs="0" name="WebsiteAddress" type="xs:string" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

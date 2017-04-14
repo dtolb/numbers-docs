@@ -1,0 +1,92 @@
+!fileScope all
+
+description: | 
+    The lnpchecker resource performs a portability analysis for a set ot TNs, returning information about the coverage and losing carrier characteristics of the TNs allowing a better assessment of which port requests to submit.
+
+!scope external
+post:
+    description: |
+        Request portability information on a set of TNs 
+    queryParameters:
+        fullCheck:
+            type: string
+            enum: [true, false, onnetportability, offnetportability]
+            example: onnetportability
+            repeat: false
+            default: "false"
+            required: false
+            description: | 
+	            <table>
+			        <tr>
+			            <th>parameter value</th>
+			            <th>description</th>
+			        </tr>
+			        <tr>
+			            <td>true</td>
+			            <td>additional information will be provided on the losing carriers associated with the listed numbers</td>
+			        </tr>
+			        <tr>
+			            <td>false</td>
+			            <td>return only rate center information</td>
+			        </tr>
+			        <tr>
+			            <td>onnetportability</td>
+			            <td>identical in meaning to <i>&quot;true&quot;</i> value</td>
+			        </tr>
+			        <tr>
+			            <td>offnetportability</td>
+			            <td>in addition to on-net information return off-net port information in <i>&lt;PartnerSupportedRateCenters&gt;</i> element with Partner/Vendor that the port will be supported on. 
+			            Contains a list of the TNs that are supported in partner rate centers, and for which we will manually execute a port if requested
+			            </td>
+			        </tr>
+			    </table>
+    body:
+        application/xml:
+            example: |
+                <NumberPortabilityRequest>
+                   <TnList>   <!-- the list of the TNs to check for Portability -->
+                      <Tn>4109255199</Tn>
+                      <Tn>4109235436</Tn>
+                      <Tn>4104685864</Tn>
+                      <Tn>4103431313</Tn>
+                      <Tn>4103154313</Tn>
+                      <Tn>4103431561</Tn>
+                   </TnList>
+                </NumberPortabilityRequest>
+    responses:
+        200:
+            description: A successful check has been performed.
+            body: 
+                application/xml:
+                    example: |
+                        !include lnpchecker_200_response_example.xml
+
+        400:
+            description: | 
+                Bad Response - there were errors in evaluating the body of the request
+                Potential errors include: <ul>
+                <li> Un-supported losing carrier.
+                <li> Unable to provide coverage.
+                <li> Telephone number is already being processed on another order.
+                <li> Rate Center Not Present in Bandwidth Dashboard.
+                <li> Account not enabled for LNP 
+                </ul> 
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <NumberPortabilityResponse>
+                            <Errors>
+                                <Code>7201</Code>
+                                <Description>61746052083 is not a valid NANPA telephone number.</Description>
+                            </Errors>
+                            <Errors>
+                                <Code>7201</Code>
+                                <Description>61746052082 is not a valid NANPA telephone number.</Description>
+                            </Errors>
+                        </NumberPortabilityResponse>
+    
+
+#  The resource tree that follows the root can be placed here.
+# values in curly braces will appear as fillable parameters in the URL
+# remember to fix these / delete these until the files are really there.

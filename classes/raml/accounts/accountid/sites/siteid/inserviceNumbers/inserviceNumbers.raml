@@ -1,0 +1,88 @@
+!fileScope external
+
+description: Retrieves all the telephone numbers currently in service for the given site.
+
+!scope external
+get:
+    description: |
+        Retrieves all the telephone numbers currently in service for the given site.
+        <br>There are multiple parameters to search and sort the in-service numbers:
+        <ul>
+            <li>LATA</li>
+            <li>Tier</li>
+            <li>Rate center</li>
+            <li>Area code</li>
+            <li>Npa-Nxx</li>
+            <li>State</li>
+            <li>City</li>
+            <li>Start Date</li>
+            <li>End date</li>
+        </ul>
+    queryParameters:
+        page:
+            description: The first in-service number displayed on the page. "1" is used as a convention for the first number on the list.
+            type: string
+            default: 1
+            example: 4352721845
+        size:
+            description: The count of in-service numbers displayed on the page.
+            type: integer
+            example: 30
+            default: 300
+        lata:
+            description: A maximum five-digit number.
+            type: integer
+            example: 371
+        tier:
+            type: integer
+            example: 0
+        rateCenter:
+            type: string
+            example: ST GEORGE
+        city:
+            type: string
+            example: Raleigh
+        state:
+            description: A two-letter representation of the State
+            type: string
+            example: NC
+        areaCode:
+            type: string
+            example: 435
+        npaNxx:
+            type: string
+            example: 435215
+        npaNxxx:
+            type: string
+            example: 4352154
+        startdate:
+            description: startdate and enddate must be together
+            type: date 
+            example: 12-01-01
+        enddate:
+            description: startdate and enddate must be together
+            type: date
+            example: 14-01-01
+    responses:
+        200:
+            description: the numbers have been successfully retrieved
+            body:
+                application/xml:
+                    example: |
+                        <TNs>
+                            <TotalCount>54</TotalCount>
+                            <Links>
+                                <first>
+                                    <!---- SNIP ---->
+                                </first>
+                                <next>
+                                    <!---- SNIP ---->
+                                </next>
+                            </Links>
+                            <TelephoneNumbers>
+                                <Count>3</Count>
+                                <TelephoneNumber>4352154855</TelephoneNumber>
+                                            <!---- SNIP ---->
+                                <TelephoneNumber>4352161523</TelephoneNumber>
+                            </TelephoneNumbers>
+                        </TNs>

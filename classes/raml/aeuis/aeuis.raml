@@ -1,0 +1,51 @@
+!fileScope internal
+description: |
+    This resource is used to manage alternate end user identifiers (AEUIs).
+
+!scope internal
+get:
+    description: |
+        GET is used to retrieve all Alternate end user identifiers.
+    queryParameters:
+            page:
+                description: An ID of the first element in a page.  This value will indicate the first value, not the count, of the initial entry in the page being requested.<br>
+                    It can be an acid of alternate end user identifier. The initial page is tagged with the ID '1'.
+                type: string
+                example: 3, customIdentifier
+                default: 1
+                required: false
+            size:
+                description: The number of items to include in a page.
+                type: integer
+                example: 5000
+                default: 500
+                required: false
+            accountId:
+                description: The internal account id assigned to the customer AEUIs are associated with.
+                type: integer
+                example: 5000125
+                required: true
+            aeui:
+                description: The Alternate end user identifier associated with callback using E911 order.
+                type: string
+                example: someAcid
+                required: false
+            callback:
+                description: Callback telephone number associated with AEUI using E911 oder.
+                type: string
+                example: 8042105760
+                required: false
+    responses:
+        200:
+            description: |
+                OK - the AEUIs retrieval request will return a list of all AEUIs.
+            body:
+                application/xml:
+                    example: !include aeuis_GET_200_response_example.xml
+
+        404:
+            description: |
+                Not Found - if the account specified does not exist or is locked or there are no AEUIs for specified search criteria it will result in a not found.
+            body:
+                application/xml:
+                    example: !include aeuis_GET_404_response_example.xml

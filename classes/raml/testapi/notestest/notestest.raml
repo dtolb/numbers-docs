@@ -1,0 +1,68 @@
+!fileScope internal
+       
+description: |
+    The notesTest resource is used to test the subscription callback mechanism, by allowing a callback URL to terminate on IRIS, and then depositing a payload in the response to the callback that allows the status of the order to be viewed.<br>
+
+    To use this URL in testing, include the path in the callback URL in a subscription:
+    <ul>
+    <li>place the URL http://&lt;base url&gt;/testapi/notesTest in the callback element of the subscription
+    <li>use a null "OrderId" tag in the subscription request - that means that all changes to the subscribed order type will cause the callback URL to be invoked</li>
+    <li>use a long Expiry value.</li>
+    </ul>
+
+    When the subscription event triggers, the callback URL will be called by the notification handler.  This in turn will cause a response to the callback that fills the &lt;Status&gt; field in the subscription with the status of the order, confirming that the callback URL was triggered, and providing some immediate order status feedback.
+
+    In sequence:
+    <ol>
+    <li>the above URL is placed in the &lt;URL&gt; element in a subscription</li>
+    <li>the event happens that causes the triggering of the notification, and the execution by IRIS of the call-back</li>
+    <li>a payload is posted to the callback URL.  That payload is described in the POST description below</li>
+    <li>That payload is echoed back as a reply to the POST, and placed in the &lt;Status&gt; field of the Subscription</li>
+    <li>examining the subscription by a GET on the subscription resource will allow inspection of the values posted to the URL </li>
+    </ol>
+
+    An example of the URL in use in the payload used to create a subscription is...
+        <pre>
+        POST /{base url}/accounts/{account-id}/subscriptions
+
+        &lt;Subscription&gt;
+            &lt;OrderType&gt;portins&lt;/OrderType&gt;
+            &lt;OrderId&gt;e098acec-459f-4ef8-bb05-cb742d699e8c&lt;/OrderId&gt;
+            &lt;CallbackSubscription&gt;
+                &lt;URL&gt;<b>http://192.168.101.76:8080/iris/testapi/notesTest</b>&lt;/URL&gt;
+                &lt;User&gt;jbm&lt;/User&gt;
+                &lt;Expiry&gt;3600&lt;/Expiry&gt;
+            &lt;/CallbackSubscription&gt;
+        &lt;/Subscription&gt;
+        </pre>
+
+post:
+    description: |
+        The URL can be invoked directly - it is not restricted to the callback described above.  This is the same thing that is done by the notification system on detection of a notifiable event:
+    body:
+        application/xml:
+            example: |
+                <?xml version="1.0"?>
+                <Notification>
+                    <Status>BACKORDERED</Status>
+                    <SubscriptionId>2ed4d8ea-5726-428f-82a8-7be219dc261f</SubscriptionId>
+                    <OrderId>3716ce64-fc7c-4cf5-a43e-7f29017756ce</OrderId>
+                    <OrderType>portins</OrderType>
+                    <Message>This is an update</Message>
+                </Notification>
+    responses:
+        201:
+            description: Created.  This indicates that the payload was successfully received.  The response body contains a reflection of the content, which is stored in the &lt;Status&gt; field of the Subscription.  A GET on the subscription will display the contents of the response in that field.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0"?>
+                        <Notification>
+                            <Status>BACKORDERED</Status>
+                            <SubscriptionId>2ed4d8ea-5726-428f-82a8-7be219dc261f</SubscriptionId>
+                            <OrderId>3716ce64-fc7c-4cf5-a43e-7f29017756ce</OrderId>
+                            <OrderType>portins</OrderType>
+                            <Message>This is an update</Message>
+                        </Notification>
+        400:
+            description: Bad Request.  An empty payload will return a bad request.  Almost any other payload will be accepted.

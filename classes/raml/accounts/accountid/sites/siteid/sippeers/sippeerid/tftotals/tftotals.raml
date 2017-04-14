@@ -1,0 +1,16 @@
+!fileScope internal
+
+description: Retrieves the total count of Toll-Free Telephone Numbers for the given SIP peer.
+
+get:
+    description: Retrieves the total count of Toll-Free Telephone Numbers for the given SIP peer.
+    responses:
+        200:
+            body:
+                application/xml:
+                    example: |
+                        <SipPeerTollFreeTotalsResponse>
+                            <TollFreeTotals>
+                                <TotalCount>0</TotalCount>
+                            </TollFreeTotals>
+                        </SipPeerTollFreeTotalsResponse>

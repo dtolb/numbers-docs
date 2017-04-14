@@ -1,0 +1,37 @@
+!fileScope internal
+
+description:
+    This API allows to trigger tn integrity audit with default (admin settings) and custom parameters.
+
+post:
+    description:
+        Allows admin user to trigger integrity audit. There are 3 possible combinations of parameters.
+        1. Without parameters - triggers next portion of nightly audit immediately after last nightly left off, using default parameters from admin settings.
+        2. With chunkSize + chunksNumber - triggers next portion of nightly audit immediately after last nightly left off, using custom parameters.
+        3. RangeStart + chunkSize + chunksNumber - triggers custom audit which will not considered as a part of nightly flow.
+
+    queryParameters:
+            rangeStart:
+                displayName: Range start
+                type: integer
+                description: From which point to start an audit.
+                required: false
+            chunkSize:
+                displayName: Chunk size
+                type: integer
+                description: Defines how wide is a range of tns which will be retrieved and validated at once.
+                required: false
+            chunksNumber:
+                displayName: Chunks number
+                type: integer
+                description: Defines how many chunks should be processed.
+                required: false
+    responses:
+        202:
+            description:
+                Accepted.
+        400:
+            description:
+                Bad request.
+
+                Returned in case of passing malformed or invalid query params.

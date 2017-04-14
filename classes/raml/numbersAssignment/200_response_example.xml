@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<TelephoneNumbersAssignmentOrders>
+    <TotalCount>3</TotalCount>
+    <TelephoneNumbersAssignmentOrderSummary>
+        <!-- Account ID preserved for uniformity with global list -->
+        <accountId>1</accountId>
+        <CustomerOrderId>ICPA123ABD</CustomerOrderId>
+        <userId>jbm</userId>
+        <OrderDate>2016-01-15T11:36:52.727Z</OrderDate>
+        <TotalQuantity>4</TotalQuantity>
+        <OrderType>NUMBERS_ASSIGNMENT_ORDER</OrderType>
+        <OrderStatus>COMPLETE</OrderStatus>
+        <Action>ASSIGN</Action>
+        <OrderId>65e03a35-6b97-48a5-8126-f47bad02df2a</OrderId>
+    </TelephoneNumbersAssignmentOrderSummary>
+    <TelephoneNumbersAssignmentOrderSummary>
+        <accountId>753</accountId>
+        <CustomerOrderId>ICPA123ABC</CustomerOrderId>
+        <userId>systemUser</userId>
+        <OrderDate>2016-11-02T13:00:52.824Z</OrderDate>
+        <OrderType>NUMBERS_ASSIGNMENT_ORDER</OrderType>
+        <OrderStatus>PARTIAL</OrderStatus>
+        <Action>ASSIGN</Action>
+        <FailedQuantity>1</FailedQuantity>
+        <OrderId>8f78dbc5-5c01-4b55-af15-2829fe8cf73f</OrderId>
+        <TotalQuantity>4</TotalQuantity>
+    </TelephoneNumbersAssignmentOrderSummary>
+    <TelephoneNumbersAssignmentOrderSummary>
+        <accountId>9900012</accountId>
+        <TotalQuantity>4</TotalQuantity>
+        <FailedQuantity>1</FailedQuantity>
+        <userId>not_jbm</userId>
+        <OrderDate>2016-01-15T11:36:26.633Z</OrderDate>
+        <OrderType>NUMBERS_ASSIGNMENT_ORDER</OrderType>
+        <OrderStatus>PARTIAL</OrderStatus>
+        <Action>UNASSIGN</Action>
+        <OrderId>d8f5abc0-1a4c-4c36-b387-93fb5b430784</OrderId>
+    </TelephoneNumbersAssignmentOrderSummary>
+</TelephoneNumbersAssignmentOrders>
+

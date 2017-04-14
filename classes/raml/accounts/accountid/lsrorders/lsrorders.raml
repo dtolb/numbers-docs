@@ -1,0 +1,490 @@
+!fileScope all
+!scope all
+description: | 
+    <p>The <b>lsrorders</b> resource is used to create, modify, and monitor API requests to remove telephone numbers from the Bandwidth network.  This API call is intended for use by carriers that want to automate the "Port-out" process with Bandwidth, rather than manually request the removal or "port-out" of each telephone number via a GUI or a Ticket.</p>
+
+    <p>This API call uses an asynchronous model that is common in the Bandwidth Dashboard API, where an "order" is created that is then subsequently used to track the progress of the request to completion.  This in somewhat analogous to the "laundry ticket" model, where the initial transaction is the submission of the laundry and the receipt of a ticket, and all other steps in the overall transaction use the identifier on the ticket to monitor and manage the transaction.</p>
+
+    <p>In this case a POST is made to the /lsrorders resource that describes the request to port out the number.  If the POST has no syntactic errors, such as a telephone number with less than 10 digits, an ID will be returned that is used to monitor and manage the port-out request.  The POST returns both a descriptive payload that reflects the request and includes the identifier, as well as a Location header that contains a valid GET API call that can be used to retrieve the current state of the LSR / Port-out request.  In general the flow of events is much like...</p>
+    <pre>
+            Carrier   -----&gt;    POST        -----&gt;      Bandwidth - the initial request
+                     &lt;-----     200 OK     &lt;-----                 - the response with a payload 
+                                                                    and a Location header
+    <br>
+            -- some subsequent event happens... an error, or the completion of the request --
+    <br>
+            Carrier &lt;----- Notification Callback &lt;----- Bandwidth - if configured, Bandwidth 
+                                                                    notifies the carrier of all
+                                                                    events that impact the order
+                                                                  - see the /subscriptions and 
+                                                                    /callbacks API descriptions
+            Carrier   -----&gt;    GET(id)     -----&gt;      Bandwidth - the carrier requests the 
+                                                                    complete status of the order
+                                                                    using the ID
+                     &lt;-----     200 OK     &lt;-----                 - the response with a descriptive
+                                                                    payload
+    <br>
+    The above notifications continue until the LSR is complete or cancelled.
+    </pre>
+
+    <p>There is a complete list of elements in payload of the POSTed request below in the documentation of the POST, but in summary the LSR request includes
+    <ul>
+    <li> a list of telephone numbers
+    <li> information about the subscriber
+    <li> tracking information such as a PON and a Customer Order ID
+    <li> winning carrier information such as the SPID
+    <li> date information
+    </ul></p>
+
+    <p>This API supports GET for retrieving order detail and status informantion, POST for creating a new LSR Order, and PUT for changing the details of an LSR in flight.</p>
+
+    <h4> Errors </h4>
+
+    There are a number of errors that can happen at various stages of the process. These are listed here for convenience, and can be found in the error reference documentation <a href="https://test.dashboard.bandwidth.com/apidocs/iris-error-page.html">here.</a>
+
+    <table>
+    <tr><th>Error code</th><th>Error message</th><th>Appearance</th></tr>
+    <tr><td>	5008	</td><td>	All telephone numbers specified are invalid	</td><td>	POST	</td></tr>
+    <tr><td>	7104	</td><td>	Subscriber information is required	</td><td>	POST/PUT	</td></tr>
+    <tr><td>	7105	</td><td>	The subscriber name is required	</td><td>	POST/PUT	</td></tr>
+    <tr><td>	7107	</td><td>	The service address is required	</td><td>	POST/PUT	</td></tr>
+    <tr><td>	7108	</td><td>	The service address house number is required	</td><td>	POST/PUT	</td></tr>
+    <tr><td>	7109	</td><td>	The service address street name is required	</td><td>	POST/PUT	</td></tr>
+    <tr><td>	7110	</td><td>	The service address city is required	</td><td>	POST/PUT	</td></tr>
+    <tr><td>	7111	</td><td>	The service address state code is required	</td><td>	POST/PUT	</td></tr>
+    <tr><td>	7112	</td><td>	The service address zip code is required	</td><td>	POST/PUT	</td></tr>
+    <tr><td>	7120	</td><td>	The PON is required	</td><td>	POST	</td></tr>
+    <tr><td>	7203	</td><td>	The billing telephone number (BTN) is invalid	</td><td>	POST/PUT	</td></tr>
+    <tr><td>	7208	</td><td>	The requested FOC date cannot be in the past	</td><td>	POST/PUT	</td></tr>
+    <tr><td>	7214	</td><td>	ZIP code is invalid	</td><td>	POST/PUT	</td></tr>
+    <tr><td>	7318	</td><td>	Customer order ID is invalid. Only alphanumeric values, dashes and spaces are allowed. Max length is 40 characters.	</td><td>	POST/PUT	</td></tr>
+    <tr><td>	7324	</td><td>	The business name is too long. The business name should not be longer than 25 characters.	</td><td>	POST/PUT	</td></tr>
+    <tr><td>	7354	</td><td>	Middle initial is too long. Middle initial should not be longer than 1 character.	</td><td>	POST/PUT	</td></tr>
+    <tr><td>	7355	</td><td>	First name is too long. First name should not be longer than 25 characters.	</td><td>	POST/PUT	</td></tr>
+    <tr><td>	7356	</td><td>	Last name is too long. Last name should not be longer than 25 characters.	</td><td>	POST/PUT	</td></tr>
+    <tr><td>	7395	</td><td>	Unsupported state code %s.	</td><td>	POST/PUT	</td></tr>
+    <tr><td>	7510	</td><td>	Required Account Code missing	</td><td>	PROCESSING	</td></tr>
+    <tr><td>	7511	</td><td>	Invalid Account Code	</td><td>	PROCESSING	</td></tr>
+    <tr><td>	7512	</td><td>	Required PIN missing	</td><td>	PROCESSING	</td></tr>
+    <tr><td>	7513	</td><td>	PIN Invalid	</td><td>	PROCESSING	</td></tr>
+    <tr><td>	7514	</td><td>	Required ZIP Code missing	</td><td>	PROCESSING	</td></tr>
+    <tr><td>	7515	</td><td>	Invalid ZIP Code	</td><td>	PROCESSING	</td></tr>
+    <tr><td>	7516	</td><td>	Telephone Number not recognized or invalid for this account	</td><td>	PROCESSING	</td></tr>
+    <tr><td>	7517	</td><td>	Too many Telephone numbers in this request	</td><td>	PROCESSING	</td></tr>
+    <tr><td>	7518	</td><td>	Telephone Number Not Active	</td><td>	PROCESSING	</td></tr>
+    <tr><td>	7519	</td><td>	Customer info does not match	</td><td>	PROCESSING	</td></tr>
+    <tr><td>	7598	</td><td>	Invalid Request	</td><td>	PROCESSING	</td></tr>
+    <tr><td>	7599	</td><td>	Fatal Error in Processing	</td><td>	PROCESSING	</td></tr>
+    <tr><td>	7999	</td><td>	An internal error has occurred. Please contact support if this issue is not resolved in 1 business day	</td><td>	PROCESSING	</td></tr>
+    <tr><td>	13522	</td><td>	The count of telephone numbers in order exceeds the maximum size of %d	</td><td>	POST	</td></tr>
+    <tr><td>	17000	</td><td>	Lsr submission order payload required.  	</td><td>	POST/PUT	</td></tr>
+    <tr><td>	17002	</td><td>	Order contains invalid tns %s.	</td><td>	POST	</td></tr>
+    <tr><td>	17003	</td><td>	Order contains empty tn list or its not present. 	</td><td>	POST	</td></tr>
+    <tr><td>	17004	</td><td>	Incorrect pon specified. It must be up to 25 character long and could not contain special characters other than -_#	</td><td>	POST	</td></tr>
+    <tr><td>	17005	</td><td>	Toll-free telephone numbers can not be present in the LSR order.	</td><td>	POST	</td></tr>
+    <tr><td>	17006	</td><td>	Account number is incorrect. It should be alphanumeric and no more than 32 characters long.	</td><td>	POST/PUT	</td></tr>
+    <tr><td>	17007	</td><td>	Pin number is incorrect. It should be alphanumeric and no more than 10 characters long.	</td><td>	POST/PUT	</td></tr>
+    <tr><td>	17008	</td><td>	An internal error has occurred. Please contact support if this issue is not resolved in 1 business day	</td><td>	PROCESSING	</td></tr>
+    <tr><td>	17009	</td><td>	Lsr order contain duplicate telephone numbers %s	</td><td>	POST	</td></tr>
+    <tr><td>	17010	</td><td>	Business name is required for business SubscriberType.	</td><td>	POST/PUT	</td></tr>
+    <tr><td>	17011	</td><td>	Last name should be empty for business SubscriberType.	</td><td>	POST/PUT	</td></tr>
+    <tr><td>	17012	</td><td>	Last name is required for residential SubscriberType.	</td><td>	POST/PUT	</td></tr>
+    <tr><td>	17013	</td><td>	Requested date format incorrect. Date should be in yyyy-mm-dd format. (example 2015-03-24).	</td><td>	POST/PUT	</td></tr>
+    <tr><td>	17017	</td><td>	Lsr order failed account SPID not configured.	</td><td>	PUT/PROCESSING	</td></tr>
+    <tr><td>	17018	</td><td>	Lsr order will be cancelled. All other submitted changes are ignored.	</td><td>	PUT/PROCESSING	</td></tr>
+    <tr><td>	17019	</td><td>	Requested FOC date cannot be on holiday or weekend.	</td><td>	POST/PUT	</td></tr>
+    <tr><td>	17020	</td><td>	Account SPID [%s] does not match with SPID specified in the Lsr order [%s].	</td><td>	POST/PUT	</td></tr>
+    <tr><td>	17021	</td><td>	Incorrect SPID [%s] specified in the order. It should be alphanumeric and no more than 4 characters long.	</td><td>	POST/PUT	</td></tr>
+    <tr><td>	17022	</td><td>	Account %d requires a SPID to be provided with each order.	</td><td>	POST/PUT	</td></tr>
+    <tr><td>	17023	</td><td>	The authorizing person contact is required for lsr orders.	</td><td>	POST/PUT	</td></tr>
+    <tr><td>	17024	</td><td>	The authorizing person contact is too long. It should be not longer than %s characters.	</td><td>	POST/PUT	</td></tr>
+    <tr><td>	17025	</td><td>	%s field%s cannot be modified.	</td><td>	PUT	</td></tr>
+    <tr><td>	17025	</td><td>	OrderStatus cannot be changed to %s. Only cancelled value allowed.	</td><td>	PUT	</td></tr>
+    <tr><td>	17027	</td><td>	Account %d has no configured SPID.  Please contact support for further assistance.	</td><td>	POST/PUT	</td></tr>
+    <tr><td>	17028	</td><td>	Minimum FOC date for a port of greater than %1$d telephone numbers is %2$d days	</td><td>	POST/PUT	</td></tr>
+    <tr><td>	17029	</td><td>	Can't modify LSR order, because it contains ported numbers.	</td><td>	PROCESSING	</td></tr>
+    <tr><td>	17030	</td><td>	LSR order completion failed, some numbers are not activated: %s.	</td><td>	PROCESSING	</td></tr>
+    <tr><td>	17031	</td><td>	Order was failed, because some telephone numbers have empty SPID [%s]	</td><td>	PROCESSING	</td></tr>
+    <tr><td>  17032 </td><td> The Specified PON is already present in our system. Please provide an alternative. </td><td> POST  </td></tr>
+    <tr><td>  17033 </td><td> The PON specified in the LSR order overlaps with existing order. Please resubmit the order with another PON. </td><td> POST  </td></tr>
+    <tr><td>  17034 </td><td> OverrideValidation flag can be supped only in EXCEPTION status. </td><td> PUT  </td></tr>
+    <tr><td>  17035 </td><td> Supp is not allowed for this LSR. Please contact support if this issue is not resolved in 1 business day. </td><td> PUT  </td></tr>
+    </table>
+
+	<p/>
+	POST - errors occur during LSR creation.<br>
+	PUT  - errors occur during LSR supp/cancel.<br>
+	PROCESSING -  errors occur while LSR processing. These errors are persistent and can be retrieved using GET requests (ex. by LSR ID).
+    <p/> * Error messages can differ from described depending on context of occurrence.
+
+!scope all
+get:
+    description: | 
+        Retrieves a list of lsrorders.  Various query parameters can be used to filter the list of LSR Orders as documented below.
+    queryParameters:
+        status:
+            description: The status of the Lsr order being searched for.
+            type: string
+            example: EXCEPTION
+            enum: [PENDING, FOC, EXCEPTION, CANCELED, COMPLETE, FAILED]
+            repeat: true
+        tn:
+            description: A Telephone Number (TN) that is referenced in the order.
+            type: string
+            example: 9199918388
+        pon:
+            description: The PON that is referenced in the Lsr order.
+            type: string
+            example: Available
+        customerOrderId:
+            description: The Customer Order ID is an ID assigned by the account owner to provide a reference number for the Port.
+            type: string
+            example: ABCCorp12345
+        orderIdFragment:
+            description: This search parameter represents the internal Bandwidth Dashboard ID that has been assigned to the Lsr Order.  This parameter is the first few characters of the internal ID - the entire ID does not need to be specified.
+            type: string
+            example: ed1c0bed-e2
+        createdDateFrom:
+            description: Checks the order's creation date against this value. Orders that have a creation date after this date will be included. Format is yyyy-MM-dd
+            type: date
+            example: |
+              2015-10-22
+        createdDateTo:
+            description: Checks the order's creation date against this value. Orders that have a creation date before this date will be included. Format is yyyy-MM-dd
+            type: date
+            example: |
+              2015-10-25
+    responses:
+        200:
+            description: the lsrorders have been successfully retrieved and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LsrOrders>
+                            <TotalCount>5</TotalCount>
+                            <LsrOrderSummary>
+                                <accountId>9999999</accountId>
+                                <CountOfTNs>2</CountOfTNs>
+                                <CustomerOrderId>FineCustomerid</CustomerOrderId>
+                                <userId>team_ua</userId>
+                                <lastModifiedDate>2015-03-02T09:10:16.193Z</lastModifiedDate>
+                                <OrderType>lsr</OrderType>
+                                <OrderDate>2015-03-25T11:44:42.941Z</OrderDate>
+                                <OrderStatus>PENDING</OrderStatus>
+                                <ActualFocDate>2015-03-25</ActualFocDate>
+                                <BillingTelephoneNumber>2526795000</BillingTelephoneNumber>
+                                <CreatedByUser>lsrOnlyUser</CreatedByUser>
+                                <OrderId>7d644c88-ef23-4307-96ab-20253666d0c7</OrderId>
+                                <Pon>ATT-011515-324234</Pon>
+                                <PonVersion>0</PonVersion>
+                                <RequestedFocDate>2015-11-15</RequestedFocDate>
+                            </LsrOrderSummary>
+
+                            <!-- SNIP -->
+
+                            <LsrOrderSummary>
+                                <accountId>9999999</accountId>
+                                <CountOfTNs>2</CountOfTNs>
+                                <CustomerOrderId>MyId5</CustomerOrderId>
+                                <lastModifiedDate>2015-03-03T14:07:19.926Z</lastModifiedDate>
+                                <OrderType>lsr</OrderType>
+                                <OrderDate>2015-03-25T11:44:42.941Z</OrderDate>
+                                <OrderStatus>FAILED</OrderStatus>
+                                <Errors>
+                                    <Error>
+                                        <Code>17008</Code>
+                                        <Description>
+                                            FOC date cannot fall on a holiday
+                                        </Description>
+                                    </Error>
+                                </Errors>
+                                <ActualFocDate>2015-03-25</ActualFocDate>
+                                <BillingTelephoneNumber>2526795000</BillingTelephoneNumber>
+                                <CreatedByUser>lsrOnlyUser</CreatedByUser>
+                                <OrderId>00cf7e08-cab0-4515-9a77-2d0a7da09415</OrderId>
+                                <Pon>testpon1002</Pon>
+                                <PonVersion>0</PonVersion>
+                                <RequestedFocDate>2015-11-15</RequestedFocDate>
+                            </LsrOrderSummary>
+                        </LsrOrders>
+        404:
+            description: Not Found.  If any errors are found in the processing of the query string a 404 will be returned.  Note that parameters that are not recognized are not considered errors, and are just ignored.
+
+!scope all
+post:
+    description: |
+        A POST creates a lsrorder request to initiate a port-out action.<br>
+        The payload fields are described below...<br>
+        <table style="text-align: left; width: 80%;"
+             border="1" cellpadding="2" cellspacing="2">
+              <tbody>
+                <tr>
+                  <td>Pon</td>
+                  <td>The Pon is customer specified order indentifier field. Allowed alphanumeric and "#","-","_". Up to 25 characters long. (required).</td>
+                </tr>
+                <tr>
+                  <td>CustomerOrderId</td>
+                  <td>The CustomerOrderId is customer specified order indentifier field. Allowed alphanumeric, spaces and dashes. Up to 40 characters long. (optional).</td>
+                </tr>
+                <tr>
+                  <td>SPID</td>
+                  <td>Identifier used in porting process. If account is no multi-SPID option - default with account value, otherwise value is required. Up to 4 characters long. (required)</td>
+                </tr>
+                <tr>
+                  <td>BillingTelephoneNumber</td>
+                  <td>Non-tollfree 10 digit phone number (optional).</td>
+                </tr>
+                <tr>
+                  <td>RequestedFocDate</td>
+                  <td>optional (next day if not specified).</td>
+                </tr>
+                <tr>
+                  <td>SubscriberType</td>
+                  <td>Subscriber type. BUSINESS | RESEDENTIAL (optional) (RESEDENTIAL if not specified).</td>
+                </tr>
+                <tr>
+                  <td>BusinessName</td>
+                  <td>Subscriber business name for BUSINESS SubscriberType. Up to 25 characters long. (required BusinessName or LastName).</td>
+                </tr>
+                <tr>
+                  <td>LastName</td>
+                  <td>Subscriber last name for RESEDENTIAL SubscriberType. Up to 25 characters long. (required BusinessName or LastName).</td>
+                </tr>
+                <tr>
+                  <td>FirstName</td>
+                  <td>Subscriber first name for RESEDENTIAL SubscriberType. Up to 25 characters long. (optional).</td>
+                </tr>
+                <tr>
+                  <td>MiddleInitial</td>
+                  <td>Subscriber middle initial for RESEDENTIAL SubscriberType. 1 character (optional).</td>
+                </tr>                
+                <tr>
+                  <td>AccountNumber</td>
+                  <td>AccountNumber.  Alphanumeric, up to 32 characters. (optional).</td>
+                </tr>                
+                <tr>
+                  <td>PinNumber</td>
+                  <td>PinNumber. Alphanumeric, up to 10 characters. (optional).</td>
+                </tr>
+                <tr>
+                  <td>AuthorizingPerson</td>
+                  <td>AuthorizingPerson. Alphanumeric, up to 100 characters (required).</td>
+                </tr>
+                <tr>
+                  <td>HousePrefix</td>
+                  <td>HousePrefix. Alphanumeric, up to 6 characters.</td>
+                </tr>
+                <tr>
+                  <td>HouseNumber</td>
+                  <td>HouseNumber. Alphanumeric, up to 45 characters  (required).</td>
+                </tr>
+                <tr>
+                  <td>HouseSuffix</td>
+                  <td>HouseSuffix. Alphanumeric, up to 45 characters.</td>
+                </tr>
+                <tr>
+                  <td>PreDirectional</td>
+                  <td>PreDirectional. Alphanumeric, up to 2 characters.</td>
+                </tr>
+                <tr>
+                  <td>StreetName</td>
+                  <td>StreetName. Alphanumeric, up to 200 characters  (required).</td>
+                </tr>
+                <tr>
+                  <td>StreetSuffix</td>
+                  <td>StreetSuffix. Alphanumeric, up to 45 characters.</td>
+                </tr>
+                <tr>
+                  <td>PostDirectional</td>
+                  <td>PostDirectional. Alphanumeric, up to 2 characters.</td>
+                </tr>
+                <tr>
+                  <td>AddressLine2</td>
+                  <td>AddressLine2. Alphanumeric, up to 200 characters.</td>
+                </tr>
+                <tr>
+                  <td>County</td>
+                  <td>County. Alphanumeric, up to 45 characters.</td>
+                </tr>
+                <tr>
+                  <td>City</td>
+                  <td>City. Alphanumeric, up to 100 characters  (required).</td>
+                </tr>
+                <tr>
+                  <td>StateCode</td>
+                  <td>StateCode. Alphanumeric, 2 characters  (required).</td>
+                </tr>
+                <tr>
+                  <td>Zip</td>
+                  <td>Zip code. Allowed formats: 5 numbers, 5+4 or Canadian  (required).</td>
+                </tr>
+                <tr>
+                  <td>ListOfTelephoneNumbers</td>
+                  <td>List of tns to be processed  (required).</td>
+                </tr>  
+              </tbody>
+            </table>
+    body:
+        application/xml:
+            example: |
+                  <LsrOrder>
+                    <!-- By customer. Alphanumeric and "#","-","_". Up to 25 character long. (required) -->
+                    <Pon>ATT-011515-324234</Pon>
+                    <!-- By customer. Alphanumeric and " ","-". Up to 40 character long. (optional) -->
+                    <CustomerOrderId>FineCustomerid</CustomerOrderId> 
+                    <!-- By customer. Alphanumeric. Up to 4 character long. (required if account value "mult") -->
+                    <SPID>123C</SPID> 
+                    <!-- Non-toll-free btn (optional) -->
+                    <BillingTelephoneNumber>9192381468</BillingTelephoneNumber>
+                    <!-- Requested date (not past, optional, default next day) -->  
+                    <RequestedFocDate>2015-11-15</RequestedFocDate>
+                    <AuthorizingPerson>Jim Hopkins</AuthorizingPerson>
+                    <Subscriber>
+                        <!--Type of the subscriber. BUSINESS | RESEDENTIAL (optional) (RESEDENTIAL if not specified)-->
+                        <SubscriberType>BUSINESS</SubscriberType> 
+                        <!-- Up to 25 character long (required) -->  
+                        <BusinessName>BusinessName</BusinessName>     
+                        <ServiceAddress>
+                            <!-- HouseNumber up to 45 characters (required) -->
+                            <HouseNumber>11</HouseNumber>
+                            <!-- StreetName up to 200 characters (required) -->
+                            <StreetName>Park</StreetName>
+                            <!-- StreetSuffix  up to 45 characters (optional) -->
+                            <StreetSuffix>Ave</StreetSuffix>
+                            <!-- City  up to 100 characters (required) -->
+                            <City>New York</City>
+                            <!-- StateCode 2 characters (required) -->
+                            <StateCode>NY</StateCode>
+                            <!-- ZipCode 5 num or 5+4 num (required) -->
+                            <Zip>90025</Zip>
+                        </ServiceAddress>
+                        <!-- Alphanumeric up to 32 character long (optional) -->
+                        <AccountNumber>123463</AccountNumber>
+                        <!-- Alphanumeric up to 10 character long (optional) --> 
+                        <PinNumber>1231</PinNumber> 
+                    </Subscriber>
+                    <!-- Toll-free number not allowed -->
+                    <ListOfTelephoneNumbers>  
+                        <TelephoneNumber>9192381468</TelephoneNumber> 
+                        <TelephoneNumber>9192381467</TelephoneNumber>
+                    </ListOfTelephoneNumbers>
+                  </LsrOrder>
+    responses:
+        201:
+            description: The 201 response indicates that lsrorder request has been successfully created.
+            body:
+                application/xml:
+                    example: |
+                        <LsrOrderResponse>
+                            <LsrOrder>
+                                <OrderId>afce454a-4e89-4753-9f58-a442ebc7b142</OrderId>
+                                <CustomerOrderId>FineCustomerid</CustomerOrderId>
+                                <LastModifiedBy>team_ua</LastModifiedBy>
+                                <OrderCreateDate>2015-02-06T12:57:45.607Z</OrderCreateDate>
+                                <PeerId>0</PeerId>
+                                <AccountId>9999999</AccountId>
+                                <SPID>123C</SPID>
+                                <LastModifiedDate>2015-02-09T13:07:57.286Z</LastModifiedDate>
+                                <SiteId>0</SiteId>
+                                <CreatedByUser>team_ua</CreatedByUser>
+                                <OrderStatus>PENDING</OrderStatus>
+                                <BillingTelephoneNumber>9192381468</BillingTelephoneNumber>
+                                <Pon>ATT-011515-324234</Pon>
+                                <PonVersion>8</PonVersion>
+                                <RequestedFocDate>2015-02-25 00:00:00</RequestedFocDate>
+                                <AuthorizingPerson>Jim Hopkins</AuthorizingPerson>
+                                !scope internal
+                                <OverrideValidation>false</OverrideValidation>
+                                <Subscriber>
+                                    <SubscriberType>BUSINESS</SubscriberType>
+                                    <BusinessName>BusinessName</BusinessName>
+                                    <AccountNumber>123463</AccountNumber>
+                                    <PinNumber>1231</PinNumber>
+                                    <ServiceAddress>
+                                        <HouseNumber>11</HouseNumber>
+                                        <StreetName>Park</StreetName>
+                                        <StreetSuffix>Ave</StreetSuffix>
+                                        <City>New York</City>
+                                        <StateCode>NY</StateCode>
+                                        <Zip>90025</Zip>
+                                        <Country>United States</Country>
+                                    </ServiceAddress>
+                                </Subscriber>
+                                <ListOfTelephoneNumbers>
+                                    <TelephoneNumber>9192381468</TelephoneNumber>
+                                    <TelephoneNumber>9192381467</TelephoneNumber>
+                                    <TelephoneNumber>9192381469</TelephoneNumber>
+                                </ListOfTelephoneNumbers>
+                            </LsrOrder>
+                        </LsrOrderResponse>
+        400:
+            description: Bad request shows that lsrorder request does not pass validation. Fror more info see LsrOrderErrors section in response.
+            body:
+                application/xml:
+                    example: |
+                          <LsrOrderResponse>
+                            <ResponseStatus>
+                                <ErrorCode>400</ErrorCode>
+                                <Description>Lsr order doesn't pass validation. Please check your input parameters.</Description>
+                            </ResponseStatus>
+                            <LsrOrderErrors>
+                                <LsrOrderError>
+                                    <Code>7324</Code>
+                                    <Description>The business name is too long. The business name should not be longer than 25 characters.</Description>
+                                </LsrOrderError>
+                                <LsrOrderError>
+                                    <Code>7318</Code>
+                                    <Description>Customer order ID is invalid. Only alphanumeric values, dashes and spaces are allowed. Max length is 40 characters.</Description>
+                                </LsrOrderError>
+                                <LsrOrderError>
+                                    <Code>7203</Code>
+                                    <Description>The billing telephone number (BTN) is invalid</Description>
+                                </LsrOrderError>
+                                <LsrOrderError>
+                                    <Code>16005</Code>
+                                    <Description>Toll-free telephone numbers can be present in the lsr order.</Description>
+                                </LsrOrderError>
+                                <LsrOrderError>
+                                    <Code>16009</Code>
+                                    <Description>Lsr order contain duplicate telephone numbers: [9192381468, 9192381468]</Description>
+                                </LsrOrderError>
+                                <LsrOrderError>
+                                    <Code>16002</Code>
+                                    <Description>Order contains invalid tns: [8882381468].</Description>
+                                </LsrOrderError>
+                            </LsrOrderErrors>
+                            <LsrOrder>
+                                <CustomerOrderId>WrongCustomerOrderIdLogerThan40AndContains$%SpecSimbols</CustomerOrderId>
+                                <LastModifiedBy>team_ua</LastModifiedBy>
+                                <OrderCreateDate>2015-02-06T12:57:45.607Z</OrderCreateDate>
+                                <AccountId>0</AccountId>
+                                <CreatedByUser>team_ua</CreatedByUser>
+                                <OrderStatus>FAILED</OrderStatus>
+                                <BillingTelephoneNumber>919238466</BillingTelephoneNumber>
+                                <Pon>ATT-011515-324234%$</Pon>
+                                <AuthorizingPerson>Jim Hopkins</AuthorizingPerson>
+                                <Subscriber>
+                                    <SubscriberType>BUSINESS</SubscriberType>
+                                    <BusinessName>LongerThan25CharacterBusinessName</BusinessName>
+                                    <AccountNumber>123463</AccountNumber>
+                                    <PinNumber>1231</PinNumber>
+                                    <ServiceAddress>
+                                        <HouseNumber>11</HouseNumber>
+                                        <StreetName>Park</StreetName>
+                                        <StreetSuffix>Ave</StreetSuffix>
+                                        <City>New York</City>
+                                        <StateCode>NY</StateCode>
+                                        <Zip>90025</Zip>
+                                        <Country>United States</Country>
+                                    </ServiceAddress>
+                                </Subscriber>
+                                <ListOfTelephoneNumbers>
+                                    <TelephoneNumber>9192381468</TelephoneNumber>
+                                    <TelephoneNumber>9192381468</TelephoneNumber>
+                                    <TelephoneNumber>9192381468</TelephoneNumber>
+                                </ListOfTelephoneNumbers>
+                            </LsrOrder>
+                          </LsrOrderResponse>
+
+/{orderid}: !include orderid/orderid.raml

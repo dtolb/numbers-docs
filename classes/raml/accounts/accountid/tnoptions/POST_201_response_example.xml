@@ -1,0 +1,35 @@
+!fileScope external
+        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<TnOptionOrderResponse>
+    <TnOptionOrder>
+        <OrderCreateDate>2016-01-15T12:01:14.324Z</OrderCreateDate>
+        <AccountId>14</AccountId>
+        <CreatedByUser>jbm</CreatedByUser>
+        <OrderId>ddbdc72e-dc27-490c-904e-d0c11291b095</OrderId>
+        <LastModifiedDate>2016-01-15T12:01:14.324Z</LastModifiedDate>
+        <ProcessingStatus>RECEIVED</ProcessingStatus>
+        <TnOptionGroups>
+            <TnOptionGroup>
+                <NumberFormat>10digit</NumberFormat>
+                <RPIDFormat>10digit</RPIDFormat>
+                <RewriteUser>testUser1</RewriteUser>
+                <CallForward>6042661720</CallForward>
+                <CallingNameDisplay>on</CallingNameDisplay>
+                <Protected>true</Protected>
+                <Sms>on</Sms>
+                <TelephoneNumbers>
+                    <TelephoneNumber>2018551020</TelephoneNumber>
+                </TelephoneNumbers>
+            </TnOptionGroup>
+            <TnOptionGroup>
+                <CallingNameDisplay>off</CallingNameDisplay>
+                <Protected>false</Protected>
+                <Sms>off</Sms>
+                <TelephoneNumbers>
+                    <TelephoneNumber>2018551025</TelephoneNumber>
+                </TelephoneNumbers>
+            </TnOptionGroup>
+        </TnOptionGroups>
+        <ErrorList/>
+    </TnOptionOrder>
+</TnOptionOrderResponse>

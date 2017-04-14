@@ -1,0 +1,119 @@
+!fileScope internal
+!scope internal
+description: |
+    The E911 settings resource is used to specialize the E911 product for the specific wholesale account, allowing the establishment of a specific relationship between IRIS and DASH at the account level.
+
+    The data retained as E911 settings is:<br>
+     - the user ID and password information that is used to access DASH E911 API for the identified account;<br>
+     - flag <b>AllowAlternateEndUserIdentifiers</b> to enable/disable the Alternate End User Identifier (AEUI) capability on the account.<br>
+     The specified credentials are account specific, and unique to the account.<br><br>
+
+    The password can be set but not retrieved.
+!scope internal
+get:
+    description: |
+        The GET returns the current settings, indicating the user ID, and the result from attempted authentication with the stored credentials.  If the Authentication fails subsequent attempts will be made using default credentials until the issue is resolved.
+
+    responses:
+        200:
+            description: The E911 settings element is returned.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <E911SettingsResponse>
+                            <E911Settings>
+                                <DashUserId>[alphanumeric]</DashUserId>
+                                <!-- failed if a 401 or 403 is http response code received from -->
+                                <!-- the DASH API on the last attempt to authenticate with the -->
+                                <!-- credentials, passed otherwise -->
+                                <DashAuthenticationStatus>[passed|failed|unknown]</DashAuthenticationStatus>
+                                <AllowAlternateEndUserIdentifiers>[true|false]</AllowAlternateEndUserIdentifiers>
+                            </E911Settings>
+                        </E911SettingsResponse>
+
+        404:
+            description: |
+                NOT FOUND
+                If the E911 product exists on the account, but settings are missing, then the 404 not found response is used.
+                If the E911 product does not exist on the account then the 404 will indicate that the E911 products resource cannot be found.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <E911SettingsResponse>
+                            <ResponseStatus>
+                                <!-- possibly a different Errorcode will be required -->
+                                <ErrorCode>12030</ErrorCode>
+                                <Description>E911 product settings have not been configured</Description>
+                            </ResponseStatus>
+                        </E911SettingsResponse>
+
+post:
+    description: |
+
+        This resource can be PUT or POSTed to in order to establish the appropriate settings.
+
+        Some of the important values that are established as part of this termination are...
+        <table>
+        <tr><th>parameter</th><th>description</th></tr>
+        <tr><td>DashUserId</td><td>[Alphanumeric with symbols] the User ID to be used to access Dash for this IRIS account. 50 characters, ascii, without % symbol or whitespace.</td></tr>
+        <tr><td>DashPassword</td><td>[Alphanumeric] the Password to be used to access Dash for this IRIS account - 50 characters</td></tr>
+        <tr><td>AllowAlternateEndUserIdentifiers</td><td>[Boolean] Provides ability to enable/disable the Alternate End User Identifier (AEUI) capability on the account - true|false(default value)</td></tr>
+        </table>
+    body:
+        application/xml:
+            example: |
+                <E911Settings>
+                    <DashUserId>[alphanumeric with symbols]</DashUserId>
+                    <DashPassword>[alphanumeric]</DashPassword>
+                    <AllowAlternateEndUserIdentifiers>true</AllowAlternateEndUserIdentifiers>
+                </E911Settings>
+    responses:
+        200:
+            description: a 200 OK is returned on successful updating of the E911 Settings.  There is no payload returned with a 200 OK.
+        400:
+            description: a 400 BAD REQUEST will be returned with a descriptive payload if the XML describing the E911 settings resource is incorrect or other factors prevent execution of the POST  The error contains an error code and description.
+            body:
+                application/xml:
+                    example: |
+                        <E911SettingsResponse>
+                            <ResponseStatus>
+                                <ErrorCode>******</ErrorCode>
+                                <Description>Passwords may contain only alphanumeric and symbol characters</Description>
+                            </ResponseStatus>
+                        </E911SettingsResponse>
+put:
+    description: |
+
+        This resource can be PUT or POSTed to in order to establish the appropriate settings.
+
+        Some of the important values that are established as part of this termination are...
+        <table>
+        <tr><th>parameter</th><th>description</th></tr>
+        <tr><td>DashUserId</td><td>[Alphanumeric with symbols] the User ID to be used to access Dash for this IRIS account</td></tr>
+        <tr><td>DashPassword</td><td>[Alphanumeric with symbols] the Password to be used to access Dash for this IRIS account</td></tr>
+        <tr><td>AllowAlternateEndUserIdentifiers</td><td>[Boolean] Provides ability to enable/disable the Alternate End User Identifier (AEUI) capability on the account - true|false(default value)</td></tr>
+        </table>
+    body:
+        application/xml:
+            example: |
+                <E911Settings>
+                    <DashUserId>[alphanumeric with symbols]</DashUserId>
+                    <DashPassword>[alphanumeric with symbols]</DashPassword>
+                    <AllowAlternateEndUserIdentifiers>true</AllowAlternateEndUserIdentifiers>
+                </E911Settings>
+    responses:
+        200:
+            description: a 200 OK is returned on successful updating of the E911 Settings.  There is no payload returned with a 200 OK.
+        400:
+            description: a 400 BAD REQUEST will be returned with a descriptive payload if the XML describing the E911 settings resource is incorrect or other factors prevent execution of the POST  The error contains an error code and description.
+            body:
+                application/xml:
+                    example: |
+                        <E911SettingsResponse>
+                            <ResponseStatus>
+                                <ErrorCode>******</ErrorCode>
+                                <Description>Passwords may contain only alphanumeric and symbol characters</Description>
+                            </ResponseStatus>
+                        </E911SettingsResponse>

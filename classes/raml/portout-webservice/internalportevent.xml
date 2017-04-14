@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<InternalPortEvent>
+  <Status>
+      <Code>200</Code>
+      <Description>Request is complete and results returned.</Description>
+  </Status>
+  <ProcessingStatus>FOC</ProcessingStatus>
+  <ProcessingErrors>
+       <Error>
+          FOC date cannot fall on a holiday
+       </Error>
+  </ProcessingErrors>
+  <BulkPortOut>
+     <PON>2578d71f-5e1a-4d6a-a9f4-16cf08f3e4b6</PON>
+     <Pin>55678</Pin>
+     <FocDate>2015-01-22</FocDate>
+     <Supplemental>UPDATE</Supplemental>
+     <Immediately>false</Immediately>
+     <TelephoneNumberList>
+       <TelephoneNumberToPort>2565224455</TelephoneNumberToPort>
+     </TelephoneNumberList>
+     <InternalPort>true</InternalPort>
+  </BulkPortOut>
+</InternalPortEvent>

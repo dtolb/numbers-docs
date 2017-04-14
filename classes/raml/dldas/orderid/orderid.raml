@@ -1,0 +1,30 @@
+!fileScope internal
+
+description: |
+    The "orderId" resource refers to a specific element of the orders collection.  Examining that resource provides detailed information on the specific identified order.
+
+get:
+    description: |
+        Retrieve information about a specific DLDA Order identified as the resource.
+
+    responses:
+        200:
+            description: |
+                The descriptive payload for the DLDA Orders query provides a broad range of information about the DLDA Order identified in the URL.  Included amongst the information is:
+                <ul>
+                <li>ErrorList - the errors discovered with codes and explanations</li>
+                <li>various dates</li>
+                <li>ProcessingStatus(RECEIVED, PROCESSING, COMPLETE, PARTIAL, FAILED, CANCELLED) - the overall status of the order</li>
+                <li>DldaTnGroups - list of DldaTnGroup elements that contains list of TNs with Directory Listing and Directory Assistance information, AccountType(RESIDENCE or BUSINESS), ListingType(LISTED, NON_LISTED or NON_PUBLISHED)</li>
+                </ul>
+
+            body:
+                application/xml:
+                    example: !include 200_response_example.xml
+        404:
+            description: NOT FOUND - the order id does not exist in the system
+            body:
+                application/xml:
+                    example: !include 404_response_example.xml
+
+/history: !include history/history.raml

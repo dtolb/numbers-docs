@@ -1,0 +1,82 @@
+!fileScope internal
+
+description: This resource manage admin migration process
+
+get:
+    description: Retrieve data about the migration status of the user or users specified in the queryParameters.
+    queryParameters:
+            userId:
+                description: This is the users about which we found migration information
+                type: string
+                example: jbm
+                repeat: true
+                required: true
+    responses:
+        200:
+            description: The information has been successfully retrieved and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LdapAdminUserMigrationResponse>
+                            <AdminUserMigrationStatus>
+                                <MigratedUsers>
+                                    <UserId>customer2</UserId>
+                                </MigratedUsers>
+                                <UnMigratedAdminUsers>
+                                    <UserId>jbm</UserId>
+                                </UnMigratedAdminUsers>
+                                <UnMigratedAccountUsers>
+                                    <UserId>jbmNonAdmin</UserId>
+                                </UnMigratedAccountUsers>
+                                <InvalidUsers>
+                                    <UserId>team_ua</UserId>
+                                </InvalidUsers>
+                            </AdminUserMigrationStatus>
+                        </LdapAdminUserMigrationResponse>
+        400:
+            description: userId is required.
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LdapAdminUserMigrationResponse>
+                            <ResponseStatus>
+                                <ErrorCode>1003</ErrorCode>
+                                <Description>userId is required</Description>
+                            </ResponseStatus>
+                        </LdapAdminUserMigrationResponse>
+post:
+    description: Run migration of admin users from MySQL to LDAP.
+    queryParameters:
+            userId:
+                description: This is the users that will be migrated
+                type: string
+                example: jbm
+                repeat: true
+                required: true
+    responses:
+        201:
+            description: migration was successfully
+        400:
+            description: userId is required and the migration request will fail unless all of the requested users are valid un-migrated admin users
+            body:
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <LdapAdminUserMigrationResponse>
+                            <ResponseStatus>
+                                <Description>Please check your input parameters.</Description>
+                            </ResponseStatus>
+                            <AdminUserMigrationStatus>
+                                <MigratedUsers>
+                                    <UserId>customer2</UserId>
+                                </MigratedUsers>
+                                <UnMigratedAdminUsers>
+                                    <UserId>jbm</UserId>
+                                </UnMigratedAdminUsers>
+                                <UnMigratedAccountUsers>
+                                    <UserId>jbmNonAdmin</UserId>
+                                </UnMigratedAccountUsers>
+                            </AdminUserMigrationStatus>
+                        </LdapAdminUserMigrationResponse>

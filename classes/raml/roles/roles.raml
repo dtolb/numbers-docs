@@ -1,0 +1,29 @@
+!fileScope internal
+
+description: This resource interacts with all the available roles. A GET on this resource will return all the roles that are available.
+
+get:
+    description: Retrieves all the available roles.
+    responses:
+        200:
+            description: The resources have been successfully retrieved and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <RolesResponse>
+                            <Roles>
+                                <Role>
+                                    <RoleName>ROLE_API_SEARCH</RoleName>
+                                    <Permissions>
+                                        <Permission>
+                                            <PermissionName>VIEW</PermissionName>
+                                        </Permission>
+                                    </Permissions>
+                                </Role>
+                                <Role>
+                                    <! --- SNIP --- >
+                                </Role>
+                            </Roles>
+                        </RolesResponse>
+
+/{roleName}: !include roleName/roleName.raml

@@ -1,0 +1,22 @@
+!fileScope internal
+
+description: This resource interacts with a specified role. A GET on this resource will return the permissions available with the specified role.
+
+get:
+    description: Retrieves the permissions available with the specified role.
+    responses:
+        200:
+            description: The role has been successfully retrieved and displayed in the payload.
+            body:
+                application/xml:
+                    example: |
+                        <RoleResponse>
+                            <Role>
+                                <RoleName>ROLE_API_SEARCH</RoleName>
+                                <Permissions>
+                                    <Permission>
+                                        <PermissionName>VIEW</PermissionName>
+                                    </Permission>
+                                </Permissions>
+                            </Role>
+                        </RoleResponse>

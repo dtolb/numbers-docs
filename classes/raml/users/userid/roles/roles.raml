@@ -1,0 +1,106 @@
+!fileScope internal
+
+description: reference the roles for a specific user in the system
+
+post:
+    
+    description: add a role or role permission to a specified user
+    body:
+        application/xml:
+            example: |
+                <?xml version="1.0"?>
+                <Roles>
+                    <Role>
+                        <RoleName>ROLE_API_SEARCH</RoleName>
+                        <Permissions>
+                            <Permission>
+                                <PermissionName>VIEW</PermissionName>
+                            </Permission>
+                        </Permissions>
+                    </Role>
+                </Roles>
+    responses:
+        201:
+            description: Created - the role was established for the specified user.
+            body: 
+                application/xml:
+                    example: empty response
+        400:
+            description: | 
+                Bad Request - if the role descriptions are incorrectly specified or conflict with existing roles then a 400 error will be returned with a descriptive payload.
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <RolesResponse>
+                            <ResponseStatus>
+                                <ErrorCode>12009</ErrorCode>
+                                <Description>Permission 'UPDATE' is not allowed for role 'ROLE_API_SEARCH'</Description>
+                            </ResponseStatus>
+                        </RolesResponse>
+
+get:
+    
+    description: Retrieve the roles and permissions that are associated with a named user-id
+
+    responses:
+        200:
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                        <RolesResponse>
+                            <Roles>
+                                <Role>
+                                    <RoleName>ROLE_API_ORDERING</RoleName>
+                                    <Permissions>
+                                        <Permission>
+                                            <PermissionName>VIEW</PermissionName>
+                                        </Permission>
+                                        <Permission>
+                                            <PermissionName>UPDATE</PermissionName>
+                                        </Permission>
+                                    </Permissions>
+                                </Role>
+                                <Role>
+                                    <RoleName>ROLE_API_PROFILE</RoleName>
+                                    <Permissions>
+                                        <Permission>
+                                            <PermissionName>VIEW</PermissionName>
+                                        </Permission>
+                                        <Permission>
+                                            <PermissionName>UPDATE</PermissionName>
+                                        </Permission>
+                                    </Permissions>
+                                </Role>
+                                <Role>
+                                    <RoleName>ROLE_API_DLDA</RoleName>
+                                    <Permissions>
+                                        <Permission>
+                                            <PermissionName>VIEW</PermissionName>
+                                        </Permission>
+                                        <Permission>
+                                            <PermissionName>UPDATE</PermissionName>
+                                        </Permission>
+                                    </Permissions>
+                                </Role>
+                                <Role>
+                                    <RoleName>ROLE_BDR</RoleName>
+                                    <Permissions>
+                                        <Permission>
+                                            <PermissionName>VIEW</PermissionName>
+                                        </Permission>
+                                    </Permissions>
+                                </Role>
+                                <Role>
+                                    <RoleName>ROLE_API_SEARCH</RoleName>
+                                    <Permissions>
+                                        <Permission>
+                                            <PermissionName>VIEW</PermissionName>
+                                        </Permission>
+                                    </Permissions>
+                                </Role>
+                            </Roles>
+                        </RolesResponse>
+
+/{roleId}: !include roleId/roleId.raml

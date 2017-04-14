@@ -1,0 +1,130 @@
+!fileScope internal
+
+description: |
+    Port out records represent the work that (typically) already been done to remove a TN from our system.  
+    The ability to search the set of all port-out work orders allows us to validate that removing numbers from the account
+    was done correctly.
+
+get:
+    description: |
+        Retrieve information about one or more Port-Out Orders (portins), where the orders are chosen based on the search parameters provided in the API Call. 
+        Not all search parameters are compatible with all other search parameters, due to the complexity of searching for historical records using highly parameterized or complex searches.  As a result:
+        * all query parameters are compatible with the exception of...
+        ** if modifiedFromDate or modifiedToDate are specified, then the only other valid search parameters are accountId, sippeerId or siteId
+        ** sippeerId and siteId are only compatible with searches that have a date range parameter.
+    queryParameters:
+        accountId:
+            description: This is the account that the searched-for order will be contributing to.  Specifying this parameter will restrict the search to portin orders within the specified account.
+            type: integer
+            example: 9900012
+            repeat: true
+        invertAccountIdSearch:
+            description: This flag makes it possible to exclude accounts from the search.
+            type: boolean
+            example: true
+        status:
+            description: The status of the portin order being searched for.
+            type: string
+            example: EXCEPTION
+            enum: [SUBMITTED, EXCEPTION, FOC, CANCELLED, COMPLETE]
+            repeat: true
+        tn:
+            description: A Telephone Number (TN) that is referenced in the order - a TN ported by the Port Order
+            type: string
+            example: 9199918388
+        orderIdFragment:
+            description: This search parameter represents the internal Bandwidth Dashboard ID that has been assigned to the Port Order.  This parameter is the first few characters of the internal ID - the entire ID does not need to be specified.
+            type: string
+            example: ed1c0bed-e2
+        requestedFocDate:
+            description: This is the FOC (Final Order Commit) Date requested by the person (or machine) creating the Port-in Order.
+            type: string
+            example: 13-10-22
+        actualFocDate:
+            description: This is the FOC (Final Order Commit) Date assigned to the Port-in Order by the loosing carrier or their agent.
+            type: string
+            example: 13-10-22
+        lastModifiedBy:
+            description: This is the user-id of the user that last modified the Port-in Order.
+            type: string
+            example: smckinnon
+        activityState:
+            description: The Order-Management state of the Port-in Order - used to manage orders within Bandwidth.  This parameter may not be exposed in the external representation of the API
+            type: string
+            enum: [quiet, responded, changed, seen]
+            example: responded
+            repeat: true
+        bandwidthPrime:
+            description: The name of the Bandwidth person responsible for managing the Port-in Order - used to manage orders within Bandwidth.  This parameter may not be exposed in the external representation of the API.
+            type: string
+            example: GeorgeB
+            repeat: true
+        modifiedFromDate:
+            description: For Date-based searches, the starting date of a date range that will be used to find Port-in Orders that were modified within the date range.  It is in the form YY-MM-DD.
+            type: string
+            example: 13-10-22
+        modifiedToDate:
+            description: For Date-based searches, the ending date of a date range that will be used to find Port-in Orders that were modified within the date range.  It is in the form YY-MM-DD.
+            type: string
+            example: 13-10-25
+    responses:    
+        200:
+            description: |
+                The descriptive response payload for the Port-out Orders query provides a broad range of information about the Port-out Orders found by the query, including the data associated with the order, the status of the order, and information about any error conditions encountered in processing of the order
+            body: 
+                application/xml:
+                    example: |
+                        <?xml version="1.0"?>
+                        <LNPResponseWrapper>
+                            <TotalCount>1520</TotalCount>
+                            <lnpPortInfoForGivenStatus>
+                                <accountId>14</accountId>
+                                <CompanyName>CWI Hosting</CompanyName>
+                                <CountOfTNs>1</CountOfTNs>
+                                <lastModifiedDate>2014-02-07T21-11-10.278Z</lastModifiedDate>
+                                <ErrorCode>200</ErrorCode>
+                                <ErrorMessage>Cancel pre foc port in successful.</ErrorMessage>
+                                <FullNumber>3232017829</FullNumber>
+                                <OrderId>7ff2652e-8ef3-4120-9df9-96f80b5bdcda</OrderId>
+                                <ProcessingStatus>cancelled</ProcessingStatus>
+                                <RequestedFOCDate>2114-02-07T00-00-00.000Z</RequestedFOCDate>
+                                <userId>jbm</userId>
+                                <VendorId>512E</VendorId>
+                            </lnpPortInfoForGivenStatus>
+                            <lnpPortInfoForGivenStatus>
+                                <accountId>14</accountId>
+                                <CompanyName>CWI Hosting</CompanyName>
+                                <CountOfTNs>1</CountOfTNs>
+                                <lastModifiedDate>2014-01-10T17-50-10.148Z</lastModifiedDate>
+                                <ErrorCode>200</ErrorCode>
+                                <ErrorMessage>Cancel pre foc port in successful.</ErrorMessage>
+                                <FullNumber>2012001665</FullNumber>
+                                <OrderId>7fd0682c-6cba-47fd-9cb1-1e4e60f3467c</OrderId>
+                                <ProcessingStatus>cancelled</ProcessingStatus>
+                                <RequestedFOCDate>2014-01-30T00-00-00.000Z</RequestedFOCDate>
+                                <userId>jbm</userId>
+                                <VendorId>512E</VendorId>
+                            </lnpPortInfoForGivenStatus>
+
+                            ... SNIP ...
+
+                            <lnpPortInfoForGivenStatus>
+                                <accountId>14</accountId>
+                                <CompanyName>CWI Hosting</CompanyName>
+                                <CountOfTNs>1</CountOfTNs>
+                                <lastModifiedDate>2014-01-29T11-21-00.525Z</lastModifiedDate>
+                                <ErrorCode>200</ErrorCode>
+                                <ErrorMessage>Port out successful.</ErrorMessage>
+                                <FullNumber>2052870789</FullNumber>
+                                <OrderId>7fc7950b-8b36-4db6-8a5c-8c1280635048</OrderId>
+                                <ProcessingStatus>complete</ProcessingStatus>
+                                <RequestedFOCDate>2014-01-31T00-00-00.000Z</RequestedFOCDate>
+                                <userId>Neustar</userId>
+                                <VendorId>979E</VendorId>
+                                <PON>14214124</PON>
+                            </lnpPortInfoForGivenStatus>
+                        </LNPResponseWrapper>
+        404:
+            description: Not Found.  If any errors are found in the processing of the query string a 404 will be returned.  Note that parameters that are not recognized are not considered errors, and are just ignored. 
+
+/{orderid}: !include orderid/orderid.raml

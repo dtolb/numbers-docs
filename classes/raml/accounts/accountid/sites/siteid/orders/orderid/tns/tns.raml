@@ -1,0 +1,15 @@
+!fileScope external
+
+description: Retrieves the Telephone Numbers associated by the given order ID
+
+get:
+    description: Retrieves the Telephone Numbers associated by the given order ID
+    responses:
+        200:
+            body:
+                application/xml:
+                    example: |
+                        <TelephoneNumbers>
+                            <Count>1</Count>
+                            <TelephoneNumber>8042105666</TelephoneNumber>
+                        </TelephoneNumbers>
